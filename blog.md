@@ -8,12 +8,12 @@ permalink: /blog/
 
 # Posts
 
-<ul class="post-list">
+<ul class="b-post-list">
   {% for post in site.posts %}
     <li>
-      <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
+      <span class="b-post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
       <h2>
-        <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+        <a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
       </h2>
     </li>
   {% endfor %}
