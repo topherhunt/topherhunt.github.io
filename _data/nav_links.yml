@@ -1,0 +1,8 @@
+- name: my story
+  url: /my_story/
+- name: resumé
+  url: /resume/
+- name: projects
+  url: /projects/
+- name: mazes
+  url: /mazes/

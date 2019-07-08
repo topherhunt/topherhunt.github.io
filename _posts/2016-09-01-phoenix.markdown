@@ -1,0 +1,16 @@
+---
+layout: post
+title:  Elixir & Phoenix
+date:   2016-09-01
+categories: jekyll update
+---
+
+<img src="/assets/images/projects/phoenix.png" class="b-project-image" />
+
+I started learning <a href="http://elixir-lang.github.io/" target="_blank">Elixir</a> and <a href="http://www.phoenixframework.org/docs/overview" target="_blank">Phoenix</a> recently, and I've decided to bet the farm on this stack. Where possible, all my new projects will be written in Elixir / Phoenix rather than Rails. Here's why:
+
+  * <strong>Strong norm of "explicit is better than implicit"</strong>: the app boot process, middleware, assets, and other components of the request lifecycle are declared using a transparent and uniform "Plugs" metaphor, leaving me with a more confident understanding of how it all fits together, whereas the prevalence of "invisible defaults" in the Rails world can feel opaque and overly magical -- this has been a pet peeve of mine for years.
+  * <strong>Phoenix comes with some neat caching tricks</strong> that reportedly deliver requests several times faster than Rails with no manual effort by the app developer. For example, route matching and template rendering are precompiled down to efficient pattern-match functions and string concatenation.
+  * Elixir's functional paradigm provides some constraints that <strong>make it harder to end up with the "ball-of-mud architecture"</strong> that I often see Ruby & Rails projects grow into. For example, it's easy to store most of your logic in input=>output functions that have no side effects, and it's easier to spot side effects when they do appear. This in turn makes it easier to understand, maintain, and refactor going forward.
+  * Phoenix (plus its Elixir dependencies such as the Ecto ORM) <strong>copies many of Rails' best features</strong>, and has built-in support for conveniences such as live reloading, background jobs, and websockets integration; it feels like it was all designed to make the transition from Rails as easy as possible.
+  * I love it and always will, but <strong>Rails is starting to show its age</strong>. I believe "convention over configuration" (compounded with the heavy use of OO class inheritance) has too often encouraged implicit and invisible "magic code" that impedes true understanding of the system and complicates troubleshooting & maintenance. Even ignoring questions of performance and real-time connection support, Elixir & Phoenix just feel like sturdier and more future-proof foundations to build web applications on.

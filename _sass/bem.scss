@@ -1,0 +1,50 @@
+.b-quote {
+  height: 150px;
+  overflow: auto;
+  font-family: monospace;
+  font-size: 90%;
+}
+
+.b-project-image {
+  box-sizing: border-box; // Ensure that padding counts as part of the width
+  display: block;
+  margin: 0 auto 0 auto;
+  width: 100%;
+  max-width: 600px;
+  padding: 0.5em;
+  box-shadow: 3px 3px 10px 0px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+
+.b-caption {
+  font-size: 0.8rem;
+  text-align: center;
+  color: #444;
+}
+
+.b-maze {
+  box-sizing: border-box; // Ensure that padding counts as part of the width
+  display: block;
+  margin: 2em auto 2em auto;
+  width: 400px;
+  max-width: 100%;
+  padding: 0.5em;
+  box-shadow: 3px 3px 10px 0px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+
+.b-resume-date {
+  float: right;
+  color: #888;
+  font-weight: normal;
+  font-size: 0.9em;
+}
+
+.b-stack {
+  > * + * { margin-top: 1em; }
+
+  &.m-bordered > * + * {
+    padding-top: 1em;
+    border-top: 1px solid #eee;
+  }
+}
