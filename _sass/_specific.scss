@@ -1,9 +1,30 @@
-.b-quote {
-  height: 150px;
+
+//
+// Posts
+//
+
+.b-post-list {
+  margin-left: 0;
+  list-style: none;
+
+  > li { margin-bottom: $spacing-unit; }
+}
+
+.b-post-meta {
+  font-size: $small-font-size;
+  color: $grey-color;
+}
+
+.b-quote-container {
+  min-height: 6em;
   overflow: auto;
   font-family: monospace;
   font-size: 90%;
 }
+
+//
+// Projects
+//
 
 .b-project-image {
   box-sizing: border-box; // Ensure that padding counts as part of the width
@@ -22,6 +43,10 @@
   color: #444;
 }
 
+//
+// Mazes
+//
+
 .b-maze {
   box-sizing: border-box; // Ensure that padding counts as part of the width
   display: block;
@@ -33,18 +58,13 @@
   border-radius: 10px;
 }
 
+//
+// Resume
+//
+
 .b-resume-date {
   float: right;
   color: #888;
   font-weight: normal;
   font-size: 0.9em;
-}
-
-.b-stack {
-  > * + * { margin-top: 1em; }
-
-  &.m-bordered > * + * {
-    padding-top: 1em;
-    border-top: 1px solid #eee;
-  }
 }

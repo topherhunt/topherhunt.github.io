@@ -1,6 +1,4 @@
 $(function(){
-  console.log("At top of quote.js")
-
   if ($('.js-quote').length == 0) return;
 
   var quotes = [
@@ -43,11 +41,10 @@ $(function(){
   ];
 
   var quote = quotes[ Math.floor(Math.random() * quotes.length) ]
-    .replace(/\./g, ".^300")
-    .replace(/\,/g, ",^200");
+    .replace(/\,/g, ",^300")
+    .replace(/\;/g, ";^300")
+    .replace(/\./g, ".^500");
   var autoscroll = true;
-
-  console.log("Init quote.");
 
   $('.js-quote').typed({
     strings: [quote],
@@ -56,14 +53,14 @@ $(function(){
 
   function jiggle_cursor(){
     $('.typed-cursor').toggle();
-    if (autoscroll) { $('#js-quote').animate({scrollTop: 999}); }
+    if (autoscroll) { $('.js-quote-container').animate({scrollTop: 999}); }
 
     setTimeout(jiggle_cursor, 600);
   }
 
   jiggle_cursor();
 
-  $('#js-quote').hover(function(){
+  $('.js-quote').hover(function(){
     autoscroll = false;
   }, function(){
     autoscroll = true;

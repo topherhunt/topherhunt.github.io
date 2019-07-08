@@ -1,0 +1,7 @@
+<a
+  href="{{ include.url | prepend: site.baseurl }}"
+  class="e-link {% if page.url == include.url %}m-active{% endif %}"
+  {% if include.target %}target="{{include.target}}"{% endif %}
+>
+  {{ include.name }}
+</a>
