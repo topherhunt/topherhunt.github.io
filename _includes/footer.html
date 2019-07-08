@@ -1,38 +1,18 @@
-<footer class="site-footer">
+<div class="b-footer">
 
   <div class="wrapper">
+    <h3>Topher Hunt</h3>
 
-    <h2 class="footer-heading">{{ site.title }}</h2>
-
-    <div class="footer-col-wrapper">
-      <div class="footer-col footer-col-1">
-        <ul class="contact-list">
-          <li>{{ site.title }}</li>
-          <li><a href="mailto:{{ site.email }}">{{ site.email }}</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-col footer-col-2">
-        <ul class="social-media-list">
-          {% if site.github_username %}
-          <li>
-            {% include icon-github.html username=site.github_username %}
-          </li>
-          {% endif %}
-
-          {% if site.twitter_username %}
-          <li>
-            {% include icon-twitter.html username=site.twitter_username %}
-          </li>
-          {% endif %}
-        </ul>
-      </div>
-
-      <div class="footer-col footer-col-3">
-        <p>{{ site.description }}</p>
-      </div>
+    <!-- TODO: Icons would be nice -->
+    <div>
+      <a href="mailto:{{ site.email }}">Email</a>
+      &nbsp;
+      <a href="https://github.com/topherhunt" target="_blank">Github</a>
+      &nbsp;
+      <a href="https://twitter.com/hunttopher" target="_blank">Twitter</a>
+      &nbsp;
+      <a href="https://www.linkedin.com/pub/topher-hunt/25/25b/685" target="_blank">LinkedIn</a>
     </div>
-
   </div>
 
-</footer>
+</div>
