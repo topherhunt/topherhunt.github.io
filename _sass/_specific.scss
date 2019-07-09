@@ -26,15 +26,24 @@
 // Projects
 //
 
+// TODO: This should be a utility. u-sidenote-right
+.b-floating-picture {
+  float: right;
+  width: 200px;
+  padding: 0 0 1em 1em;
+}
+
+// TODO: This should be a utility, .u-image-frame
 .b-project-image {
   box-sizing: border-box; // Ensure that padding counts as part of the width
   display: block;
   margin: 0 auto 0 auto;
   width: 100%;
   max-width: 600px;
-  padding: 0.5em;
+  background: #fff;
   box-shadow: 3px 3px 10px 0px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
+  overflow: hidden;
 }
 
 .b-caption {

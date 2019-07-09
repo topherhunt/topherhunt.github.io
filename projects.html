@@ -9,37 +9,34 @@ permalink: /projects/
 <div class="b-stack --bordered">
 
   <div>
-    <div class="row">
-      <div class="col-75">
-        <h2><a href="http://www.discotest.org" target="_blank">DiscoTest</a></h2>
-
-        <p><a href="http://www.lectica.org" target="_blank">Lectica</a> builds open-ended formative standardized assessment systems designed a) to honor the rich diversity of students' perspectives, and b) to trigger iterative cycles of learning & feedback in students, teachers, administrators, and developmental researchers.</p>
-
-        <p><a href="http://www.discotest.org" target="_blank">DiscoTest</a> is Lectica's platform for designing, validating, administering, scoring, and reporting on Lectical assessments for K-12 students. DiscoTest was the most inspiring, technically interesting, and conceptually challenging project I've worked on to date.</p>
-
-        <p><strong>The fun parts:</strong></p>
-
-        <ul>
-          <li>Designing and querying an extremely complex relational data schema</li>
-          <li>Interfaces to give the admin full control over managing, editing, and using the coding rubrics</li>
-          <li>Auto-generated multi-page reports for individual students as well as filterable reports that allows teachers, administrators, and researchers to analyze aggregate results, generate custom charts, etc.</li>
-        </ul>
+    <div class="b-floating-picture b-stack">
+      <div>
+        {% include project_image.html path="/assets/images/projects/2013-05-20 Lectica report_card.png" %}
+        <div class="b-caption">Student report card</div>
       </div>
-      <div class="col-25 b-stack">
-        <div>
-          {% include project_image.html path="/assets/images/projects/2013-05-20 Lectica report_card.png" %}
-          <div class="b-caption">Student report card</div>
-        </div>
-        <div>
-          {% include project_image.html path="/assets/images/projects/2013-10-15 Lectica Strands Heatmap.png" %}
-          <div class="b-caption">Learning sequences with heatmap based on filterable student data</div>
-        </div>
-        <div>
-          {% include project_image.html path="/assets/images/projects/2013-05-20 Lectica data filter.png" %}
-          <div class="b-caption">Dynamic report filters</div>
-        </div>
+      <div>
+        {% include project_image.html path="/assets/images/projects/2013-10-15 Lectica Strands Heatmap.png" %}
+        <div class="b-caption">Learning sequences with heatmap based on filterable student data</div>
+      </div>
+      <div>
+        {% include project_image.html path="/assets/images/projects/2013-05-20 Lectica data filter.png" %}
+        <div class="b-caption">Dynamic report filters</div>
       </div>
     </div>
+
+    <h2><a href="http://www.discotest.org" target="_blank">DiscoTest</a></h2>
+
+    <p><a href="http://www.lectica.org" target="_blank">Lectica</a> builds open-ended formative standardized assessment systems designed a) to honor the rich diversity of students' perspectives, and b) to trigger iterative cycles of learning & feedback in students, teachers, administrators, and developmental researchers.</p>
+
+    <p><a href="http://www.discotest.org" target="_blank">DiscoTest</a> is Lectica's platform for designing, validating, administering, scoring, and reporting on Lectical assessments for K-12 students. DiscoTest was the most inspiring, technically interesting, and conceptually challenging project I've worked on to date.</p>
+
+    <p><strong>The fun parts:</strong></p>
+
+    <ul>
+      <li>Designing and querying an extremely complex relational data schema</li>
+      <li>Interfaces to give the admin full control over managing, editing, and using the coding rubrics</li>
+      <li>Auto-generated multi-page reports for individual students as well as filterable reports that allows teachers, administrators, and researchers to analyze aggregate results, generate custom charts, etc.</li>
+    </ul>
   </div>
 
   <div>
@@ -48,62 +45,72 @@ permalink: /projects/
         Lux Research
       </a>
     </h2>
-    <div class="row">
-      <div class="col-66">
-        <p>Lux gathers research on startups, builds reports and metrics about their viability, potential market size, etc. then gives access to these reports to subscribers.</p>
-        <p>I was tasked to implement a "chart explorer" interface to allow customers to explore their companies database in a visual and dynamic way, with customizable X and Y axes, filters to constrain results along a number of dimensions, controls to save and load chart settings, and export to PNG or CSV. The chart is refreshed via AJAX each time a setting is changed.</p>
-        <p>This was about 30% Rails and 70% Javascript (my first time working with <a href="https://d3js.org/" target="_blank">D3.js</a>) and was a ton of fun.</p>
-      </div>
-      <div class="col-33">
-        {% include project_image.html path="/assets/images/projects/2016-02-19 Lux chart explorer.png" %}
-      </div>
+    <div class="b-floating-picture">
+      {% include project_image.html path="/assets/images/projects/2016-02-19 Lux chart explorer.png" %}
     </div>
+
+    <p>Lux gathers research on startups, builds reports and metrics about their viability, potential market size, etc. then gives access to these reports to subscribers.</p>
+    <p>I was tasked to implement a "chart explorer" interface to allow customers to explore their companies database in a visual and dynamic way, with customizable X and Y axes, filters to constrain results along a number of dimensions, controls to save and load chart settings, and export to PNG or CSV. The chart is refreshed via AJAX each time a setting is changed.</p>
+    <p>This was about 30% Rails and 70% Javascript (my first time working with <a href="https://d3js.org/" target="_blank">D3.js</a>) and was a ton of fun.</p>
   </div>
 
   <div>
     <h2><a href="https://www.grayowlnet.com/" target="_blank">Gray Owl</a></h2>
-    <div class="row">
-      <div class="col-66">
-        <p>Gray Owl manages a library of finance, banking, and insurance related resources available for subscriber access. As part of the team planning and building the application, I mostly worked on integrating machine learning & automation tools into the app interface and data flow.</p>
 
-        <p><strong>The fun parts:</strong></p>
+    <div class="b-floating-picture">{% include project_image.html path="/assets/images/projects/2016-11-22 Gray Owl.png" %}</div>
 
-        <ul>
-          <li>Storing certain file attachments in dynamically named S3 buckets (1 per user for legal reasons)</li>
-          <li>Machine learning integration (training, prediction, and evaluating accuracy) using a Prediction.io server, queried from our main Rails app</li>
-          <li>Spin off short-lived EC2 instances from an AMI, to each crawl a single domain, write newly found links to a central database, then terminate; logging & interface to provide transparency into what each crawler instance is doing</li>
-          <li>Audit records of all changes are stored in a secondary database and can be reviewed by authorized users</li>
-        </ul>
-      </div>
-      <div class="col-33">
-        {% include project_image.html path="/assets/images/projects/2016-11-22 Gray Owl.png" %}
-      </div>
-    </div>
+    <p>Gray Owl manages a library of finance, banking, and insurance related resources available for subscriber access. As part of the team planning and building the application, I mostly worked on integrating machine learning & automation tools into the app interface and data flow.</p>
+
+    <p><strong>The fun parts:</strong></p>
+
+    <ul>
+      <li>Storing certain file attachments in dynamically named S3 buckets (1 per user for legal reasons)</li>
+      <li>Machine learning integration (training, prediction, and evaluating accuracy) using a Prediction.io server, queried from our main Rails app</li>
+      <li>Spin off short-lived EC2 instances from an AMI, to each crawl a single domain, write newly found links to a central database, then terminate; logging & interface to provide transparency into what each crawler instance is doing</li>
+      <li>Audit records of all changes are stored in a secondary database and can be reviewed by authorized users</li>
+    </ul>
   </div>
 
   <div>
     <h2><a href="https://www.thriveabilitylab.com" target="_blank">Thriveability Lab</a></h2>
-    <div class="row">
-      <div class="col-66">
-        <p>The Thriveability project aims to build a social networking & collaboration hub that supports deeper discourse and more reflective engagement with the people around you. It's an antithesis to the shallow infosharing and "ADD culture" often cultivated by Facebook, Twitter, and similar.</p>
-      </div>
-      <div class="col-33">
-        {% include project_image.html path="/assets/images/projects/2016-06-06 Integral Climate 1.png" %}
-        (TODO: newer photo)
-      </div>
+
+    <div class="b-floating-picture">
+      {% include project_image.html path="/assets/images/projects/2019-07-08 Thriveability Lab.png" %}
     </div>
+
+    <p>The Thriveability project aims to build a social networking & collaboration hub that supports deeper discourse and more reflective engagement with the people around you. It's an antithesis to the shallow infosharing and "ADD culture" often cultivated by Facebook, Twitter, and similar.</p>
   </div>
 
   <div>
     <h2><a href="https://www.glassfrog.com/" target="_blank">GlassFrog</a></h2>
-    <div class="row">
-      <div class="col-66">
-        <p>GlassFrog is a data management platform built by <a href="https://www.holacracy.org/" target="_blank">HolacracyOne</a> to help organizations adopt a solid Holacracy practice.</p>
-      </div>
-      <div class="col-33">
-        {% include project_image.html path="/assets/images/projects/2017-12-14 GlassFrog.png" %}
-      </div>
-    </div>
+
+    <div class="b-floating-picture">{% include project_image.html path="/assets/images/projects/2017-12-14 GlassFrog.png" %}</div>
+
+    <p>GlassFrog is a data management platform built by <a href="https://www.holacracy.org/" target="_blank">HolacracyOne</a> to help organizations adopt a solid Holacracy practice.</p>
+
+    <p><strong>The fun parts:</strong></p>
+
+    <ul>
+      <li><a href="https://github.com/topherhunt/grassflog-apollo#grassflog" target="_blank">Tackled the fascinating problem</a> of how to both 1) represent the current structure of an organization, and 2) represent proposed structural changes to the org structure, in a way that makes it easy to a) craft in a friendly "proposal builder" UI, b) detect conflicts between proposals, c) validate and execute, and d) summarize in human-readable terms after execution, even if the referenced records no longer exist.</li>
+      <li>Slack integrations (<a href="https://support.glassfrog.com/support/solutions/articles/9000120786-how-do-i-set-up-slack-integration-premium-" target="_blank">announcing proposals</a> and collecting accept/reject responses; <a href="https://support.glassfrog.com/support/solutions/articles/9000158803-how-do-i-enable-the-slack-mentions-for-roles-premium-" target="_blank">syncing an organization's roles</a> to Slack usergroups; <a href="https://support.glassfrog.com/support/solutions/articles/9000165450-how-to-request-projects-and-actions-of-other-roles-in-slack-premium-" target="_blank">making and responding to requests to a role</a> via Slack)</li>
+      <li><a href="https://www.activecampaign.com/" target="_blank">ActiveCampaign</a> contact list sync with heavy caching layer to work around ActiveCampaign's highly-throttled api</li>
+      <li>Logic for importing organization data from other Holacracy support tools, validating, and transforming the data to fit our schema</li>
+    </ul>
+  </div>
+
+  <div>
+    <h2><a href="https://rtl-prod.herokuapp.com/" target="_blank">Reassembling the Line</a></h2>
+
+    <div class="b-floating-picture">{% include project_image.html path="/assets/images/projects/2019-07-09 RTL recording page.png" %}</div>
+
+    <p>RTL is an experimental new way of collecting human stories, digesting them into categorized "clips", and recombining those clips into a custom playlist based on what questions you'd like to ask of the data. Somewhere in between art form and social research tool, the vision is to [encourage people to ask novel questions and discover novel insights] by making individuals' stories digestible and accessible at scale without reducing the nuance and subtlety to numbers, as much of social research tends to do.</p>
+
+    <p><strong>The fun parts:</strong></p>
+
+    <ul>
+      <li>Video capture, preview, and direct-to-S3 upload using the (apparently still experimental) MediaStream recording api</li>
+      <li>Friendly iMovie-inspired video tagging system using React / Apollo / GraphQL / Absinthe</li>
+    </ul>
   </div>
 
 </div>

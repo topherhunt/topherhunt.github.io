@@ -21,7 +21,10 @@
 }
 
 .b-stack {
-  > * + * { margin-top: 1em; }
+  > * + * {
+    margin-top: 1em;
+    clear: both; // clear any side-floated contents
+  }
 
   &.--bordered > * + * {
     padding-top: 1em;
