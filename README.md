@@ -1,5 +1,8 @@
 # Topher's portfolio site
 
+[![HitCount](http://hits.dwyl.com/topherhunt/topherhunt.github.io.svg)](http://hits.dwyl.com/topherhunt/topherhunt.github.io)
+
+See the site at: https://topherhunt.github.io/
 
 ## Setting up the dev environment
 
