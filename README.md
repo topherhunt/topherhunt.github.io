@@ -1,24 +1,65 @@
-# Topher's portfolio site
+# Topher's personal site
 
-[![HitCount](http://hits.dwyl.com/topherhunt/topherhunt.github.io.svg)](http://hits.dwyl.com/topherhunt/topherhunt.github.io)
+Live site: https://topherhunt.github.io/
 
-See the site at: https://topherhunt.github.io/
+## Dev setup
 
-
-## Setting up the dev environment
-
-  * First time, you'll need to run `bundle install`
-  * Start the dev server with: `bundle exec jekyll serve` (or my alias: `j`)
-
+- `bundle install` (first-time only)
+- Start the dev server: `bundle exec jekyll serve`
+- Go to http://127.0.0.1:4000/
 
 ## Deploying
 
-Push the `master` branch and Github Pages will know how to compile and serve the deployed site.
+Push the `master` branch. A GitHub Actions workflow builds the site with Jekyll 4 and deploys to GitHub Pages.
 
+## Project structure
 
-## Jekyll v3 notes
+- `source/` — all site content (pages, posts, layouts, includes, assets)
+- `_site/` — build output (gitignored)
+- `_config.yml` — Jekyll configuration
 
-  * Handy tour of Jekyll, Liquid templates, layouts, includes, links, "front matter" and data collections: https://jekyllrb.com/docs/step-by-step/02-liquid/
-  * The Jekyll server compiles the final site files to `_site/`.
-  * `main.scss` can reference / import any stylesheets in `_sass/`.
-  * I can set up an RSS feed by adding a `feed.xml` template.
+## Front matter options
+
+Any markdown page can use the following front matter keys:
+
+### `layout`
+
+Which layout template to use. Options: `default`, `page`, `post`.
+
+```yaml
+layout: page
+```
+
+### `toc`
+
+Generate a table of contents below the first H1, built from the specified heading levels.
+
+```yaml
+toc: "h2,h3"
+```
+
+### `fold-headers`
+
+Make specified heading levels collapsible. Content under each matching heading is hidden by default; clicking the heading toggles it open/closed.
+
+```yaml
+fold-headers: "h3,h4"
+```
+
+### `breadcrumbs`
+
+Show a breadcrumb trail above the page title. "Home" is always included automatically. Requires `layout: page`.
+
+```yaml
+breadcrumbs:
+  - title: Cheatsheets
+    url: /cheatsheets/
+```
+
+### `permalink`
+
+Set a custom URL path for the page.
+
+```yaml
+permalink: /cheatsheets/phoenix-setup/
+```
