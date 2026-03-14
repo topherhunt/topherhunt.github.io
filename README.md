@@ -20,46 +20,19 @@ Push the `master` branch. A GitHub Actions workflow builds the site with Jekyll 
 
 ## Front matter options
 
-Any markdown page can use the following front matter keys:
+- **`layout`** — which template to use: `default`, `page`, or `post`
+- **`toc: true`** — generate a table of contents from h2–h6. Sticky sidebar on wide screens, inline on narrow.
+- **`fold-headers: "h3,h4"`** — make specified heading levels collapsible (click to toggle)
+- **`permalink: /my/path/`** — custom URL path for the page
+- **`breadcrumbs`** — breadcrumb trail above the title (requires `layout: page`). Posts get Home > Blog automatically.
+  ```yaml
+  breadcrumbs:
+    - title: Cheatsheets
+      url: /cheatsheets/
+  ```
 
-### `layout`
+## To do
 
-Which layout template to use. Options: `default`, `page`, `post`.
-
-```yaml
-layout: page
-```
-
-### `toc`
-
-Generate a table of contents from all h2–h6 headings. On wide screens (≥1100px), appears as a sticky sidebar in the left gutter with scroll-spy. On narrow screens, appears inline below the first H1.
-
-```yaml
-toc: true
-```
-
-### `fold-headers`
-
-Make specified heading levels collapsible. Content under each matching heading is hidden by default; clicking the heading toggles it open/closed.
-
-```yaml
-fold-headers: "h3,h4"
-```
-
-### `breadcrumbs`
-
-Show a breadcrumb trail above the page title. "Home" is always included automatically. Requires `layout: page`.
-
-```yaml
-breadcrumbs:
-  - title: Cheatsheets
-    url: /cheatsheets/
-```
-
-### `permalink`
-
-Set a custom URL path for the page.
-
-```yaml
-permalink: /cheatsheets/phoenix-setup/
-```
+- Figure out a compelling design for my homepage.
+  - Re-include things I love + things I'm worried about. As a random JS selection of 3 items? But first, come up with an updated list of things I love + things I'm worried about.
+  - Include a pic of me with a cool subtle mouse-cursor-tilt JS/CSS & shadow

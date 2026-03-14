@@ -7,6 +7,23 @@ $(function(){
       .toggle(200);
   });
 
+  // Add copy button to code blocks
+  $(".highlighter-rouge:has(pre)").each(function () {
+    var block = $(this);
+    block.css("position", "relative");
+    var btn = $('<button class="code-copy-btn" title="Copy"><i class="bi bi-clipboard"></i></button>');
+    block.append(btn);
+
+    btn.on("click", function () {
+      var code = block.find("pre").text();
+      navigator.clipboard.writeText(code).then(function () {
+        var tooltip = $('<span class="code-copy-tooltip">Copied!</span>');
+        btn.append(tooltip);
+        setTimeout(function () { tooltip.remove(); }, 1500);
+      });
+    });
+  });
+
   // Highlight the target footnote when clicking a footnote link
   $(document).on("click", "a[href^='#fn:'], a[href^='#fnref:']", function () {
     var targetId = $(this).attr("href").substring(1);
