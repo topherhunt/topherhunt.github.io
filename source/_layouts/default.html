@@ -8,7 +8,7 @@
     {% include header.html %}
 
     <div class="page-content">
-      <div class="wrapper" {% if page.toc %}data-toc="{{ page.toc }}"{% endif %} {% if page.fold-headers %}data-fold-headers="{{ page.fold-headers }}"{% endif %}>
+      <div class="wrapper" {% if page.toc %}data-toc{% endif %} {% if page.fold-headers %}data-fold-headers="{{ page.fold-headers }}"{% endif %}>
         {{ content }}
       </div>
     </div>
