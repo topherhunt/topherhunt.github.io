@@ -6,7 +6,7 @@ permalink: /blog/
 
 # Blog
 
-Thoughts on tech, society, epistemology, geopolitics, (grits teeth) culture wars, and how they intersect.
+Thoughts on tech, society, epistemology, geopolitics, (*grits teeth*) culture wars, and how they intersect.
 
 **My writing is Claude-assisted**; we are all cyborgs now. Becoming a cyborg doesn't take away from your humanity. Only your decisions can do that.
 
