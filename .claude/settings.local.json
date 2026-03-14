@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:jekyllrb.com)",
+      "WebFetch(domain:pages.github.com)",
+      "WebFetch(domain:rubygems.org)",
+      "Bash(bundle exec:*)"
+    ]
+  }
+}

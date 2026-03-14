@@ -8,7 +8,7 @@
     {% include header.html %}
 
     <div class="page-content">
-      <div class="wrapper">
+      <div class="wrapper" {% if page.toc %}data-toc="{{ page.toc }}"{% endif %} {% if page.fold-headers %}data-fold-headers="{{ page.fold-headers }}"{% endif %}>
         {{ content }}
       </div>
     </div>
@@ -22,5 +22,7 @@
   <script src="/assets/js/vendor/typed.js"></script>
   <script src="/assets/js/misc.js"></script>
   <script src="/assets/js/quote.js"></script>
+  <script src="/assets/js/toc.js"></script>
+  <script src="/assets/js/fold-headers.js"></script>
 
 </html>
