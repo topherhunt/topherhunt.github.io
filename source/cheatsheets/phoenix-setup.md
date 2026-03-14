@@ -2,8 +2,7 @@
 layout: page
 title: Phoenix Setup
 permalink: /cheatsheets/phoenix-setup/
-toc: "h2"
-fold-headers: "h3"
+toc: true
 breadcrumbs:
   - title: Cheatsheets
     url: /cheatsheets/

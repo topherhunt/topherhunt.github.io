@@ -32,10 +32,10 @@ layout: page
 
 ### `toc`
 
-Generate a table of contents below the first H1, built from the specified heading levels.
+Generate a table of contents from all h2–h6 headings. On wide screens (≥1100px), appears as a sticky sidebar in the left gutter with scroll-spy. On narrow screens, appears inline below the first H1.
 
 ```yaml
-toc: "h2,h3"
+toc: true
 ```
 
 ### `fold-headers`
