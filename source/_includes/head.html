@@ -8,6 +8,32 @@
 
   <link rel="stylesheet" href="{{ "/assets/css/main.css" | prepend: site.baseurl }}">
   <link rel="stylesheet" href="{{ "/assets/css/bootstrap-icons.css" | prepend: site.baseurl }}">
+
+  <script>
+    // Apply saved theme immediately to prevent flash
+    (function() {
+      var theme = localStorage.getItem("theme") || "light";
+      document.documentElement.setAttribute("data-theme", theme);
+    })();
+
+    function toggleTheme() {
+      var current = document.documentElement.getAttribute("data-theme");
+      var next = current === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", next);
+      localStorage.setItem("theme", next);
+      updateThemeIcon(next);
+    }
+
+    function updateThemeIcon(theme) {
+      var icon = document.querySelector(".b-theme-toggle i");
+      if (!icon) return;
+      icon.className = theme === "dark" ? "bi bi-sun-fill" : "bi bi-moon-fill";
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+      updateThemeIcon(document.documentElement.getAttribute("data-theme"));
+    });
+  </script>
   <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
   <link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}">
 
