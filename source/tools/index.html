@@ -1,0 +1,51 @@
+---
+layout: page
+title: Tools
+permalink: /tools/
+---
+
+<style>
+  .tools-grid { display: grid; gap: 2rem; }
+  .tool-card { border: 1px solid #ccc3; border-radius: 10px; padding: 1.25rem 1.5rem; }
+  .tool-card h2 { margin-top: 0; }
+  .tool-card ul { list-style: none; padding-left: 0; }
+  .tool-card li { margin: 0.35rem 0; }
+  .tool-card .launch { display: inline-block; margin-top: 0.5rem; font-weight: 600; }
+</style>
+
+<p>A couple of single-file browser tools I built for language practice. No install, no server — just open and go. All progress lives in your browser's localStorage.</p>
+
+<div class="tools-grid">
+
+  <div class="tool-card">
+    <h2>🎯 Quizzer</h2>
+    <p>A spaced-repetition flashcard app in one HTML file. Drop in a CSV deck and study.</p>
+    <ul>
+      <li>🧠 FSRS-4.5 spaced repetition (tracks stability, difficulty, due dates per card)</li>
+      <li>📥 Import decks as CSV via drag-and-drop</li>
+      <li>🎛️ Study modes: spaced repetition, least practiced, random, browse</li>
+      <li>⭐ Self-rate each answer: Again / Hard / Good / Easy</li>
+      <li>📊 Session summaries, mastery charts, response-time breakdowns</li>
+      <li>💾 Export / import full state as JSON</li>
+      <li>🌍 Multi-language UI (EN, NL, IT)</li>
+    </ul>
+    <a class="launch" href="/tools/quizzer/quizzer.html" target="_blank" rel="noopener">Launch Quizzer →</a>
+  </div>
+
+  <div class="tool-card">
+    <h2>🌍 Translator</h2>
+    <p>AI-powered translation practice. Pick a language pair, translate sentences, get instant feedback with adaptive difficulty.</p>
+    <ul>
+      <li>🗣️ 8 languages, any direction (EN, NL, ES, TR, DE, IT, EL, FR)</li>
+      <li>🤖 Claude evaluates each attempt: score, ideal translation, grammar notes</li>
+      <li>📈 Adaptive difficulty — the AI adjusts based on your recent performance</li>
+      <li>🏅 CEFR sub-levels (A1- through B2+) tracked over time</li>
+      <li>🔁 Retry injection: periodically re-serves sentences you got wrong</li>
+      <li>⚡ Speed bonus for fast correct answers (carrot, not stick)</li>
+      <li>🔊 Optional TTS playback of expected translations (bring your own OpenAI key)</li>
+      <li>🔑 Bring your own Anthropic API key — no server, no middleman</li>
+    </ul>
+    <a class="launch" href="/tools/translator/translator.html" target="_blank" rel="noopener">Launch Translator →</a>
+  </div>
+
+</div>

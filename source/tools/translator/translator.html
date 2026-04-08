@@ -1,0 +1,2869 @@
+<!--
+  Translation Practice — AI-powered translation tool.
+
+  USAGE: Open in a browser. Enter your Anthropic API key, pick your
+  native language and target language. The AI generates sentences in
+  your native language for you to translate, evaluates your attempts,
+  and adapts difficulty based on performance.
+
+  All progress is stored in localStorage. No server required.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Traductor — Translation Practice</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌍</text></svg>">
+<style>
+:root {
+  --bg: #141720;
+  --surface: #1c2030;
+  --elevated: #2a3045;
+  --accent: #53d8a8;
+  --error: #e74c6f;
+  --text: #e8e8e8;
+  --muted: #8899aa;
+  --amber: #f5a623;
+  --radius: 10px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100dvh;
+  line-height: 1.5;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+/* Header */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  margin-bottom: 12px;
+  border-bottom: 1px solid var(--elevated);
+}
+header h1 { font-size: 1.3rem; font-weight: 700; cursor: pointer; }
+header nav { display: flex; gap: 8px; }
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 12px 20px;
+  border-radius: var(--radius);
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+  text-align: center;
+}
+.btn-primary { background: #0d6efd; color: white; }
+.btn-primary:hover { filter: brightness(1.15); }
+.btn-secondary { background: #6c757d; color: white; }
+.btn-secondary:hover { filter: brightness(1.2); }
+.btn-outline-primary { background: transparent; color: #0d6efd; border: 1px solid #0d6efd; }
+.btn-outline-primary:hover { background: #0d6efd; color: white; }
+.btn-outline-secondary { background: transparent; color: var(--muted); border: 1px solid var(--elevated); }
+.btn-outline-secondary:hover { color: var(--text); border-color: var(--muted); }
+.btn-danger { background: #dc3545; color: white; }
+.btn-danger:hover { filter: brightness(1.1); }
+.btn-success { background: #198754; color: white; }
+.btn-success:hover { filter: brightness(1.1); }
+.btn-small { padding: 8px 14px; font-size: 0.85rem; width: auto; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Cards */
+.card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 12px;
+}
+.help-item {
+  padding: 6px 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* Sentence display */
+.sentence-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 24px 20px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+.sentence-card .label {
+  font-size: 0.75rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+}
+.sentence-card .sentence {
+  font-size: 1.3rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+.sentence-card .hint {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-top: 10px;
+  font-style: italic;
+}
+
+/* Input area */
+.input-area {
+  margin-bottom: 16px;
+}
+.input-area textarea {
+  width: 100%;
+  padding: 14px;
+  border-radius: var(--radius);
+  border: 2px solid var(--elevated);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 1.05rem;
+  font-family: inherit;
+  line-height: 1.5;
+  resize: none;
+  transition: border-color 0.2s;
+  min-height: 60px;
+}
+.input-area textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.input-area textarea:disabled {
+  opacity: 0.5;
+}
+
+/* Timer */
+.timer {
+  font-size: 0.8rem;
+  color: var(--muted);
+  text-align: right;
+  margin-bottom: 8px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Status bar */
+.status-bar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.status-item {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  flex: 1;
+  min-width: 80px;
+  text-align: center;
+  position: relative;
+}
+.status-item .value {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+.status-item .label {
+  font-size: 0.7rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+/* Level badge */
+.level-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  background: var(--accent);
+  color: var(--bg);
+}
+
+/* Feedback card */
+.feedback-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 16px;
+  border-left: 4px solid var(--accent);
+  animation: slideIn 0.25s ease-out;
+}
+.feedback-card.incorrect {
+  border-left-color: var(--error);
+}
+.feedback-card .result-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+}
+.feedback-card .result-label.correct { color: var(--accent); }
+.feedback-card .result-label.wrong { color: var(--error); }
+.feedback-card .expected {
+  margin: 10px 0;
+  padding: 10px;
+  background: var(--elevated);
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+.feedback-card .expected .label {
+  font-size: 0.7rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.feedback-card .feedback-text {
+  font-size: 0.9rem;
+  margin: 10px 0;
+  line-height: 1.6;
+}
+.feedback-card .feedback-text p {
+  margin: 0 0 6px;
+}
+.feedback-card .feedback-text ul {
+  margin: 6px 0;
+  padding-left: 1.4em;
+}
+.feedback-card .feedback-text li {
+  margin-bottom: 4px;
+}
+.feedback-card .grammar-note {
+  font-size: 0.85rem;
+  color: var(--amber);
+  margin-top: 8px;
+  padding: 8px 10px;
+  background: rgba(245, 166, 35, 0.08);
+  border-radius: 6px;
+}
+.feedback-card .score-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+.feedback-card .score-row .score {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Loading */
+.loading {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--muted);
+}
+.spinner {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  border: 3px solid var(--elevated);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 12px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.btn-spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+
+/* Settings */
+.setting-group {
+  margin-bottom: 20px;
+}
+.setting-group label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.setting-group .input-row {
+  display: flex;
+  gap: 8px;
+}
+.setting-group input[type="password"],
+.setting-group input[type="text"] {
+  flex: 1;
+  padding: 12px 14px;
+  border-radius: var(--radius);
+  border: 2px solid var(--elevated);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.95rem;
+  font-family: inherit;
+}
+.setting-group input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.toggle-vis {
+  background: var(--elevated);
+  border: none;
+  color: var(--muted);
+  border-radius: var(--radius);
+  padding: 0 14px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+.setting-group select {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: var(--radius);
+  border: 2px solid var(--elevated);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.95rem;
+  font-family: inherit;
+}
+.setting-group select:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+/* Stats */
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.stat-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 14px;
+  text-align: center;
+  position: relative;
+}
+.stat-card .value {
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+.stat-card .label {
+  font-size: 0.7rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.stat-emoji {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+/* History table */
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+}
+.history-table th {
+  text-align: left;
+  padding: 8px 6px;
+  border-bottom: 1px solid var(--elevated);
+  color: var(--muted);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  cursor: pointer;
+}
+.history-table th:hover { color: var(--text); }
+.history-table td {
+  padding: 8px 6px;
+  border-bottom: 1px solid var(--elevated);
+  vertical-align: top;
+}
+.history-table tr:hover td { background: var(--surface); }
+.history-scroll-wrap {
+  position: relative;
+}
+.history-scroll {
+  max-height: 400px;
+  overflow-y: auto;
+  border-radius: var(--radius);
+  border: 1px solid var(--elevated);
+}
+.scroll-hint {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--elevated);
+  color: var(--muted);
+  font-size: 0.7rem;
+  padding: 4px 12px;
+  border-radius: 12px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+.scroll-hint.visible {
+  opacity: 1;
+}
+
+.chart-tooltip {
+  position: fixed;
+  pointer-events: none;
+  background: var(--elevated);
+  color: var(--text);
+  font-size: 0.8rem;
+  padding: 4px 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.15s;
+  z-index: 100;
+}
+.chart-tooltip.visible {
+  opacity: 1;
+}
+
+.tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  background: var(--elevated);
+  color: var(--muted);
+  margin: 2px;
+}
+
+.tts-btn {
+  background: transparent;
+  border: 1px solid var(--elevated);
+  color: var(--text);
+  border-radius: var(--radius);
+  padding: 4px 10px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  min-width: 36px;
+  line-height: 1;
+}
+.tts-btn:hover:not(:disabled) { background: var(--elevated); }
+.tts-btn:disabled { cursor: wait; opacity: 0.7; }
+.tts-btn.playing { color: #f5a524; border-color: #f5a524; }
+
+/* Fluency chart */
+.fluency-chart {
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+.fluency-chart canvas {
+  width: 100%;
+  height: auto;
+}
+
+/* Alert */
+.alert {
+  padding: 12px 16px;
+  border-radius: var(--radius);
+  margin-bottom: 12px;
+  font-size: 0.9rem;
+}
+.alert-error {
+  background: rgba(231, 76, 111, 0.12);
+  color: var(--error);
+}
+.alert-success {
+  background: rgba(83, 216, 168, 0.12);
+  color: var(--accent);
+}
+
+/* Overlay / dialog */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 16px;
+}
+.dialog {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 24px;
+  max-width: 400px;
+  width: 100%;
+}
+.dialog h3 { margin-bottom: 12px; }
+.dialog .btn-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+.dialog .btn-row .btn { flex: 1; }
+
+/* Expand row */
+.expand-row {
+  cursor: pointer;
+}
+.expand-content {
+  display: none;
+  padding: 10px;
+  background: var(--elevated);
+  border-radius: 6px;
+  margin-top: 6px;
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+.expand-content.open { display: block; }
+
+/* Section heading */
+.section-heading {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 20px 0 10px;
+}
+.section-heading:first-child { margin-top: 0; }
+
+/* Misc */
+.text-muted { color: var(--muted); }
+.text-small { font-size: 0.8rem; }
+.text-center { text-align: center; }
+.mt-8 { margin-top: 8px; }
+.mt-16 { margin-top: 16px; }
+.mb-12 { margin-bottom: 12px; }
+.gap-8 { display: flex; gap: 8px; }
+</style>
+</head>
+<body>
+<div class="chart-tooltip" id="qa-chart-tooltip"></div>
+<div class="container">
+  <header>
+    <h1 id="qa-title" onclick="navigate('#/')">Traductor <span id="qa-tier-emoji"></span></h1>
+    <nav>
+      <button class="btn btn-small btn-outline-primary" id="qa-home-btn" onclick="navigate('#/')">Home</button>
+      <button class="btn btn-small btn-outline-primary" id="qa-help-btn" onclick="navigate('#/help')">Help</button>
+      <button class="btn btn-small btn-outline-primary" id="qa-settings-btn" onclick="navigate('#/settings')">Settings</button>
+    </nav>
+  </header>
+  <main id="app"></main>
+</div>
+
+<script>
+// ── Constants ──────────────────────────────────────────────────────
+const API_URL = 'https://api.anthropic.com/v1/messages';
+const MODEL = 'claude-sonnet-4-6';
+const CEFR_LEVELS = ['A1-','A1','A1+','A2-','A2','A2+','B1-','B1','B1+','B2-','B2','B2+'];
+const TIME_LIMITS = { 'A1-': 30, 'A1': 30, 'A1+': 30, 'A2-': 45, 'A2': 45, 'A2+': 45, 'B1-': 60, 'B1': 60, 'B1+': 60, 'B2-': 90, 'B2': 90, 'B2+': 90 };
+const EMA_ALPHA = 0.15;
+const SONNET_INPUT_COST = 3;   // $/M tokens
+const SONNET_OUTPUT_COST = 15; // $/M tokens
+
+const KEYS = {
+  apiKey: 'translator_api_key',
+  openaiKey: 'translator_openai_key',
+  nativeLang: 'translator_native_lang',
+  targetLang: 'translator_target_lang',
+  feedbackLang: 'translator_feedback_lang',
+  stats: 'translator_stats',
+  history: 'translator_history',
+  sessions: 'translator_sessions',
+};
+
+// Language definitions: code → {name in own language, english name}
+// EN must stay first — it's the default when no selection is saved.
+const NATIVE_LANGS = {
+  en: { label: 'English', en: 'English' },
+  nl: { label: 'Nederlands', en: 'Dutch' },
+  es: { label: 'Español', en: 'Spanish' },
+  tr: { label: 'Türkçe', en: 'Turkish' },
+  de: { label: 'Deutsch', en: 'German' },
+  it: { label: 'Italiano', en: 'Italian' },
+  el: { label: 'Ελληνικά', en: 'Greek' },
+  fr: { label: 'Français', en: 'French' },
+};
+// EN must stay first — it's the default when no selection is saved.
+const TARGET_LANGS = {
+  en: { label: 'English', en: 'English' },
+  es: { label: 'Español', en: 'Spanish' },
+  tr: { label: 'Türkçe', en: 'Turkish' },
+  nl: { label: 'Nederlands', en: 'Dutch' },
+  de: { label: 'Deutsch', en: 'German' },
+  it: { label: 'Italiano', en: 'Italian' },
+  el: { label: 'Ελληνικά', en: 'Greek' },
+  fr: { label: 'Français', en: 'French' },
+};
+
+function getNativeLang() { return localStorage.getItem(KEYS.nativeLang) || 'en'; }
+function getTargetLang() { return localStorage.getItem(KEYS.targetLang) || 'en'; }
+function nativeName() { return NATIVE_LANGS[getNativeLang()].en; }
+function targetName() { return TARGET_LANGS[getTargetLang()].en; }
+function getFeedbackLang() { return localStorage.getItem(KEYS.feedbackLang) || 'native'; }
+function feedbackLangName() { return getFeedbackLang() === 'native' ? nativeName() : targetName(); }
+function getUILangCode() { return getFeedbackLang() === 'native' ? getNativeLang() : getTargetLang(); }
+
+// ── i18n ───────────────────────────────────────────────────────────
+const LANGS = {
+  nl: {
+    home: 'Home',
+    settings: 'Instellingen',
+    apiKey: 'Anthropic API-sleutel',
+    apiKeyHint: 'Je sleutel blijft in de localStorage van deze browser en wordt alleen naar de Anthropic API gestuurd. Nog geen sleutel? Maak een gratis account aan op anthropic.com, ga dan naar',
+    apiKeyHintLink: 'Console → API-sleutels',
+    apiKeyWarning: 'Beide sleutels worden in deze browser opgeslagen, dus kwaadaardige extensies kunnen ze stelen. Gebruik deze app niet met niet-vertrouwde extensies en stel uitgavelimieten in op je Anthropic- en OpenAI-dashboards om de schade bij een lek te beperken. Als je vermoedt dat een sleutel is gestolen, ga dan onmiddellijk naar het betreffende dashboard en verwijder die sleutel zodat hij niet meer gebruikt kan worden.',
+    show: 'Tonen',
+    hide: 'Verbergen',
+    nativeLang: 'Moedertaal',
+    targetLang: 'Doeltaal',
+    feedbackLangLabel: 'App-taal',
+    feedbackInNative: 'Moedertaal',
+    feedbackInTarget: 'Doeltaal (⭐ aanbevolen)',
+    feedbackLangHint: 'Bepaalt de taal van de hele interface en AI-feedback. Doeltaal is aanbevolen als je het op basisniveau kunt lezen — zo oefen je extra!',
+    saveValidate: 'Opslaan & valideren',
+    validating: 'Valideren...',
+    validated: 'Sleutel gevalideerd! Doorsturen...',
+    enterApiKey: 'Voer een API-sleutel in.',
+    selectTargetLang: 'Kies een doeltaal.',
+    selectLangPlaceholder: '— Kies een taal —',
+    manageData: 'Mijn gegevens beheren',
+    exportData: 'Gegevens exporteren',
+    importData: 'Gegevens importeren',
+    importConfirm: 'Dit overschrijft al je huidige geschiedenis en statistieken. Doorgaan?',
+    importSuccess: 'Gegevens geïmporteerd!',
+    importError: 'Ongeldig back-upbestand.',
+    importSchemaError: 'Dit back-upbestand gebruikt een nieuwer formaat en kan niet worden geïmporteerd in deze versie van de app.',
+    deleteAllData: 'Alle gegevens verwijderen',
+    deleteAllConfirm: 'Dit verwijdert AL je vertaalgeschiedenis, statistieken en API-sleutel. Doorgaan?',
+    practice: 'Oefenen',
+    startPractice: 'Begin met oefenen',
+    noHistory: 'Nog geen oefengeschiedenis. Begin met oefenen om je statistieken te zien!',
+    generating: 'Zin genereren...',
+    translateTo: lang => `Vertaal naar het ${lang}`,
+    typePlaceholder: lang => `Typ je ${lang}e vertaling...`,
+    submit: 'Verzenden',
+    evaluating: 'Evalueren...',
+    retry: 'Opnieuw proberen',
+    endSession: 'Sessie beeindigen',
+    youTranslated: 'Je vertaalde',
+    correct: 'Correct!',
+    notQuite: 'Niet helemaal',
+    expected: lang => `Verwacht ${lang}`,
+    score: 'Score',
+    time: 'Tijd',
+    nextSentence: 'Volgende zin',
+    level: 'Niveau',
+    streak: 'Reeks',
+    total: 'Totaal',
+    fluencyLevel: 'Taalniveau',
+    accuracy: 'Nauwkeurigheid',
+    sentences: 'Zinnen',
+    runningScore: 'Lopende score',
+    currentStreak: 'Huidige reeks',
+    bestStreak: 'Beste reeks',
+    avgTime: 'Gem. tijd',
+    apiCost: 'API-kosten',
+    aiNotes: 'AI-notities',
+    fluencyOverTime: 'Taalniveau in de tijd',
+    scoreOverTime: 'Score in de tijd',
+    history: 'Geschiedenis',
+    all: 'Alles',
+    correctOnly: 'Alleen correct',
+    incorrectOnly: 'Alleen fout',
+    noMatches: 'Geen resultaten voor dit filter.',
+    source: 'Bron',
+    yourAnswer: 'Jouw antwoord',
+    expectedLabel: 'Verwacht',
+    feedback: 'Feedback',
+    grammar: 'Grammatica',
+    baseScore: 'Basisscore',
+    speedBonus: 'snelheidsbonus',
+    sessions: 'Sessies',
+    nSentences: n => `${n} zinnen`,
+    avg: 'gem.',
+    help: 'Help',
+    helpTitle: 'Hoe werkt het?',
+    helpSetup: 'Instellen',
+    helpSetupKey: 'Maak een Anthropic-account aan en voer je API-sleutel in',
+    helpSetupKeyLink: 'Haal je sleutel op',
+    helpSetupLangs: 'Kies je moedertaal (vertalen VANUIT) en doeltaal (vertalen NAAR)',
+    helpSetupGo: 'Klik op Oefenen — de AI doet de rest!',
+    helpPractice: 'Oefenen',
+    helpPracticeRead: 'Lees de zin in je moedertaal',
+    helpPracticeType: 'Typ je vertaling in de doeltaal',
+    helpPracticeFeedback: 'Krijg directe feedback met tips en correcties',
+    helpScoring: 'Score & snelheid',
+    helpScoringBase: 'De AI geeft 0–100 punten op basis van correctheid',
+    helpScoringBonus: 'Sneller dan de doeltijd? Verdien tot +30% snelheidsbonus!',
+    helpScoringNoPenalty: 'Geen tijdstraf — neem de tijd als het nodig is',
+    helpProgress: 'Voortgang',
+    helpProgressCEFR: 'Je niveau wordt beoordeeld op de CEFR-schaal (A1- tot B2+)',
+    helpProgressAdapt: 'Zinnen passen zich automatisch aan jouw niveau aan',
+    helpProgressStats: 'Bekijk je geschiedenis, reeksen en kosten op de startpagina',
+    helpSupportText: 'Heb je problemen, vragen, ideeën, of wil je gewoon even hallo zeggen?',
+    helpSupportLink: 'Bezoek het ondersteuningsforum',
+  },
+  en: {
+    home: 'Home',
+    settings: 'Settings',
+    apiKey: 'Anthropic API Key',
+    apiKeyHint: 'Your key stays in this browser\'s localStorage and is only sent to the Anthropic API. No key yet? Create a free account at anthropic.com, then go to',
+    apiKeyHintLink: 'Console → API Keys',
+    apiKeyWarning: 'Both keys are stored in this browser, so malicious extensions can steal them. Don\'t use this app with untrusted extensions, and set spending limits in your Anthropic and OpenAI dashboards to cap the damage if a key ever leaks. If you suspect a key has been stolen, immediately go to the relevant dashboard and delete that key so it can no longer be used.',
+    show: 'Show',
+    hide: 'Hide',
+    nativeLang: 'Native language',
+    targetLang: 'Target language',
+    feedbackLangLabel: 'App language',
+    feedbackInNative: 'Native language',
+    feedbackInTarget: 'Target language (⭐ recommended)',
+    feedbackLangHint: 'Controls the language of the entire interface and AI feedback. Target language is recommended if you can read it at a basic level — extra practice!',
+    saveValidate: 'Save & Validate',
+    validating: 'Validating...',
+    validated: 'Key validated! Redirecting...',
+    enterApiKey: 'Please enter an API key.',
+    selectTargetLang: 'Please select a target language.',
+    selectLangPlaceholder: '— Select a language —',
+    openaiKey: 'OpenAI API key (optional)',
+    openaiKeyHint: 'Used for text-to-speech playback of expected answers.',
+    openaiKeyHintLink: 'Get an OpenAI API key',
+    helpTTS: 'Audio playback',
+    helpTTSDesc: 'Add an OpenAI API key in Settings to play the correct answer aloud — look for the ▶ button next to the expected sentence',
+    manageData: 'Manage My Data',
+    exportData: 'Export Data',
+    importData: 'Import Data',
+    importConfirm: 'This will overwrite all your current history and stats. Continue?',
+    importSuccess: 'Data imported!',
+    importError: 'Invalid backup file.',
+    importSchemaError: 'This backup was made with a newer version of the app and cannot be imported.',
+    deleteAllData: 'Delete All Data',
+    deleteAllConfirm: 'This will delete ALL your translation history, stats, and API key. Continue?',
+    practice: 'Practice',
+    startPractice: 'Start Practice',
+    noHistory: 'No practice history yet. Start practicing to see your stats!',
+    generating: 'Generating sentence...',
+    translateTo: lang => `Translate to ${lang}`,
+    typePlaceholder: lang => `Type your ${lang} translation...`,
+    submit: 'Submit',
+    evaluating: 'Evaluating...',
+    retry: 'Retry',
+    endSession: 'End Session',
+    youTranslated: 'You translated',
+    correct: 'Correct!',
+    notQuite: 'Not quite',
+    expected: lang => `Expected ${lang}`,
+    score: 'Score',
+    time: 'Time',
+    nextSentence: 'Next Sentence',
+    level: 'Level',
+    streak: 'Streak',
+    total: 'Total',
+    fluencyLevel: 'Fluency Level',
+    accuracy: 'Accuracy',
+    sentences: 'Sentences',
+    runningScore: 'Running Score',
+    currentStreak: 'Current Streak',
+    bestStreak: 'Best Streak',
+    avgTime: 'Avg Time',
+    apiCost: 'API Cost',
+    aiNotes: 'AI Notes',
+    fluencyOverTime: 'Fluency Over Time',
+    scoreOverTime: 'Score Over Time',
+    volumeOverTime: 'Sentences Per Day',
+    history: 'History',
+    all: 'All',
+    correctOnly: 'Correct Only',
+    incorrectOnly: 'Incorrect Only',
+    noMatches: 'No entries match this filter.',
+    source: 'Source',
+    yourAnswer: 'Your Answer',
+    expectedLabel: 'Expected',
+    feedback: 'Feedback',
+    grammar: 'Grammar',
+    baseScore: 'Base score',
+    speedBonus: 'speed bonus',
+    sessions: 'Sessions',
+    nSentences: n => `${n} sentences`,
+    avg: 'avg',
+    help: 'Help',
+    helpTitle: 'How does it work?',
+    helpSetup: 'Setup',
+    helpSetupKey: 'Create an Anthropic account and enter your API key',
+    helpSetupKeyLink: 'Get your key',
+    helpSetupLangs: 'Choose your native language (translate FROM) and target language (translate TO)',
+    helpSetupGo: 'Click Practice — the AI handles the rest!',
+    helpPractice: 'Practice',
+    helpPracticeRead: 'Read the sentence in your native language',
+    helpPracticeType: 'Type your translation in the target language',
+    helpPracticeFeedback: 'Get instant feedback with tips and corrections',
+    helpScoring: 'Score & speed',
+    helpScoringBase: 'The AI awards 0–100 points based on correctness',
+    helpScoringBonus: 'Faster than target time? Earn up to +30% speed bonus!',
+    helpScoringNoPenalty: 'No time penalty — take your time if you need to',
+    helpProgress: 'Progress',
+    helpProgressCEFR: 'Your level is assessed on the CEFR scale (A1- to B2+)',
+    helpProgressAdapt: 'Sentences automatically adapt to your level',
+    helpProgressStats: 'View your history, streaks, and costs on the home page',
+    helpProgressStreak: 'Streak grows with each score above 75 — any slip resets it',
+    totalSentences: 'Total Sentences',
+    helpSupportText: 'Have any issues, questions, ideas, or just want to say hi?',
+    helpSupportLink: 'Visit the support forum',
+  },
+  it: {
+    home: 'Home',
+    settings: 'Impostazioni',
+    apiKey: 'Chiave API Anthropic',
+    apiKeyHint: 'La tua chiave resta nel localStorage di questo browser e viene inviata solo all\'API di Anthropic. Non hai una chiave? Crea un account gratuito su anthropic.com, poi vai su',
+    apiKeyHintLink: 'Console → Chiavi API',
+    apiKeyWarning: 'Entrambe le chiavi sono salvate in questo browser, quindi estensioni malevole possono rubarle. Non usare questa app con estensioni non affidabili e imposta limiti di spesa nelle dashboard di Anthropic e OpenAI per limitare i danni in caso di fuga. Se sospetti che una chiave sia stata rubata, vai immediatamente alla dashboard corrispondente ed elimina quella chiave in modo che non possa più essere usata.',
+    show: 'Mostra',
+    hide: 'Nascondi',
+    nativeLang: 'Lingua madre',
+    targetLang: 'Lingua obiettivo',
+    feedbackLangLabel: 'Lingua dell\'app',
+    feedbackInNative: 'Lingua madre',
+    feedbackInTarget: 'Lingua obiettivo (⭐ consigliato)',
+    feedbackLangHint: 'Controlla la lingua dell\'intera interfaccia e del feedback AI. La lingua obiettivo è consigliata se riesci a leggerla a livello base — pratica extra!',
+    saveValidate: 'Salva e valida',
+    validating: 'Validazione...',
+    validated: 'Chiave validata! Reindirizzamento...',
+    enterApiKey: 'Inserisci una chiave API.',
+    selectTargetLang: 'Seleziona una lingua obiettivo.',
+    selectLangPlaceholder: '— Seleziona una lingua —',
+    manageData: 'Gestisci i miei dati',
+    exportData: 'Esporta dati',
+    importData: 'Importa dati',
+    importConfirm: 'Questo sovrascriverà tutta la cronologia e le statistiche attuali. Continuare?',
+    importSuccess: 'Dati importati!',
+    importError: 'File di backup non valido.',
+    importSchemaError: 'Questo backup è stato creato con una versione più recente dell\'app e non può essere importato.',
+    deleteAllData: 'Elimina tutti i dati',
+    deleteAllConfirm: 'Questo cancellerà TUTTA la cronologia, le statistiche e la chiave API. Continuare?',
+    practice: 'Pratica',
+    startPractice: 'Inizia a praticare',
+    noHistory: 'Nessuna cronologia di pratica. Inizia a praticare per vedere le statistiche!',
+    generating: 'Generazione frase...',
+    translateTo: lang => `Traduci in ${lang}`,
+    typePlaceholder: lang => `Scrivi la tua traduzione in ${lang}...`,
+    submit: 'Invia',
+    evaluating: 'Valutazione...',
+    retry: 'Riprova',
+    endSession: 'Termina sessione',
+    youTranslated: 'Hai tradotto',
+    correct: 'Corretto!',
+    notQuite: 'Non proprio',
+    expected: lang => `${lang} previsto`,
+    score: 'Punteggio',
+    time: 'Tempo',
+    nextSentence: 'Prossima frase',
+    level: 'Livello',
+    streak: 'Serie',
+    total: 'Totale',
+    fluencyLevel: 'Livello di fluenza',
+    accuracy: 'Precisione',
+    sentences: 'Frasi',
+    runningScore: 'Punteggio corrente',
+    currentStreak: 'Serie attuale',
+    bestStreak: 'Migliore serie',
+    avgTime: 'Tempo medio',
+    apiCost: 'Costo API',
+    aiNotes: 'Note AI',
+    fluencyOverTime: 'Fluenza nel tempo',
+    scoreOverTime: 'Punteggio nel tempo',
+    history: 'Cronologia',
+    all: 'Tutti',
+    correctOnly: 'Solo corretti',
+    incorrectOnly: 'Solo sbagliati',
+    noMatches: 'Nessun risultato per questo filtro.',
+    source: 'Fonte',
+    yourAnswer: 'La tua risposta',
+    expectedLabel: 'Previsto',
+    feedback: 'Feedback',
+    grammar: 'Grammatica',
+    baseScore: 'Punteggio base',
+    speedBonus: 'bonus velocità',
+    sessions: 'Sessioni',
+    nSentences: n => `${n} frasi`,
+    avg: 'media',
+    help: 'Aiuto',
+    helpTitle: 'Come funziona?',
+    helpSetup: 'Configurazione',
+    helpSetupKey: 'Crea un account Anthropic e inserisci la tua chiave API',
+    helpSetupKeyLink: 'Ottieni la chiave',
+    helpSetupLangs: 'Scegli la lingua madre (tradurre DA) e la lingua obiettivo (tradurre IN)',
+    helpSetupGo: 'Clicca Pratica — l\'AI fa il resto!',
+    helpPractice: 'Pratica',
+    helpPracticeRead: 'Leggi la frase nella tua lingua madre',
+    helpPracticeType: 'Scrivi la traduzione nella lingua obiettivo',
+    helpPracticeFeedback: 'Ricevi feedback immediato con suggerimenti e correzioni',
+    helpScoring: 'Punteggio & velocità',
+    helpScoringBase: 'L\'AI assegna 0–100 punti in base alla correttezza',
+    helpScoringBonus: 'Più veloce del tempo target? Guadagna fino a +30% bonus velocità!',
+    helpScoringNoPenalty: 'Nessuna penalità di tempo — prenditi il tempo necessario',
+    helpProgress: 'Progressi',
+    helpProgressCEFR: 'Il tuo livello è valutato sulla scala CEFR (A1- a B2+)',
+    helpProgressAdapt: 'Le frasi si adattano automaticamente al tuo livello',
+    helpProgressStats: 'Visualizza cronologia, serie e costi nella pagina iniziale',
+    helpSupportText: 'Hai problemi, domande, idee, o vuoi semplicemente salutare?',
+    helpSupportLink: 'Visita il forum di supporto',
+  },
+  el: {
+    home: 'Αρχική',
+    settings: 'Ρυθμίσεις',
+    apiKey: 'Κλειδί API Anthropic',
+    apiKeyHint: 'Το κλειδί σου μένει στο localStorage αυτού του browser και στέλνεται μόνο στο API της Anthropic. Δεν έχεις κλειδί; Δημιούργησε δωρεάν λογαριασμό στο anthropic.com και μετά πήγαινε στο',
+    apiKeyHintLink: 'Console → Κλειδιά API',
+    apiKeyWarning: 'Και τα δύο κλειδιά αποθηκεύονται σε αυτόν τον browser, οπότε κακόβουλες επεκτάσεις μπορούν να τα κλέψουν. Μην χρησιμοποιείς αυτήν την εφαρμογή με μη αξιόπιστες επεκτάσεις και όρισε όρια δαπανών στα dashboard σου Anthropic και OpenAI για να περιορίσεις τη ζημιά σε περίπτωση διαρροής. Αν υποψιάζεσαι ότι κάποιο κλειδί έχει κλαπεί, πήγαινε αμέσως στο αντίστοιχο dashboard και διέγραψε το κλειδί ώστε να μην μπορεί πλέον να χρησιμοποιηθεί.',
+    show: 'Εμφάνιση',
+    hide: 'Απόκρυψη',
+    nativeLang: 'Μητρική γλώσσα',
+    targetLang: 'Γλώσσα-στόχος',
+    feedbackLangLabel: 'Γλώσσα εφαρμογής',
+    feedbackInNative: 'Μητρική γλώσσα',
+    feedbackInTarget: 'Γλώσσα-στόχος (⭐ συνιστάται)',
+    feedbackLangHint: 'Ελέγχει τη γλώσσα ολόκληρης της διεπαφής και της ανατροφοδότησης AI. Η γλώσσα-στόχος συνιστάται αν μπορείτε να τη διαβάσετε σε βασικό επίπεδο — επιπλέον εξάσκηση!',
+    saveValidate: 'Αποθήκευση & Επαλήθευση',
+    validating: 'Επαλήθευση...',
+    validated: 'Το κλειδί είναι έγκυρο! Ανακατεύθυνση...',
+    enterApiKey: 'Εισάγετε ένα κλειδί API.',
+    selectTargetLang: 'Επιλέξτε μια γλώσσα-στόχο.',
+    selectLangPlaceholder: '— Επιλέξτε γλώσσα —',
+    manageData: 'Διαχείριση δεδομένων μου',
+    exportData: 'Εξαγωγή δεδομένων',
+    importData: 'Εισαγωγή δεδομένων',
+    importConfirm: 'Αυτό θα αντικαταστήσει όλο το τρέχον ιστορικό και τα στατιστικά σου. Συνέχεια;',
+    importSuccess: 'Τα δεδομένα εισήχθησαν!',
+    importError: 'Μη έγκυρο αρχείο αντιγράφου.',
+    importSchemaError: 'Αυτό το αντίγραφο δημιουργήθηκε με νεότερη έκδοση της εφαρμογής και δεν μπορεί να εισαχθεί.',
+    deleteAllData: 'Διαγραφή όλων των δεδομένων',
+    deleteAllConfirm: 'Αυτό θα διαγράψει ΟΛΟ το ιστορικό μεταφράσεων, στατιστικά και κλειδί API. Συνέχεια;',
+    practice: 'Εξάσκηση',
+    startPractice: 'Έναρξη εξάσκησης',
+    noHistory: 'Δεν υπάρχει ιστορικό εξάσκησης ακόμα. Ξεκινήστε την εξάσκηση για να δείτε τα στατιστικά!',
+    generating: 'Δημιουργία πρότασης...',
+    translateTo: lang => `Μεταφράστε στα ${lang}`,
+    typePlaceholder: lang => `Γράψτε τη μετάφρασή σας στα ${lang}...`,
+    submit: 'Υποβολή',
+    evaluating: 'Αξιολόγηση...',
+    retry: 'Δοκιμάστε ξανά',
+    endSession: 'Τέλος συνεδρίας',
+    youTranslated: 'Μεταφράσατε',
+    correct: 'Σωστά!',
+    notQuite: 'Όχι ακριβώς',
+    expected: lang => `Αναμενόμενο ${lang}`,
+    score: 'Βαθμολογία',
+    time: 'Χρόνος',
+    nextSentence: 'Επόμενη πρόταση',
+    level: 'Επίπεδο',
+    streak: 'Σειρά',
+    total: 'Σύνολο',
+    fluencyLevel: 'Επίπεδο ευγλωττίας',
+    accuracy: 'Ακρίβεια',
+    sentences: 'Προτάσεις',
+    runningScore: 'Τρέχουσα βαθμολογία',
+    currentStreak: 'Τρέχουσα σειρά',
+    bestStreak: 'Καλύτερη σειρά',
+    avgTime: 'Μ.Ο. χρόνου',
+    apiCost: 'Κόστος API',
+    aiNotes: 'Σημειώσεις AI',
+    fluencyOverTime: 'Ευγλωττία σε βάρος χρόνου',
+    scoreOverTime: 'Βαθμολογία σε βάρος χρόνου',
+    history: 'Ιστορικό',
+    all: 'Όλα',
+    correctOnly: 'Μόνο σωστά',
+    incorrectOnly: 'Μόνο λάθος',
+    noMatches: 'Δεν υπάρχουν αποτελέσματα για αυτό το φίλτρο.',
+    source: 'Πηγή',
+    yourAnswer: 'Η απάντησή σας',
+    expectedLabel: 'Αναμενόμενο',
+    feedback: 'Σχόλια',
+    grammar: 'Γραμματική',
+    baseScore: 'Βασική βαθμολογία',
+    speedBonus: 'μπόνους ταχύτητας',
+    sessions: 'Συνεδρίες',
+    nSentences: n => `${n} προτάσεις`,
+    avg: 'Μ.Ο.',
+    help: 'Βοήθεια',
+    helpTitle: 'Πώς λειτουργεί;',
+    helpSetup: 'Ρύθμιση',
+    helpSetupKey: 'Δημιούργησε λογαριασμό Anthropic και εισάγε το κλειδί API σου',
+    helpSetupKeyLink: 'Πάρε το κλειδί σου',
+    helpSetupLangs: 'Επίλεξε τη μητρική γλώσσα (μετάφραση ΑΠΟ) και τη γλώσσα-στόχο (μετάφραση ΣΕ)',
+    helpSetupGo: 'Κάνε κλικ στο Εξάσκηση — η AI κάνει τα υπόλοιπα!',
+    helpPractice: 'Εξάσκηση',
+    helpPracticeRead: 'Διάβασε την πρόταση στη μητρική σου γλώσσα',
+    helpPracticeType: 'Γράψε τη μετάφρασή σου στη γλώσσα-στόχο',
+    helpPracticeFeedback: 'Λάβε άμεση ανατροφοδότηση με συμβουλές και διορθώσεις',
+    helpScoring: 'Βαθμολογία & ταχύτητα',
+    helpScoringBase: 'Η AI δίνει 0–100 βαθμούς με βάση την ορθότητα',
+    helpScoringBonus: 'Πιο γρήγορα από το χρόνο-στόχο; Κέρδισε έως +30% μπόνους ταχύτητας!',
+    helpScoringNoPenalty: 'Καμία ποινή χρόνου — πάρε τον χρόνο σου αν χρειαστεί',
+    helpProgress: 'Πρόοδος',
+    helpProgressCEFR: 'Το επίπεδό σου αξιολογείται στην κλίμακα CEFR (A1- έως B2+)',
+    helpProgressAdapt: 'Οι προτάσεις προσαρμόζονται αυτόματα στο επίπεδό σου',
+    helpProgressStats: 'Δες το ιστορικό, τις σειρές και τα κόστη στην αρχική σελίδα',
+    helpSupportText: 'Έχετε προβλήματα, ερωτήσεις, ιδέες ή θέλετε απλά να πείτε γεια;',
+    helpSupportLink: 'Επισκεφθείτε το φόρουμ υποστήριξης',
+  },
+  es: {
+    home: 'Inicio',
+    settings: 'Configuración',
+    apiKey: 'Clave API de Anthropic',
+    apiKeyHint: 'Tu clave se guarda en el localStorage de este navegador y solo se envía a la API de Anthropic. ¿No tienes clave? Crea una cuenta gratuita en anthropic.com y luego ve a',
+    apiKeyHintLink: 'Console → Claves API',
+    apiKeyWarning: 'Ambas claves se guardan en este navegador, así que extensiones maliciosas pueden robarlas. No uses esta app con extensiones no confiables y establece límites de gasto en tus paneles de Anthropic y OpenAI para limitar el daño si alguna clave se filtra. Si sospechas que te han robado una clave, ve inmediatamente al panel correspondiente y elimina esa clave para que ya no pueda usarse.',
+    show: 'Mostrar',
+    hide: 'Ocultar',
+    nativeLang: 'Idioma nativo',
+    targetLang: 'Idioma objetivo',
+    feedbackLangLabel: 'Idioma de la app',
+    feedbackInNative: 'Idioma nativo',
+    feedbackInTarget: 'Idioma objetivo (⭐ recomendado)',
+    feedbackLangHint: 'Controla el idioma de toda la interfaz y el feedback de la IA. El idioma objetivo es recomendado si puedes leerlo a nivel básico — ¡práctica extra!',
+    saveValidate: 'Guardar y validar',
+    validating: 'Validando...',
+    validated: '¡Clave validada! Redirigiendo...',
+    enterApiKey: 'Ingresa una clave API.',
+    selectTargetLang: 'Selecciona un idioma objetivo.',
+    selectLangPlaceholder: '— Selecciona un idioma —',
+    manageData: 'Gestionar mis datos',
+    exportData: 'Exportar datos',
+    importData: 'Importar datos',
+    importConfirm: 'Esto sobrescribirá todo tu historial y estadísticas actuales. ¿Continuar?',
+    importSuccess: '¡Datos importados!',
+    importError: 'Archivo de respaldo no válido.',
+    importSchemaError: 'Este respaldo fue creado con una versión más nueva de la app y no se puede importar.',
+    deleteAllData: 'Eliminar todos los datos',
+    deleteAllConfirm: 'Esto eliminará TODO tu historial de traducción, estadísticas y clave API. ¿Continuar?',
+    practice: 'Practicar',
+    startPractice: 'Empezar a practicar',
+    noHistory: '¡Aún no hay historial de práctica. Empieza a practicar para ver tus estadísticas!',
+    generating: 'Generando oración...',
+    translateTo: lang => `Traducir al ${lang}`,
+    typePlaceholder: lang => `Escribe tu traducción en ${lang}...`,
+    submit: 'Enviar',
+    evaluating: 'Evaluando...',
+    retry: 'Reintentar',
+    endSession: 'Terminar sesión',
+    youTranslated: 'Tradujiste',
+    correct: '¡Correcto!',
+    notQuite: 'No del todo',
+    expected: lang => `${lang} esperado`,
+    score: 'Puntuación',
+    time: 'Tiempo',
+    nextSentence: 'Siguiente oración',
+    level: 'Nivel',
+    streak: 'Racha',
+    total: 'Total',
+    fluencyLevel: 'Nivel de fluidez',
+    accuracy: 'Precisión',
+    sentences: 'Oraciones',
+    runningScore: 'Puntuación actual',
+    currentStreak: 'Racha actual',
+    bestStreak: 'Mejor racha',
+    avgTime: 'Tiempo prom.',
+    apiCost: 'Costo API',
+    aiNotes: 'Notas de IA',
+    fluencyOverTime: 'Fluidez en el tiempo',
+    scoreOverTime: 'Puntuación en el tiempo',
+    history: 'Historial',
+    all: 'Todo',
+    correctOnly: 'Solo correctos',
+    incorrectOnly: 'Solo incorrectos',
+    noMatches: 'No hay resultados para este filtro.',
+    source: 'Fuente',
+    yourAnswer: 'Tu respuesta',
+    expectedLabel: 'Esperado',
+    feedback: 'Feedback',
+    grammar: 'Gramática',
+    baseScore: 'Puntuación base',
+    speedBonus: 'bonificación de velocidad',
+    sessions: 'Sesiones',
+    nSentences: n => `${n} oraciones`,
+    avg: 'prom.',
+    help: 'Ayuda',
+    helpTitle: '¿Cómo funciona?',
+    helpSetup: 'Configuración',
+    helpSetupKey: 'Crea una cuenta en Anthropic e ingresa tu clave API',
+    helpSetupKeyLink: 'Obtén tu clave',
+    helpSetupLangs: 'Elige tu idioma nativo (traducir DESDE) y el idioma objetivo (traducir HACIA)',
+    helpSetupGo: '¡Haz clic en Practicar — la IA se encarga del resto!',
+    helpPractice: 'Práctica',
+    helpPracticeRead: 'Lee la oración en tu idioma nativo',
+    helpPracticeType: 'Escribe tu traducción en el idioma objetivo',
+    helpPracticeFeedback: 'Recibe feedback inmediato con consejos y correcciones',
+    helpScoring: 'Puntuación y velocidad',
+    helpScoringBase: 'La IA otorga 0–100 puntos según la corrección',
+    helpScoringBonus: '¿Más rápido que el tiempo objetivo? ¡Gana hasta +30% de bonificación!',
+    helpScoringNoPenalty: 'Sin penalización de tiempo — tómate tu tiempo si lo necesitas',
+    helpProgress: 'Progreso',
+    helpProgressCEFR: 'Tu nivel se evalúa en la escala CEFR (A1- a B2+)',
+    helpProgressAdapt: 'Las oraciones se adaptan automáticamente a tu nivel',
+    helpProgressStats: 'Consulta tu historial, rachas y costos en la página principal',
+    helpSupportText: '¿Tienes problemas, preguntas, ideas o simplemente quieres saludar?',
+    helpSupportLink: 'Visita el foro de soporte',
+  },
+  de: {
+    home: 'Startseite',
+    settings: 'Einstellungen',
+    apiKey: 'Anthropic API-Schlüssel',
+    apiKeyHint: 'Dein Schlüssel bleibt im localStorage dieses Browsers und wird nur an die Anthropic API gesendet. Noch keinen Schlüssel? Erstelle ein kostenloses Konto auf anthropic.com und gehe dann zu',
+    apiKeyHintLink: 'Console → API-Schlüssel',
+    apiKeyWarning: 'Beide Schlüssel werden in diesem Browser gespeichert, sodass bösartige Erweiterungen sie stehlen können. Verwende diese App nicht mit nicht vertrauenswürdigen Erweiterungen und lege in deinen Anthropic- und OpenAI-Dashboards Ausgabenlimits fest, um den Schaden bei einem Leck zu begrenzen. Wenn du vermutest, dass ein Schlüssel gestohlen wurde, gehe sofort zum entsprechenden Dashboard und lösche diesen Schlüssel, damit er nicht mehr verwendet werden kann.',
+    show: 'Anzeigen',
+    hide: 'Verbergen',
+    nativeLang: 'Muttersprache',
+    targetLang: 'Zielsprache',
+    feedbackLangLabel: 'App-Sprache',
+    feedbackInNative: 'Muttersprache',
+    feedbackInTarget: 'Zielsprache (⭐ empfohlen)',
+    feedbackLangHint: 'Steuert die Sprache der gesamten Oberfläche und des KI-Feedbacks. Zielsprache wird empfohlen, wenn du sie auf Grundniveau lesen kannst — extra Übung!',
+    saveValidate: 'Speichern & Validieren',
+    validating: 'Wird validiert...',
+    validated: 'Schlüssel validiert! Weiterleitung...',
+    enterApiKey: 'Bitte gib einen API-Schlüssel ein.',
+    selectTargetLang: 'Bitte wähle eine Zielsprache.',
+    selectLangPlaceholder: '— Sprache wählen —',
+    manageData: 'Meine Daten verwalten',
+    exportData: 'Daten exportieren',
+    importData: 'Daten importieren',
+    importConfirm: 'Dies überschreibt deine gesamte aktuelle Historie und Statistiken. Fortfahren?',
+    importSuccess: 'Daten importiert!',
+    importError: 'Ungültige Sicherungsdatei.',
+    importSchemaError: 'Dieses Backup wurde mit einer neueren Version der App erstellt und kann nicht importiert werden.',
+    deleteAllData: 'Alle Daten löschen',
+    deleteAllConfirm: 'Dies löscht ALLE deine Übersetzungshistorie, Statistiken und den API-Schlüssel. Fortfahren?',
+    practice: 'Üben',
+    startPractice: 'Übung starten',
+    noHistory: 'Noch keine Übungshistorie. Beginne zu üben, um deine Statistiken zu sehen!',
+    generating: 'Satz wird generiert...',
+    translateTo: lang => `Übersetze ins ${lang}e`,
+    typePlaceholder: lang => `Schreibe deine ${lang}e Übersetzung...`,
+    submit: 'Absenden',
+    evaluating: 'Wird ausgewertet...',
+    retry: 'Erneut versuchen',
+    endSession: 'Sitzung beenden',
+    youTranslated: 'Du hast übersetzt',
+    correct: 'Richtig!',
+    notQuite: 'Nicht ganz',
+    expected: lang => `Erwartetes ${lang}`,
+    score: 'Punktzahl',
+    time: 'Zeit',
+    nextSentence: 'Nächster Satz',
+    level: 'Stufe',
+    streak: 'Serie',
+    total: 'Gesamt',
+    fluencyLevel: 'Sprachniveau',
+    accuracy: 'Genauigkeit',
+    sentences: 'Sätze',
+    runningScore: 'Laufende Punktzahl',
+    currentStreak: 'Aktuelle Serie',
+    bestStreak: 'Beste Serie',
+    avgTime: 'Ø Zeit',
+    apiCost: 'API-Kosten',
+    aiNotes: 'KI-Notizen',
+    fluencyOverTime: 'Sprachniveau im Zeitverlauf',
+    scoreOverTime: 'Punktzahl im Zeitverlauf',
+    history: 'Verlauf',
+    all: 'Alle',
+    correctOnly: 'Nur richtige',
+    incorrectOnly: 'Nur falsche',
+    noMatches: 'Keine Einträge für diesen Filter.',
+    source: 'Quelle',
+    yourAnswer: 'Deine Antwort',
+    expectedLabel: 'Erwartet',
+    feedback: 'Feedback',
+    grammar: 'Grammatik',
+    baseScore: 'Grundpunktzahl',
+    speedBonus: 'Geschwindigkeitsbonus',
+    sessions: 'Sitzungen',
+    nSentences: n => `${n} Sätze`,
+    avg: 'Ø',
+    help: 'Hilfe',
+    helpTitle: 'Wie funktioniert es?',
+    helpSetup: 'Einrichtung',
+    helpSetupKey: 'Erstelle ein Anthropic-Konto und gib deinen API-Schlüssel ein',
+    helpSetupKeyLink: 'Schlüssel abrufen',
+    helpSetupLangs: 'Wähle deine Muttersprache (übersetzen VON) und Zielsprache (übersetzen NACH)',
+    helpSetupGo: 'Klicke auf Üben — die KI erledigt den Rest!',
+    helpPractice: 'Übung',
+    helpPracticeRead: 'Lies den Satz in deiner Muttersprache',
+    helpPracticeType: 'Schreibe deine Übersetzung in der Zielsprache',
+    helpPracticeFeedback: 'Erhalte sofortiges Feedback mit Tipps und Korrekturen',
+    helpScoring: 'Punktzahl & Geschwindigkeit',
+    helpScoringBase: 'Die KI vergibt 0–100 Punkte basierend auf Korrektheit',
+    helpScoringBonus: 'Schneller als die Zielzeit? Verdiene bis zu +30% Geschwindigkeitsbonus!',
+    helpScoringNoPenalty: 'Keine Zeitstrafe — nimm dir Zeit, wenn du sie brauchst',
+    helpProgress: 'Fortschritt',
+    helpProgressCEFR: 'Dein Niveau wird auf der CEFR-Skala bewertet (A1- bis B2+)',
+    helpProgressAdapt: 'Sätze passen sich automatisch an dein Niveau an',
+    helpProgressStats: 'Sieh dir deinen Verlauf, Serien und Kosten auf der Startseite an',
+    helpSupportText: 'Hast du Probleme, Fragen, Ideen oder möchtest einfach Hallo sagen?',
+    helpSupportLink: 'Besuche das Support-Forum',
+  },
+  tr: {
+    home: 'Ana Sayfa',
+    settings: 'Ayarlar',
+    apiKey: 'Anthropic API Anahtarı',
+    apiKeyHint: 'Anahtarınız bu tarayıcının localStorage\'ında saklanır ve yalnızca Anthropic API\'sine gönderilir. Anahtarınız yok mu? anthropic.com\'da ücretsiz bir hesap oluşturun, ardından şuraya gidin:',
+    apiKeyHintLink: 'Console → API Anahtarları',
+    apiKeyWarning: 'Her iki anahtar da bu tarayıcıda saklandığından kötü amaçlı eklentiler onları çalabilir. Bu uygulamayı güvenilmeyen eklentilerle kullanmayın ve bir anahtar sızdırılırsa hasarı sınırlamak için Anthropic ve OpenAI panolarınızda harcama limitleri belirleyin. Bir anahtarın çalındığından şüpheleniyorsanız, hemen ilgili panoya gidin ve artık kullanılamaması için o anahtarı silin.',
+    show: 'Göster',
+    hide: 'Gizle',
+    nativeLang: 'Ana dil',
+    targetLang: 'Hedef dil',
+    feedbackLangLabel: 'Uygulama dili',
+    feedbackInNative: 'Ana dil',
+    feedbackInTarget: 'Hedef dil (⭐ önerilir)',
+    feedbackLangHint: 'Tüm arayüzün ve AI geri bildiriminin dilini belirler. Temel düzeyde okuyabiliyorsanız hedef dil önerilir — ekstra pratik!',
+    saveValidate: 'Kaydet ve Doğrula',
+    validating: 'Doğrulanıyor...',
+    validated: 'Anahtar doğrulandı! Yönlendiriliyor...',
+    enterApiKey: 'Lütfen bir API anahtarı girin.',
+    selectTargetLang: 'Lütfen bir hedef dil seçin.',
+    selectLangPlaceholder: '— Bir dil seçin —',
+    manageData: 'Verilerimi Yönet',
+    exportData: 'Verileri Dışa Aktar',
+    importData: 'Verileri İçe Aktar',
+    importConfirm: 'Bu, tüm mevcut geçmişinizi ve istatistiklerinizi üzerine yazacaktır. Devam edilsin mi?',
+    importSuccess: 'Veriler içe aktarıldı!',
+    importError: 'Geçersiz yedekleme dosyası.',
+    importSchemaError: 'Bu yedek, uygulamanın daha yeni bir sürümüyle oluşturulmuş ve içe aktarılamaz.',
+    deleteAllData: 'Tüm Verileri Sil',
+    deleteAllConfirm: 'Bu, TÜM çeviri geçmişinizi, istatistiklerinizi ve API anahtarınızı silecektir. Devam edilsin mi?',
+    practice: 'Alıştırma',
+    startPractice: 'Alıştırmaya Başla',
+    noHistory: 'Henüz alıştırma geçmişi yok. İstatistiklerinizi görmek için alıştırmaya başlayın!',
+    generating: 'Cümle oluşturuluyor...',
+    translateTo: lang => `${lang} diline çevir`,
+    typePlaceholder: lang => `${lang} çevirinizi yazın...`,
+    submit: 'Gönder',
+    evaluating: 'Değerlendiriliyor...',
+    retry: 'Tekrar Dene',
+    endSession: 'Oturumu Bitir',
+    youTranslated: 'Çevirdiniz',
+    correct: 'Doğru!',
+    notQuite: 'Tam değil',
+    expected: lang => `Beklenen ${lang}`,
+    score: 'Puan',
+    time: 'Süre',
+    nextSentence: 'Sonraki Cümle',
+    level: 'Seviye',
+    streak: 'Seri',
+    total: 'Toplam',
+    fluencyLevel: 'Akıcılık Seviyesi',
+    accuracy: 'Doğruluk',
+    sentences: 'Cümleler',
+    runningScore: 'Güncel Puan',
+    currentStreak: 'Mevcut Seri',
+    bestStreak: 'En İyi Seri',
+    avgTime: 'Ort. Süre',
+    apiCost: 'API Maliyeti',
+    aiNotes: 'AI Notları',
+    fluencyOverTime: 'Zaman İçinde Akıcılık',
+    scoreOverTime: 'Zaman İçinde Puan',
+    history: 'Geçmiş',
+    all: 'Tümü',
+    correctOnly: 'Sadece Doğru',
+    incorrectOnly: 'Sadece Yanlış',
+    noMatches: 'Bu filtre için sonuç bulunamadı.',
+    source: 'Kaynak',
+    yourAnswer: 'Cevabınız',
+    expectedLabel: 'Beklenen',
+    feedback: 'Geri Bildirim',
+    grammar: 'Dilbilgisi',
+    baseScore: 'Temel puan',
+    speedBonus: 'hız bonusu',
+    sessions: 'Oturumlar',
+    nSentences: n => `${n} cümle`,
+    avg: 'ort.',
+    help: 'Yardım',
+    helpTitle: 'Nasıl çalışır?',
+    helpSetup: 'Kurulum',
+    helpSetupKey: 'Bir Anthropic hesabı oluşturun ve API anahtarınızı girin',
+    helpSetupKeyLink: 'Anahtarınızı alın',
+    helpSetupLangs: 'Ana dilinizi (çeviri KAYNAĞINIZ) ve hedef dilinizi (çeviri HEDEFİNİZ) seçin',
+    helpSetupGo: 'Alıştırma\'ya tıklayın — gerisini AI halleder!',
+    helpPractice: 'Alıştırma',
+    helpPracticeRead: 'Cümleyi ana dilinizde okuyun',
+    helpPracticeType: 'Çevirinizi hedef dilde yazın',
+    helpPracticeFeedback: 'İpuçları ve düzeltmelerle anında geri bildirim alın',
+    helpScoring: 'Puan ve hız',
+    helpScoringBase: 'AI, doğruluğa göre 0–100 puan verir',
+    helpScoringBonus: 'Hedef süreden hızlı mısınız? +%30\'a kadar hız bonusu kazanın!',
+    helpScoringNoPenalty: 'Süre cezası yok — gerekirse acele etmeyin',
+    helpProgress: 'İlerleme',
+    helpProgressCEFR: 'Seviyeniz CEFR ölçeğinde değerlendirilir (A1-\'den B2+\'ya)',
+    helpProgressAdapt: 'Cümleler seviyenize otomatik olarak uyum sağlar',
+    helpProgressStats: 'Geçmişinizi, serilerinizi ve maliyetlerinizi ana sayfada görüntüleyin',
+    helpSupportText: 'Sorunlarınız, sorularınız, fikirleriniz mi var, yoksa sadece merhaba mı demek istiyorsunuz?',
+    helpSupportLink: 'Destek forumunu ziyaret edin',
+  },
+  fr: {
+    home: 'Accueil',
+    settings: 'Paramètres',
+    apiKey: 'Clé API Anthropic',
+    apiKeyHint: 'Votre clé reste dans le localStorage de ce navigateur et n\'est envoyée qu\'à l\'API Anthropic. Pas encore de clé ? Créez un compte gratuit sur anthropic.com, puis allez sur',
+    apiKeyHintLink: 'Console → Clés API',
+    apiKeyWarning: 'Les deux clés sont stockées dans ce navigateur, donc des extensions malveillantes peuvent les voler. N\'utilisez pas cette application avec des extensions non fiables et définissez des limites de dépenses dans vos tableaux de bord Anthropic et OpenAI pour limiter les dégâts en cas de fuite. Si vous soupçonnez qu\'une clé a été volée, allez immédiatement sur le tableau de bord concerné et supprimez cette clé afin qu\'elle ne puisse plus être utilisée.',
+    show: 'Afficher',
+    hide: 'Masquer',
+    nativeLang: 'Langue maternelle',
+    targetLang: 'Langue cible',
+    feedbackLangLabel: 'Langue de l\'app',
+    feedbackInNative: 'Langue maternelle',
+    feedbackInTarget: 'Langue cible (⭐ recommandé)',
+    feedbackLangHint: 'Contrôle la langue de toute l\'interface et du feedback IA. La langue cible est recommandée si vous pouvez la lire à un niveau de base — pratique supplémentaire !',
+    saveValidate: 'Enregistrer et valider',
+    validating: 'Validation...',
+    validated: 'Clé validée ! Redirection...',
+    enterApiKey: 'Veuillez entrer une clé API.',
+    selectTargetLang: 'Veuillez sélectionner une langue cible.',
+    selectLangPlaceholder: '— Choisir une langue —',
+    manageData: 'Gérer mes données',
+    exportData: 'Exporter les données',
+    importData: 'Importer les données',
+    importConfirm: 'Cela écrasera tout votre historique et vos statistiques actuels. Continuer ?',
+    importSuccess: 'Données importées !',
+    importError: 'Fichier de sauvegarde invalide.',
+    importSchemaError: 'Cette sauvegarde a été créée avec une version plus récente de l\'app et ne peut pas être importée.',
+    deleteAllData: 'Supprimer toutes les données',
+    deleteAllConfirm: 'Cela supprimera TOUT votre historique de traduction, vos statistiques et votre clé API. Continuer ?',
+    practice: 'Pratiquer',
+    startPractice: 'Commencer la pratique',
+    noHistory: 'Pas encore d\'historique. Commencez à pratiquer pour voir vos statistiques !',
+    generating: 'Génération de la phrase...',
+    translateTo: lang => `Traduire en ${lang}`,
+    typePlaceholder: lang => `Tapez votre traduction en ${lang}...`,
+    submit: 'Soumettre',
+    evaluating: 'Évaluation...',
+    retry: 'Réessayer',
+    endSession: 'Terminer la session',
+    youTranslated: 'Vous avez traduit',
+    correct: 'Correct !',
+    notQuite: 'Pas tout à fait',
+    expected: lang => `${lang} attendu`,
+    score: 'Score',
+    time: 'Temps',
+    nextSentence: 'Phrase suivante',
+    level: 'Niveau',
+    streak: 'Série',
+    total: 'Total',
+    fluencyLevel: 'Niveau de maîtrise',
+    accuracy: 'Précision',
+    sentences: 'Phrases',
+    runningScore: 'Score glissant',
+    currentStreak: 'Série en cours',
+    bestStreak: 'Meilleure série',
+    avgTime: 'Temps moyen',
+    apiCost: 'Coût API',
+    aiNotes: 'Notes IA',
+    fluencyOverTime: 'Maîtrise dans le temps',
+    scoreOverTime: 'Score dans le temps',
+    history: 'Historique',
+    all: 'Tout',
+    correctOnly: 'Correctes uniquement',
+    incorrectOnly: 'Incorrectes uniquement',
+    noMatches: 'Aucune entrée ne correspond à ce filtre.',
+    source: 'Source',
+    yourAnswer: 'Votre réponse',
+    expectedLabel: 'Attendu',
+    feedback: 'Feedback',
+    grammar: 'Grammaire',
+    baseScore: 'Score de base',
+    speedBonus: 'bonus de vitesse',
+    sessions: 'Sessions',
+    nSentences: n => `${n} phrases`,
+    avg: 'moy',
+    help: 'Aide',
+    helpTitle: 'Comment ça marche ?',
+    helpSetup: 'Configuration',
+    helpSetupKey: 'Créez un compte Anthropic et entrez votre clé API',
+    helpSetupKeyLink: 'Obtenir votre clé',
+    helpSetupLangs: 'Choisissez votre langue maternelle (traduire DEPUIS) et votre langue cible (traduire VERS)',
+    helpSetupGo: 'Cliquez sur Pratiquer — l\'IA s\'occupe du reste !',
+    helpPractice: 'Pratique',
+    helpPracticeRead: 'Lisez la phrase dans votre langue maternelle',
+    helpPracticeType: 'Tapez votre traduction dans la langue cible',
+    helpPracticeFeedback: 'Recevez un feedback instantané avec des conseils et des corrections',
+    helpScoring: 'Score et vitesse',
+    helpScoringBase: 'L\'IA attribue 0 à 100 points selon la justesse',
+    helpScoringBonus: 'Plus rapide que le temps cible ? Gagnez jusqu\'à +30% de bonus de vitesse !',
+    helpScoringNoPenalty: 'Pas de pénalité de temps — prenez votre temps si nécessaire',
+    helpProgress: 'Progression',
+    helpProgressCEFR: 'Votre niveau est évalué sur l\'échelle CECR (A1- à B2+)',
+    helpProgressAdapt: 'Les phrases s\'adaptent automatiquement à votre niveau',
+    helpProgressStats: 'Consultez votre historique, vos séries et vos coûts sur la page d\'accueil',
+    helpSupportText: 'Des problèmes, questions, idées, ou juste envie de dire bonjour ?',
+    helpSupportLink: 'Visitez le forum d\'assistance',
+  },
+};
+
+function t(key) { return LANGS[getUILangCode()]?.[key] || LANGS.en[key]; }
+
+// ── System prompt (dynamic) ────────────────────────────────────────
+function buildSystemPrompt() {
+  const native = nativeName();
+  const target = targetName();
+  const targetLang = getTargetLang();
+  const feedbackLang = feedbackLangName();
+  return `You are a ${target} language tutor helping a ${native} speaker learn ${target}.
+
+You have two tasks, performed one at a time based on the user's request:
+
+TASK 1 - GENERATE: Generate a sentence in ${native} (NOT ${target}!) for the student to translate into ${target}.
+- CRITICAL: The "es" field MUST be in ${native}. Never output a ${target} sentence in the "es" field. The student translates FROM ${native} TO ${target}.
+- You will receive the student's recent history (if any) showing their sentences and whether they got them correct/incorrect
+- Analyze their performance to choose an appropriate difficulty level
+- If no history, start with very basic A1 sentences
+- Gradually increase complexity as they demonstrate mastery
+- If they are struggling, ease back to reinforce fundamentals
+- Vary the grammar topics — don't repeat the same pattern many times in a row
+- Output ONLY valid JSON: {"es": "${native} sentence", "hint": "brief grammar hint written in ${feedbackLang} about what ${target} construct to use", "topic": "grammar topic being tested (in ${feedbackLang})"}
+- No extra text outside the JSON
+
+TASK 2 - EVALUATE: Evaluate the student's ${target} translation of a ${native} sentence, AND generate the next sentence.
+- You will receive the ${native} original, the student's ${target} attempt, and their recent history
+- IMPORTANT: Output fields in THIS exact order. First produce "expected" so you have the reference answer BEFORE judging correctness.
+- Output ONLY valid JSON: {"expected": "ideal ${target} translation", "correct": true/false, "score": 0-100, "feedback": "Start with a one-line summary, then use markdown bullet points for specific feedback items. Prefix each bullet with ✅ (good) or ❌ (needs work). Use **bold** for key terms and *italics* for example phrases. Write in ${feedbackLang}. Include grammar notes, patterns to learn, or tips to remember.", "fluency_level": "CEFR level", "notes": "2-3 sentence internal scratchpad in ${feedbackLang} — update based on previous notes and this evaluation. Track: recurring weaknesses, strengths, progression over time. Keep compact.", "next_es": "${native} sentence (NOT ${target}!)", "next_hint": "brief grammar hint in ${feedbackLang}", "next_topic": "grammar topic in ${feedbackLang}"}
+- If the student's translation matches or is essentially equivalent to "expected", it MUST be marked correct with score 100. Do not second-guess a correct answer.
+
+SEMANTIC EQUIVALENCE — CRITICAL:
+- "expected" is ONE valid translation, NOT the only one. Many sentences have multiple equally correct translations.
+- BEFORE deducting any points, ask yourself: "Would a native ${target} speaker accept this as a natural, grammatical translation that preserves the meaning?" If YES, it is CORRECT — score 100. Do not deduct.
+- You MUST accept all of the following as fully correct (score 100, no deduction):
+  • Synonyms and near-synonyms ("close to" vs "near", "begin" vs "start", "big" vs "large")
+  • Idiomatic variants and common alternative phrasings ("if I had the time" vs "if I had time", "I'd like to" vs "I would like to")
+  • Optional articles, particles, or words where the language genuinely permits both forms
+  • Different but equally valid word orders
+  • Contractions vs full forms
+  • Equivalent registers (formal/informal) unless the source clearly demands one
+- NEVER deduct points for stylistic preference, for "your version is more common", or because the student's wording differs from yours. Only deduct for actual errors: wrong meaning, ungrammatical constructions, wrong tense/agreement, misspellings, or missing required elements.
+- If you find yourself writing feedback like "you could also say X" or "X is more natural" — STOP. That is not an error. Mark it correct.
+
+- Write ALL feedback and notes in ${feedbackLang}.
+- Be encouraging but honest
+- Accept minor spelling variations but flag them
+- Accept romanized/transliterated spellings (e.g. "tha pao" for "θα πάω" in Greek) — mark as correct but show the proper native script in "expected" and gently note the correct spelling
+- PUNCTUATION: If punctuation is clearly wrong (missing period, wrong question mark, bad capitalization), note it gently in feedback and deduct a few points (score 80-90). Never mark an answer incorrect solely for punctuation. Do NOT claim punctuation is missing unless you are absolutely certain — re-read the student's answer carefully before critiquing punctuation.
+
+CRITICAL FEEDBACK RULES:
+- ONLY critique THIS translation. Do NOT mention past mistakes that the student got RIGHT this time. Your notes track patterns — feedback is ONLY about the current attempt.
+- Do NOT double-count errors. If the student chose the wrong word, critique the word choice ONCE. Do not separately critique the article/gender of the wrong word they chose — that is the same error, not a second one.
+- Each ❌ must point to a distinct, independent mistake in the current translation.
+- Each ✅ must point to something the student actually did well in THIS translation, not something generic.
+- If the translation is perfect, give score 100. NEVER deduct points to "leave room for growth" or for any reason other than an actual mistake. A perfect translation gets a perfect score.
+- Do NOT mention specific score numbers in your feedback text. The UI displays the score separately.
+- "score": 100 for perfect, 80+ for minor issues (small spelling or punctuation errors), 50-79 for partially correct (meaning preserved but grammar errors), 0-49 for incorrect meaning or major errors
+- "fluency_level": assess the student's overall demonstrated level based on ALL the history, not just this one sentence. Use three gradations per CEFR level: "A1-", "A1", "A1+", "A2-", "A2", "A2+", "B1-", "B1", "B1+", "B2-", "B2", "B2+"
+- "notes": Your internal scratchpad (write in ${feedbackLang}). You will receive your previous notes (if any) — update them based on this evaluation. Summarize in 2-3 compact sentences: what the student struggles with, what they're good at, and how they're progressing. This is your memory across rounds — keep it useful and concise. Do NOT repeat current feedback here — track PATTERNS across multiple rounds.
+- "next_es", "next_hint", "next_topic": Generate the NEXT sentence for the student, following all GENERATE rules above. CRITICAL: "next_es" MUST be in ${native}, not ${target}.`;
+}
+
+// ── Storage helpers ────────────────────────────────────────────────
+function load(key, fallback) {
+  try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; }
+  catch { return fallback; }
+}
+function save(key, val) { localStorage.setItem(key, JSON.stringify(val)); }
+
+function getStats() {
+  return load(KEYS.stats, {
+    totalAttempted: 0, totalCorrect: 0,
+    currentStreak: 0, bestStreak: 0,
+    runningScore: 0, totalTimeSpent: 0
+  });
+}
+function saveStats(s) { save(KEYS.stats, s); }
+function getHistory() { return load(KEYS.history, []); }
+function saveHistory(h) { save(KEYS.history, h); }
+function getSessions() { return load(KEYS.sessions, []); }
+function saveSessions(s) { save(KEYS.sessions, s); }
+
+// ── API ────────────────────────────────────────────────────────────
+async function callClaude(userContent) {
+  const apiKey = localStorage.getItem(KEYS.apiKey);
+  if (!apiKey) { navigate('#/settings'); return null; }
+
+  const res = await fetch(API_URL, {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true',
+    },
+    body: JSON.stringify({
+      model: MODEL,
+      max_tokens: 1024,
+      system: buildSystemPrompt(),
+      messages: [{ role: 'user', content: userContent }],
+    }),
+  });
+
+  if (res.status === 401) {
+    localStorage.removeItem(KEYS.apiKey);
+    navigate('#/settings');
+    throw new Error('Invalid API key. Please re-enter your key.');
+  }
+  if (res.status === 429) {
+    throw new Error('Rate limited. Please wait a moment and try again.');
+  }
+  if (!res.ok) {
+    throw new Error(`API error: ${res.status} ${res.statusText}`);
+  }
+
+  const data = await res.json();
+  const text = data.content[0].text;
+  const usage = data.usage || { input_tokens: 0, output_tokens: 0 };
+
+  let parsed;
+  try {
+    parsed = JSON.parse(text);
+  } catch {
+    // Extract JSON from markdown code blocks or raw text
+    const blocks = [...text.matchAll(/\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\}/g)];
+    for (const m of blocks.reverse()) {
+      try { parsed = JSON.parse(m[0]); break; } catch {}
+    }
+    if (!parsed) throw new Error('Could not parse AI response as JSON');
+  }
+
+  return { result: parsed, usage };
+}
+
+function formatHistoryForAI(history) {
+  const native = nativeName();
+  const recent = history.slice(-20);
+  if (recent.length === 0) return `No history yet. This is the student's first sentence. Start at basic A1 level.`;
+  return recent.map((h, i) =>
+    `${i + 1}. ${native}: "${h.es}" → Student wrote: "${h.attempt}" → ${h.correct ? 'CORRECT' : 'INCORRECT'} (score: ${h.baseScore})`
+  ).join('\n');
+}
+
+async function generateSentence(history) {
+  const native = nativeName();
+  const target = targetName();
+  const historyText = formatHistoryForAI(history);
+  const lastNotes = [...history].reverse().find(h => h.notes)?.notes || '';
+  const notesSection = lastNotes ? `\n\nYour notes on this student:\n${lastNotes}` : '';
+  const prompt = `TASK: GENERATE\n\nStudent's recent history:\n${historyText}${notesSection}\n\nGenerate the next ${native} sentence for them to translate into ${target}.`;
+  return callClaude(prompt);
+}
+
+async function evaluateTranslation(es, attempt, history, isRetry, previousAttempt) {
+  const native = nativeName();
+  const target = targetName();
+  const historyText = formatHistoryForAI(history);
+  const lastNotes = [...history].reverse().find(h => h.notes)?.notes || '';
+  const notesSection = lastNotes ? `\n\nYour previous notes:\n${lastNotes}` : '';
+  const retrySection = isRetry
+    ? `\n\nNOTE: This sentence is a RETRY — the student previously translated it incorrectly${previousAttempt ? ` (their earlier attempt was: "${previousAttempt}")` : ''}. Evaluate this new attempt on its own merits and acknowledge the retry briefly in your feedback if they've improved.`
+    : '';
+  const prompt = `TASK: EVALUATE\n\nStudent's recent history:\n${historyText}${notesSection}${retrySection}\n\nCurrent sentence:\n${native}: "${es}"\nStudent's ${target} translation: "${attempt}"\n\nEvaluate their translation.`;
+  return callClaude(prompt);
+}
+
+// Find the oldest sentence whose most recent attempt was incorrect (unresolved).
+function findUnresolvedWrong(history) {
+  const latest = new Map();
+  for (const h of history) latest.set(h.es, h);
+  const seen = new Set();
+  for (const h of history) {
+    if (seen.has(h.es)) continue;
+    seen.add(h.es);
+    const last = latest.get(h.es);
+    if (!last.correct) return last;
+  }
+  return null;
+}
+
+// Every Nth sentence, swap in an unresolved wrong sentence instead of the AI's next.
+const RETRY_INTERVAL = 3;
+function shouldInjectRetry(history) {
+  return history.length > 0 && history.length % RETRY_INTERVAL === 0;
+}
+function pickRetrySentence(history) {
+  const wrong = findUnresolvedWrong(history);
+  if (!wrong) return null;
+  return { es: wrong.es, hint: '', topic: '', isRetry: true, previousAttempt: wrong.attempt };
+}
+
+// ── Scoring ────────────────────────────────────────────────────────
+function getTargetTime(sentence) {
+  return (sentence || '').length / 2;
+}
+
+const TIER_EMOJIS = ['🪨','🌅','🕯️','🫧','🐢','🌊','💪','🏋️','🔥','🥷','💃','🦄','🐉'];
+// const CEFR_EMOJIS = ['🐌','🐛','🐸','🦆','🐭','🐷','🦊','🐯','🦁','🐬','🦈','🐋'];
+const CEFR_EMOJIS = ['🌱','🐛','🐸','🐣','🦆','🐭','🐷','🦊','🦁','🐬','🦈','🐋'];
+function getTierEmoji(score) {
+  const idx = Math.min(Math.floor(score / 10), TIER_EMOJIS.length - 1);
+  return TIER_EMOJIS[Math.max(0, idx)];
+}
+function getCefrEmoji(level) {
+  const idx = CEFR_LEVELS.indexOf(level);
+  return CEFR_EMOJIS[idx >= 0 ? idx : 0];
+}
+
+function calculateTimeBonus(baseScore, elapsed, sentence) {
+  const target = getTargetTime(sentence);
+  if (elapsed >= target) return 0;
+  // Faster than target → up to 30% bonus, scaled linearly
+  const speedRatio = Math.max(0, 1 - elapsed / target);
+  return Math.round(baseScore * 0.3 * speedRatio);
+}
+
+function updateEMA(current, newValue) {
+  return current + EMA_ALPHA * (newValue - current);
+}
+
+// ── Router ─────────────────────────────────────────────────────────
+function navigate(hash) {
+  window.location.hash = hash;
+  window.scrollTo(0, 0);
+}
+
+function handleRoute() {
+  const hash = window.location.hash || '';
+  const apiKey = localStorage.getItem(KEYS.apiKey);
+
+  // Update header button text
+  const homeBtn = document.getElementById('qa-home-btn');
+  if (homeBtn) homeBtn.textContent = t('home');
+  const helpBtn = document.getElementById('qa-help-btn');
+  if (helpBtn) helpBtn.textContent = t('help');
+  const settingsBtn = document.getElementById('qa-settings-btn');
+  if (settingsBtn) settingsBtn.textContent = t('settings');
+  const tierEl = document.getElementById('qa-tier-emoji');
+  if (tierEl) {
+    const history = getHistory();
+    const lastLevel = history.length > 0 ? history[history.length - 1].fluencyLevel : null;
+    tierEl.textContent = lastLevel ? getCefrEmoji(lastLevel) : '';
+  }
+
+  if (!apiKey && !hash.startsWith('#/settings') && !hash.startsWith('#/help')) {
+    navigate('#/settings');
+    return;
+  }
+
+  if (hash.startsWith('#/practice')) {
+    renderPractice();
+  } else {
+    // Leaving practice — cancel any in-flight generate and save session
+    generateEpoch++;
+    if (sessionSentences.length > 0) endSession();
+    if (hash.startsWith('#/settings')) renderSettings();
+    else if (hash.startsWith('#/help')) renderHelp();
+    else renderStats();
+  }
+}
+
+window.addEventListener('hashchange', handleRoute);
+
+// ── State ──────────────────────────────────────────────────────────
+let currentSentence = null;
+let timerStart = null;
+let timerRAF = null;
+let sessionStart = null;
+let sessionSentences = [];
+let generateEpoch = 0;
+let lastGenerateUsage = null;
+let isSubmitting = false;
+let feedbackEnterHandler = null;
+let ttsCache = null; // { text, audioUrl } — cleared on each new feedback view
+let ttsAudio = null;
+
+// ── Render: Settings ───────────────────────────────────────────────
+function renderSettings() {
+  const app = document.getElementById('app');
+  const existing = localStorage.getItem(KEYS.apiKey) || '';
+  const existingOpenai = localStorage.getItem(KEYS.openaiKey) || '';
+  const curNative = getNativeLang();
+  const curTarget = localStorage.getItem(KEYS.targetLang) || '';
+  const curFeedback = getFeedbackLang();
+
+  const nativeOpts = Object.entries(NATIVE_LANGS).map(([code, l]) =>
+    `<option value="${code}" ${code === curNative ? 'selected' : ''}>${l.label} (${l.en})</option>`
+  ).join('');
+  const targetPlaceholder = `<option value="" disabled ${curTarget ? '' : 'selected'}>${t('selectLangPlaceholder')}</option>`;
+  const targetOpts = targetPlaceholder + Object.entries(TARGET_LANGS).map(([code, l]) =>
+    `<option value="${code}" ${code === curTarget ? 'selected' : ''}>${l.label} (${l.en})</option>`
+  ).join('');
+
+  app.innerHTML = `
+    <h2 style="margin-bottom:16px">${t('settings')}</h2>
+    <div class="setting-group">
+      <label>${t('nativeLang')}</label>
+      <select id="qa-native-lang" onchange="onNativeLangChange()">${nativeOpts}</select>
+    </div>
+    <div class="setting-group">
+      <label>${t('targetLang')}</label>
+      <select id="qa-target-lang" onchange="onTargetLangChange()">${targetOpts}</select>
+    </div>
+    <div class="setting-group">
+      <label>${t('feedbackLangLabel')}</label>
+      <div style="display:flex;gap:16px;margin-top:4px">
+        <label style="display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer">
+          <input type="radio" name="feedbackLang" value="native" ${curFeedback === 'native' ? 'checked' : ''} onchange="onFeedbackLangChange(this.value)">
+          ${t('feedbackInNative')}
+        </label>
+        <label style="display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer">
+          <input type="radio" name="feedbackLang" value="target" ${curFeedback === 'target' ? 'checked' : ''} onchange="onFeedbackLangChange(this.value)">
+          ${t('feedbackInTarget')}
+        </label>
+      </div>
+      <p class="text-small text-muted mt-8">${t('feedbackLangHint')}</p>
+    </div>
+    <div class="setting-group">
+      <label>${t('apiKey')}</label>
+      <div class="input-row">
+        <input id="qa-api-key" type="password" value="${existing}" placeholder="sk-ant-...">
+        <button class="toggle-vis" onclick="toggleKeyVis()">${t('show')}</button>
+      </div>
+      <p class="text-small text-muted mt-8">${t('apiKeyHint')} <a href="https://console.anthropic.com/settings/keys" target="_blank" style="color:#0d6efd">${t('apiKeyHintLink')}</a></p>
+    </div>
+    <div class="setting-group">
+      <label>${t('openaiKey')}</label>
+      <div class="input-row">
+        <input id="qa-openai-key" type="password" value="${existingOpenai}" placeholder="sk-...">
+        <button class="toggle-vis" onclick="toggleOpenaiKeyVis()">${t('show')}</button>
+      </div>
+      <p class="text-small text-muted mt-8">${t('openaiKeyHint')} <a href="https://platform.openai.com/api-keys" target="_blank" style="color:#0d6efd">${t('openaiKeyHintLink')}</a></p>
+      <p class="text-small mt-8" style="color:#e0a800">⚠️ ${t('apiKeyWarning')}</p>
+    </div>
+    <div id="qa-settings-msg"></div>
+    <button class="btn btn-primary" style="margin-top:1rem" id="qa-save-key" onclick="saveSettings()">${t('saveValidate')}</button>
+    <h3 style="margin-top:2rem;margin-bottom:0.5rem">${t('manageData')}</h3>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      ${existing ? `<button class="btn btn-secondary" onclick="exportData()">${t('exportData')}</button>` : ''}
+      <button class="btn btn-secondary" onclick="document.getElementById('qa-import-file').click()">${t('importData')}</button>
+      <input type="file" id="qa-import-file" accept=".json" style="display:none" onchange="importData(this)">
+    </div>
+    <div id="qa-import-msg" style="margin-top:8px"></div>
+    ${existing ? `<button class="btn btn-danger mt-16" onclick="deleteAllData()">${t('deleteAllData')}</button>` : ''}
+  `;
+}
+
+function preserveKeyInput(fn) {
+  const snap = (id) => {
+    const el = document.getElementById(id);
+    return el ? { val: el.value, visible: el.type === 'text' } : null;
+  };
+  const restore = (id, s) => {
+    if (!s) return;
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.value = s.val;
+    if (s.visible) { el.type = 'text'; el.nextElementSibling.textContent = t('hide'); }
+  };
+  const a = snap('qa-api-key');
+  const b = snap('qa-openai-key');
+  fn();
+  restore('qa-api-key', a);
+  restore('qa-openai-key', b);
+}
+
+function onNativeLangChange() {
+  const native = document.getElementById('qa-native-lang').value;
+  localStorage.setItem(KEYS.nativeLang, native);
+  preserveKeyInput(renderSettings);
+}
+
+function onTargetLangChange() {
+  const target = document.getElementById('qa-target-lang').value;
+  localStorage.setItem(KEYS.targetLang, target);
+  preserveKeyInput(renderSettings);
+}
+
+function onFeedbackLangChange(value) {
+  localStorage.setItem(KEYS.feedbackLang, value);
+  preserveKeyInput(renderSettings);
+  // Update nav button text since UI language changed
+  const homeBtn = document.getElementById('qa-home-btn');
+  if (homeBtn) homeBtn.textContent = t('home');
+  const helpBtn = document.getElementById('qa-help-btn');
+  if (helpBtn) helpBtn.textContent = t('help');
+  const settingsBtn = document.getElementById('qa-settings-btn');
+  if (settingsBtn) settingsBtn.textContent = t('settings');
+}
+
+function toggleKeyVis() {
+  const input = document.getElementById('qa-api-key');
+  const btn = input.nextElementSibling;
+  if (input.type === 'password') { input.type = 'text'; btn.textContent = t('hide'); }
+  else { input.type = 'password'; btn.textContent = t('show'); }
+}
+
+function toggleOpenaiKeyVis() {
+  const input = document.getElementById('qa-openai-key');
+  const btn = input.nextElementSibling;
+  if (input.type === 'password') { input.type = 'text'; btn.textContent = t('hide'); }
+  else { input.type = 'password'; btn.textContent = t('show'); }
+}
+
+async function saveSettings() {
+  const key = document.getElementById('qa-api-key').value.trim();
+  const native = document.getElementById('qa-native-lang').value;
+  const target = document.getElementById('qa-target-lang').value;
+  const msgEl = document.getElementById('qa-settings-msg');
+  const btn = document.getElementById('qa-save-key');
+
+  if (!key) { msgEl.innerHTML = `<div class="alert alert-error">${t('enterApiKey')}</div>`; return; }
+  if (!target) { msgEl.innerHTML = `<div class="alert alert-error">${t('selectTargetLang')}</div>`; return; }
+
+  localStorage.setItem(KEYS.nativeLang, native);
+  localStorage.setItem(KEYS.targetLang, target);
+
+  const openaiKey = document.getElementById('qa-openai-key').value.trim();
+  if (openaiKey) localStorage.setItem(KEYS.openaiKey, openaiKey);
+  else localStorage.removeItem(KEYS.openaiKey);
+
+  btn.disabled = true;
+  btn.textContent = t('validating');
+  msgEl.innerHTML = '';
+
+  try {
+    localStorage.setItem(KEYS.apiKey, key);
+    await callClaude(`TASK: GENERATE\n\nNo history yet. This is the student's first sentence. Start at basic A1 level.\n\nGenerate one simple ${nativeName()} sentence.`);
+    msgEl.innerHTML = `<div class="alert alert-success">${t('validated')}</div>`;
+    setTimeout(() => navigate('#/'), 800);
+  } catch (e) {
+    msgEl.innerHTML = `<div class="alert alert-error">${e.message}</div>`;
+    btn.disabled = false;
+    btn.textContent = t('saveValidate');
+  }
+}
+
+const BACKUP_SCHEMA = 1;
+
+function exportData() {
+  const data = {
+    _app: 'translator',
+    _schema: BACKUP_SCHEMA,
+    _exportedAt: new Date().toISOString(),
+    nativeLang: localStorage.getItem(KEYS.nativeLang),
+    targetLang: localStorage.getItem(KEYS.targetLang),
+    feedbackLang: localStorage.getItem(KEYS.feedbackLang),
+    stats: load(KEYS.stats, null),
+    history: load(KEYS.history, []),
+    sessions: load(KEYS.sessions, []),
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const date = new Date().toISOString().slice(0, 10);
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `translator-backup-${date}.json`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function importData(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const msgEl = document.getElementById('qa-import-msg');
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const data = JSON.parse(reader.result);
+      if (data._app !== 'translator' || !data.history) throw new Error('invalid');
+      if (data._schema && data._schema > BACKUP_SCHEMA) throw new Error('schema');
+      if (!confirm(t('importConfirm'))) { input.value = ''; return; }
+      if (data.nativeLang) localStorage.setItem(KEYS.nativeLang, data.nativeLang);
+      if (data.targetLang) localStorage.setItem(KEYS.targetLang, data.targetLang);
+      if (data.feedbackLang) localStorage.setItem(KEYS.feedbackLang, data.feedbackLang);
+      if (data.stats) save(KEYS.stats, data.stats);
+      save(KEYS.history, data.history);
+      if (data.sessions) save(KEYS.sessions, data.sessions);
+      msgEl.innerHTML = `<div class="alert alert-success">${t('importSuccess')}</div>`;
+      setTimeout(() => renderSettings(), 800);
+    } catch (e) {
+      const msg = e.message === 'schema' ? t('importSchemaError') : t('importError');
+      msgEl.innerHTML = `<div class="alert alert-error">${msg}</div>`;
+    }
+    input.value = '';
+  };
+  reader.readAsText(file);
+}
+
+function deleteAllData() {
+  if (!confirm(t('deleteAllConfirm'))) return;
+  Object.values(KEYS).forEach(k => localStorage.removeItem(k));
+  navigate('#/settings');
+  renderSettings();
+}
+
+// ── Render: Practice ───────────────────────────────────────────────
+function renderPractice() {
+  const app = document.getElementById('app');
+  sessionStart = sessionStart || Date.now();
+  sessionSentences = sessionSentences || [];
+
+  if (!currentSentence) {
+    app.innerHTML = `<div class="loading"><div class="spinner"></div><p>${t('generating')}</p></div>`;
+    loadNextSentence();
+    return;
+  }
+
+  const stats = getStats();
+  const history = getHistory();
+  const lastLevel = history.length > 0 ? history[history.length - 1].fluencyLevel : '\u2014';
+
+  app.innerHTML = `
+    <div class="status-bar">
+      <div class="status-item">
+        ${lastLevel !== '\u2014' ? '<span class="stat-emoji">' + getCefrEmoji(lastLevel) + '</span>' : ''}
+        <div class="value"><span class="level-badge">${lastLevel}</span></div>
+        <div class="label">${t('level')}</div>
+      </div>
+      <div class="status-item">
+        <div class="value">${stats.currentStreak}</div>
+        <div class="label">${t('streak')}</div>
+      </div>
+      <div class="status-item">
+        <span class="stat-emoji">${getTierEmoji(stats.runningScore)}</span>
+        <div class="value">${Math.round(stats.runningScore)}</div>
+        <div class="label">${t('score')}</div>
+      </div>
+      <div class="status-item">
+        <div class="value">${stats.totalAttempted}</div>
+        <div class="label">${t('total')}</div>
+      </div>
+    </div>
+
+    <div class="sentence-card">
+      <div class="label">${t('translateTo')(targetName())}${currentSentence.isRetry ? ' <span title="Retry of a sentence you previously got wrong" style="margin-left:6px;font-size:0.85em;color:#f0ad4e">↻ retry</span>' : ''}</div>
+      <div class="sentence">${escapeHtml(currentSentence.es)}</div>
+      <div class="hint">${escapeHtml(currentSentence.hint)}</div>
+    </div>
+
+    <div class="timer" id="qa-timer">0.0s</div>
+
+    <div class="input-area">
+      <textarea id="qa-input" rows="2" placeholder="${t('typePlaceholder')(targetName())}" autofocus></textarea>
+    </div>
+
+    <div id="qa-error"></div>
+
+    <button class="btn btn-primary" id="qa-submit" onclick="submitTranslation()">${t('submit')}</button>
+  `;
+
+  const input = document.getElementById('qa-input');
+  input.focus();
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      submitTranslation();
+    }
+  });
+
+  startTimer();
+}
+
+function startTimer() {
+  timerStart = performance.now();
+  cancelAnimationFrame(timerRAF);
+  function tick() {
+    const el = document.getElementById('qa-timer');
+    if (!el) return;
+    const elapsed = (performance.now() - timerStart) / 1000;
+    el.textContent = Math.floor(elapsed) + 's';
+    timerRAF = requestAnimationFrame(tick);
+  }
+  tick();
+}
+
+async function loadNextSentence() {
+  // Clean up feedback Enter handler to prevent double-fire
+  if (feedbackEnterHandler) {
+    document.removeEventListener('keydown', feedbackEnterHandler);
+    feedbackEnterHandler = null;
+  }
+  // If eval already provided the next sentence, skip the API call
+  if (currentSentence) {
+    renderPractice();
+    return;
+  }
+  // Try to inject a retry of a previously-wrong sentence (no API call needed)
+  const histForRetry = getHistory();
+  if (shouldInjectRetry(histForRetry)) {
+    const retry = pickRetrySentence(histForRetry);
+    if (retry) {
+      currentSentence = retry;
+      lastGenerateUsage = { input_tokens: 0, output_tokens: 0 };
+      renderPractice();
+      return;
+    }
+  }
+  const app = document.getElementById('app');
+  app.innerHTML = `<div class="loading"><div class="spinner"></div><p>${t('generating')}</p></div>`;
+  const myEpoch = ++generateEpoch;
+  try {
+    const history = getHistory();
+    const { result, usage } = await generateSentence(history);
+    if (myEpoch !== generateEpoch) return; // navigated away — discard
+    currentSentence = result;
+    lastGenerateUsage = usage;
+    renderPractice();
+  } catch (e) {
+    const app = document.getElementById('app');
+    app.innerHTML = `
+      <div class="alert alert-error">${e.message}</div>
+      <button class="btn btn-primary mt-16" onclick="renderPractice()">${t('retry')}</button>
+    `;
+  }
+}
+
+async function submitTranslation() {
+  if (isSubmitting) return;
+  const input = document.getElementById('qa-input');
+  const attempt = input.value.trim();
+  if (!attempt) return;
+
+  isSubmitting = true;
+  cancelAnimationFrame(timerRAF);
+  const elapsed = (performance.now() - timerStart) / 1000;
+
+  const submitBtn = document.getElementById('qa-submit');
+  submitBtn.disabled = true;
+  submitBtn.innerHTML = '<span class="btn-spinner"></span>' + escapeHtml(t('evaluating'));
+  input.disabled = true;
+
+  try {
+    const history = getHistory();
+    const { result: evalResult, usage: evalUsage } = await evaluateTranslation(
+      currentSentence.es, attempt, history, !!currentSentence.isRetry, currentSentence.previousAttempt
+    );
+
+    const lastLevel = history.length > 0 ? history[history.length - 1].fluencyLevel : 'A1';
+    const fluencyLevel = evalResult.fluency_level || lastLevel;
+    const baseScore = evalResult.score;
+    const timeBonus = evalResult.correct ? calculateTimeBonus(baseScore, elapsed, currentSentence.es) : 0;
+    const sentenceScore = baseScore + timeBonus;
+
+    const genUsage = lastGenerateUsage || { input_tokens: 0, output_tokens: 0 };
+    // When eval includes next sentence, gen usage is zero (bundled in eval)
+    const tokensIn = genUsage.input_tokens + evalUsage.input_tokens;
+    const tokensOut = genUsage.output_tokens + evalUsage.output_tokens;
+
+    const entry = {
+      es: currentSentence.es,
+      attempt,
+      expected: evalResult.expected,
+      baseScore,
+      sentenceScore,
+      responseTime: Math.round(elapsed * 10) / 10,
+      correct: evalResult.correct,
+      fluencyLevel,
+      feedback: evalResult.feedback,
+      notes: evalResult.notes || '',
+      tokensIn,
+      tokensOut,
+      timestamp: Date.now(),
+      ...(currentSentence.isRetry ? { isRetry: true } : {})
+    };
+    history.push(entry);
+    saveHistory(history);
+
+    const stats = getStats();
+    stats.totalAttempted++;
+    if (evalResult.correct) stats.totalCorrect++;
+    if (baseScore > 75) {
+      stats.currentStreak++;
+      if (stats.currentStreak > stats.bestStreak) stats.bestStreak = stats.currentStreak;
+    } else {
+      stats.currentStreak = 0;
+    }
+    stats.runningScore = updateEMA(stats.runningScore, sentenceScore);
+    stats.totalTimeSpent += elapsed;
+    saveStats(stats);
+    const tierEl = document.getElementById('qa-tier-emoji');
+    if (tierEl) tierEl.textContent = getCefrEmoji(fluencyLevel);
+
+    sessionSentences.push(entry);
+
+    showFeedback(evalResult, baseScore, timeBonus, sentenceScore, elapsed, fluencyLevel, currentSentence.es, attempt);
+    // Decide what comes next: retry of an unresolved wrong sentence, or the AI's bundled next.
+    const retryPick = shouldInjectRetry(history) ? pickRetrySentence(history) : null;
+    if (retryPick) {
+      currentSentence = retryPick;
+      lastGenerateUsage = { input_tokens: 0, output_tokens: 0 };
+    } else if (evalResult.next_es) {
+      currentSentence = { es: evalResult.next_es, hint: evalResult.next_hint || '', topic: evalResult.next_topic || '' };
+      lastGenerateUsage = { input_tokens: 0, output_tokens: 0 }; // included in eval usage
+    } else {
+      currentSentence = null;
+    }
+
+  } catch (e) {
+    document.getElementById('qa-error').innerHTML = `<div class="alert alert-error">${e.message}</div>`;
+    submitBtn.disabled = false;
+    submitBtn.textContent = t('submit');
+    input.disabled = false;
+  } finally {
+    isSubmitting = false;
+  }
+}
+
+function showFeedback(evalResult, baseScore, timeBonus, sentenceScore, elapsed, fluencyLevel, esOriginal, userAttempt) {
+  const app = document.getElementById('app');
+  const stats = getStats();
+  const isCorrect = evalResult.correct;
+  const notes = evalResult.notes || '';
+  // Reset TTS cache for the new answer view
+  if (ttsAudio) { try { ttsAudio.pause(); } catch {} ttsAudio = null; }
+  if (ttsCache?.audioUrl) URL.revokeObjectURL(ttsCache.audioUrl);
+  ttsCache = null;
+
+  app.innerHTML = `
+    <div class="status-bar">
+      <div class="status-item">
+        <span class="stat-emoji">${getCefrEmoji(fluencyLevel)}</span>
+        <div class="value"><span class="level-badge">${fluencyLevel}</span></div>
+        <div class="label">${t('level')}</div>
+      </div>
+      <div class="status-item">
+        <div class="value">${stats.currentStreak}</div>
+        <div class="label">${t('streak')}</div>
+      </div>
+      <div class="status-item">
+        <span class="stat-emoji">${getTierEmoji(stats.runningScore)}</span>
+        <div class="value">${Math.round(stats.runningScore)}</div>
+        <div class="label">${t('score')}</div>
+      </div>
+      <div class="status-item">
+        <div class="value">${stats.totalAttempted}</div>
+        <div class="label">${t('total')}</div>
+      </div>
+    </div>
+
+    <div class="sentence-card">
+      <div class="label">${t('youTranslated')}</div>
+      <div class="sentence">${escapeHtml(esOriginal)}</div>
+    </div>
+
+    <div class="feedback-card ${isCorrect ? '' : 'incorrect'}">
+      <div class="result-label ${isCorrect ? 'correct' : 'wrong'}">${isCorrect ? t('correct') : t('notQuite')}</div>
+
+      <div class="expected">
+        <div class="label">${t('yourAnswer')}</div>
+        ${escapeHtml(userAttempt)}
+      </div>
+
+      <div class="expected">
+        <div class="label">${t('expected')(targetName())}</div>
+        <div style="display:flex;align-items:flex-start;gap:8px">
+          <div style="flex:1">${escapeHtml(evalResult.expected)}</div>
+          ${localStorage.getItem(KEYS.openaiKey) ? `<button id="qa-tts-btn" class="tts-btn" onclick="toggleTTS(this)" data-text="${escapeHtml(evalResult.expected)}" title="Play audio">▶</button>` : ''}
+        </div>
+      </div>
+
+      <div class="feedback-text">${renderFeedbackMd(evalResult.feedback)}</div>
+
+
+      <div class="score-row">
+        <span>${t('score')}: <span class="score">${baseScore}</span>${timeBonus > 0 ? ` <span style="color:#53d8a8;font-weight:600">+${timeBonus} ${t('speedBonus')}</span>` : ''}</span>
+        <span>${t('time')}: ${elapsed.toFixed(1)}s</span>
+        <span class="level-badge">${fluencyLevel}</span>
+      </div>
+
+      ${notes ? `<div style="margin-top:10px;font-size:0.75rem;color:var(--text-muted);opacity:0.6">${escapeHtml(notes)}</div>` : ''}
+    </div>
+
+    <button class="btn btn-primary" id="qa-next" onclick="loadNextSentence()">${t('nextSentence')}</button>
+  `;
+
+  if (feedbackEnterHandler) document.removeEventListener('keydown', feedbackEnterHandler);
+  feedbackEnterHandler = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      loadNextSentence();
+    }
+  };
+  document.addEventListener('keydown', feedbackEnterHandler);
+}
+
+async function toggleTTS(btn) {
+  const text = btn.getAttribute('data-text');
+  // If currently playing, stop.
+  if (ttsAudio && !ttsAudio.paused) {
+    ttsAudio.pause();
+    ttsAudio.currentTime = 0;
+    btn.classList.remove('playing');
+    btn.innerHTML = '▶';
+    return;
+  }
+  // If we have cached audio for this text, play it.
+  if (ttsCache && ttsCache.text === text) {
+    playTTS(btn, ttsCache.audioUrl);
+    return;
+  }
+  // Fetch from OpenAI.
+  const openaiKey = localStorage.getItem(KEYS.openaiKey);
+  if (!openaiKey) return;
+  btn.disabled = true;
+  btn.innerHTML = '<span class="btn-spinner"></span>';
+  try {
+    const res = await fetch('https://api.openai.com/v1/audio/speech', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${openaiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'gpt-4o-mini-tts',
+        voice: 'alloy',
+        input: text,
+        response_format: 'mp3',
+      }),
+    });
+    if (!res.ok) throw new Error(`TTS error: ${res.status}`);
+    const blob = await res.blob();
+    const audioUrl = URL.createObjectURL(blob);
+    ttsCache = { text, audioUrl };
+    btn.disabled = false;
+    playTTS(btn, audioUrl);
+  } catch (e) {
+    btn.disabled = false;
+    btn.innerHTML = '▶';
+    btn.title = e.message;
+  }
+}
+
+function playTTS(btn, audioUrl) {
+  ttsAudio = new Audio(audioUrl);
+  btn.classList.add('playing');
+  btn.innerHTML = '■';
+  btn.title = 'Stop';
+  ttsAudio.addEventListener('ended', () => {
+    btn.classList.remove('playing');
+    btn.innerHTML = '▶';
+    btn.title = 'Play audio';
+  });
+  ttsAudio.play().catch(() => {
+    btn.classList.remove('playing');
+    btn.innerHTML = '▶';
+  });
+}
+
+function endSession() {
+  if (sessionSentences.length > 0) {
+    const sessions = getSessions();
+    const avgScore = Math.round(sessionSentences.reduce((s, e) => s + e.sentenceScore, 0) / sessionSentences.length);
+    sessions.push({
+      date: sessionStart,
+      duration: Math.round((Date.now() - sessionStart) / 1000),
+      count: sessionSentences.length,
+      averageScore: avgScore,
+      fluencyStart: sessionSentences[0].fluencyLevel,
+      fluencyEnd: sessionSentences[sessionSentences.length - 1].fluencyLevel,
+      totalTokensIn: sessionSentences.reduce((s, e) => s + e.tokensIn, 0),
+      totalTokensOut: sessionSentences.reduce((s, e) => s + e.tokensOut, 0),
+    });
+    saveSessions(sessions);
+  }
+
+  sessionStart = null;
+  sessionSentences = [];
+  currentSentence = null;
+  cancelAnimationFrame(timerRAF);
+}
+
+// ── Render: Help ───────────────────────────────────────────────────
+function renderHelp() {
+  const app = document.getElementById('app');
+  const keyUrl = 'https://console.anthropic.com/settings/keys';
+  app.innerHTML = `
+    <h2>${t('helpTitle')}</h2>
+
+    <div class="card mb-12">
+      <div class="section-heading" style="margin-top:0">🔧 ${t('helpSetup')}</div>
+      <div class="help-item">🔑 ${t('helpSetupKey')} — <a href="${keyUrl}" target="_blank" style="color:#0d6efd">${t('helpSetupKeyLink')}</a></div>
+      <div class="help-item">🌍 ${t('helpSetupLangs')}</div>
+      <div class="help-item">🚀 ${t('helpSetupGo')}</div>
+    </div>
+
+    <div class="card mb-12">
+      <div class="section-heading" style="margin-top:0">✏️ ${t('helpPractice')}</div>
+      <div class="help-item">📖 ${t('helpPracticeRead')}</div>
+      <div class="help-item">⌨️ ${t('helpPracticeType')}</div>
+      <div class="help-item">💬 ${t('helpPracticeFeedback')}</div>
+    </div>
+
+    <div class="card mb-12">
+      <div class="section-heading" style="margin-top:0">⚡ ${t('helpScoring')}</div>
+      <div class="help-item">📊 ${t('helpScoringBase')}</div>
+      <div class="help-item">🏃 ${t('helpScoringBonus')}</div>
+      <div class="help-item">😌 ${t('helpScoringNoPenalty')}</div>
+    </div>
+
+    <div class="card mb-12">
+      <div class="section-heading" style="margin-top:0">📈 ${t('helpProgress')}</div>
+      <div class="help-item">🎯 ${t('helpProgressCEFR')}</div>
+      <div class="help-item">🤖 ${t('helpProgressAdapt')}</div>
+      <div class="help-item">📋 ${t('helpProgressStats')}</div>
+      <div class="help-item">🔥 ${t('helpProgressStreak')}</div>
+      <div class="help-item">🔊 ${t('helpTTSDesc')}</div>
+    </div>
+
+    <div class="card mb-12" style="text-align:center">
+      <p style="margin-bottom:8px">${t('helpSupportText')}</p>
+      <a href="https://github.com/topherhunt/topher-utilities/discussions" target="_blank" style="color:#0d6efd">${t('helpSupportLink')}</a>
+    </div>
+  `;
+}
+
+// ── Render: Stats ──────────────────────────────────────────────────
+function renderStats() {
+  const app = document.getElementById('app');
+  const stats = getStats();
+  const history = getHistory();
+  const sessions = getSessions();
+
+  if (history.length === 0) {
+    app.innerHTML = `
+      <button class="btn btn-primary mb-12" onclick="navigate('#/practice')">${t('startPractice')}</button>
+      <p class="text-muted text-center" style="padding:40px 0">${t('noHistory')}</p>
+    `;
+    return;
+  }
+
+  const lastLevel = history[history.length - 1].fluencyLevel;
+  const accuracy = stats.totalAttempted > 0 ? Math.round(stats.totalCorrect / stats.totalAttempted * 100) : 0;
+  const recentForAvg = history.slice(-20);
+  const avgTime = recentForAvg.length > 0
+    ? (recentForAvg.reduce((s, h) => s + (h.responseTime || 0), 0) / recentForAvg.length).toFixed(1)
+    : '\u2014';
+  const totalTokensIn = history.reduce((s, e) => s + (e.tokensIn || 0), 0);
+  const totalTokensOut = history.reduce((s, e) => s + (e.tokensOut || 0), 0);
+  const estCost = (totalTokensIn * SONNET_INPUT_COST / 1e6) + (totalTokensOut * SONNET_OUTPUT_COST / 1e6);
+  const avgCost = history.length > 0 ? estCost / history.length : 0;
+
+  const latestNotes = [...history].reverse().find(h => h.notes)?.notes || '';
+
+  app.innerHTML = `
+    <button class="btn btn-primary mb-12" onclick="navigate('#/practice')">${t('practice')}</button>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <span class="stat-emoji">${getCefrEmoji(lastLevel)}</span>
+        <div class="value"><span class="level-badge">${lastLevel}</span></div>
+        <div class="label">${t('fluencyLevel')}</div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-emoji">${getTierEmoji(stats.runningScore)}</span>
+        <div class="value">${Math.round(stats.runningScore)}</div>
+        <div class="label">${t('runningScore')}</div>
+      </div>
+      <div class="stat-card">
+        <div class="value">${stats.totalAttempted}</div>
+        <div class="label">${t('totalSentences')}</div>
+      </div>
+      <div class="stat-card">
+        <div class="value">${accuracy}%</div>
+        <div class="label">${t('accuracy')}</div>
+      </div>
+      <div class="stat-card">
+        <div class="value">${stats.currentStreak}</div>
+        <div class="label">${t('currentStreak')}</div>
+      </div>
+      <div class="stat-card">
+        <div class="value">${stats.bestStreak}</div>
+        <div class="label">${t('bestStreak')}</div>
+      </div>
+      <div class="stat-card">
+        <div class="value">${avgTime}s</div>
+        <div class="label">${t('avgTime')}</div>
+      </div>
+      <div class="stat-card">
+        <div class="value">$${estCost.toFixed(3)}</div>
+        <div class="label">${t('apiCost')}</div>
+      </div>
+    </div>
+
+    <div class="card text-small text-muted">
+      Tokens: ${totalTokensIn.toLocaleString()} in / ${totalTokensOut.toLocaleString()} out &middot;
+      ${t('avg')} $${avgCost.toFixed(4)}/round
+    </div>
+
+    ${latestNotes ? `
+      <div class="section-heading">${t('aiNotes')}</div>
+      <div class="card" style="font-size:0.85rem;color:var(--text-muted)">${escapeHtml(latestNotes)}</div>
+    ` : ''}
+
+    <div class="section-heading">${t('fluencyOverTime')}</div>
+    <div class="fluency-chart" id="qa-fluency-chart"></div>
+
+    <div class="section-heading">${t('scoreOverTime')}</div>
+    <div class="fluency-chart" id="qa-score-chart"></div>
+
+    <div class="section-heading">${t('volumeOverTime')}</div>
+    <div class="fluency-chart" id="qa-volume-chart"></div>
+
+    <div class="section-heading">${t('history')}</div>
+    <div id="qa-history-controls" class="gap-8 mb-12">
+      <select id="qa-history-filter" class="btn btn-small btn-secondary" onchange="renderHistoryTable()" style="padding:6px 10px;font-size:0.8rem;background:var(--elevated);color:var(--text);border:1px solid var(--elevated);border-radius:var(--radius)">
+        <option value="all">${t('all')}</option>
+        <option value="correct">${t('correctOnly')}</option>
+        <option value="incorrect">${t('incorrectOnly')}</option>
+      </select>
+    </div>
+    <div class="history-scroll-wrap">
+      <div class="history-scroll" id="qa-history-table"></div>
+      <div class="scroll-hint" id="qa-scroll-hint">\u25BC more</div>
+    </div>
+
+    ${sessions.length > 0 ? `
+      <div class="section-heading">${t('sessions')}</div>
+      <div id="qa-sessions"></div>
+    ` : ''}
+
+  `;
+
+  renderFluencyChart(history);
+  renderScoreChart(history);
+  renderVolumeChart(history);
+  renderHistoryTable();
+  renderSessions(sessions);
+}
+
+function wireChartTooltip(canvas, points) {
+  // points: [{x, y, label}]
+  const tooltip = document.getElementById('qa-chart-tooltip');
+  const hitRadius = 12;
+
+  canvas.addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    const mx = (e.clientX - rect.left) * scaleX;
+    const my = (e.clientY - rect.top) * scaleY;
+
+    let closest = null;
+    let closestDist = Infinity;
+    for (const p of points) {
+      const d = Math.hypot(mx - p.x, my - p.y);
+      if (d < hitRadius && d < closestDist) {
+        closest = p;
+        closestDist = d;
+      }
+    }
+
+    if (closest) {
+      tooltip.textContent = closest.label;
+      tooltip.style.left = (e.clientX + 12) + 'px';
+      tooltip.style.top = (e.clientY - 30) + 'px';
+      tooltip.classList.add('visible');
+    } else {
+      tooltip.classList.remove('visible');
+    }
+  });
+
+  canvas.addEventListener('mouseleave', () => {
+    tooltip.classList.remove('visible');
+  });
+}
+
+function renderFluencyChart(history) {
+  const container = document.getElementById('qa-fluency-chart');
+  if (!container) return;
+
+  // Dynamic window: show up to 1 sub-level above highest datapoint
+  const maxIdx = history.reduce((max, h) => {
+    const idx = CEFR_LEVELS.indexOf(h.fluencyLevel);
+    return idx > max ? idx : max;
+  }, 0);
+  const ceilIdx = Math.min(maxIdx + 1, CEFR_LEVELS.length - 1);
+  const visibleLevels = CEFR_LEVELS.slice(0, ceilIdx + 1);
+
+  const perLevel = 18;
+  const height = Math.max(100, visibleLevels.length * perLevel + 16);
+  const width = container.clientWidth;
+  const canvas = document.createElement('canvas');
+  canvas.width = width;
+  canvas.height = height;
+  canvas.style.width = width + 'px';
+  canvas.style.height = height + 'px';
+  container.style.height = height + 'px';
+  container.appendChild(canvas);
+
+  const ctx = canvas.getContext('2d');
+  const padding = { top: 8, bottom: 8, left: 30, right: 8 };
+  const chartW = width - padding.left - padding.right;
+  const chartH = height - padding.top - padding.bottom;
+
+  ctx.fillStyle = '#8899aa';
+  ctx.font = '10px -apple-system, sans-serif';
+  ctx.textAlign = 'left';
+  visibleLevels.forEach((lvl, i) => {
+    const y = padding.top + chartH - (i / (visibleLevels.length - 1)) * chartH;
+    ctx.fillText(lvl, 2, y + 3);
+    ctx.strokeStyle = '#2a3045';
+    ctx.beginPath();
+    ctx.moveTo(padding.left, y);
+    ctx.lineTo(width - padding.right, y);
+    ctx.stroke();
+  });
+
+  if (history.length < 2) return;
+  const step = chartW / (history.length - 1);
+
+  ctx.beginPath();
+  ctx.strokeStyle = '#53d8a8';
+  ctx.lineWidth = 2;
+  history.forEach((h, i) => {
+    const lvlIdx = CEFR_LEVELS.indexOf(h.fluencyLevel);
+    const idx = Math.max(0, Math.min(lvlIdx, ceilIdx));
+    const x = padding.left + i * step;
+    const y = padding.top + chartH - (idx / (visibleLevels.length - 1)) * chartH;
+    if (i === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  });
+  ctx.stroke();
+
+  const points = [];
+  history.forEach((h, i) => {
+    const lvlIdx = CEFR_LEVELS.indexOf(h.fluencyLevel);
+    const idx = Math.max(0, Math.min(lvlIdx, ceilIdx));
+    const x = padding.left + i * step;
+    const y = padding.top + chartH - (idx / (visibleLevels.length - 1)) * chartH;
+    ctx.beginPath();
+    ctx.fillStyle = h.correct ? '#53d8a8' : '#e74c6f';
+    ctx.arc(x, y, 3, 0, Math.PI * 2);
+    ctx.fill();
+    const emoji = getCefrEmoji(h.fluencyLevel);
+    points.push({ x, y, label: `${emoji} ${h.fluencyLevel}` });
+  });
+  wireChartTooltip(canvas, points);
+}
+
+function renderScoreChart(history) {
+  const container = document.getElementById('qa-score-chart');
+  if (!container || history.length < 2) return;
+
+  // Compute running EMA for each point
+  const scores = [];
+  let ema = history[0].sentenceScore;
+  scores.push(ema);
+  for (let i = 1; i < history.length; i++) {
+    ema = ema + EMA_ALPHA * (history[i].sentenceScore - ema);
+    scores.push(Math.round(ema));
+  }
+
+  const peakScore = Math.max(...scores);
+  const maxScore = peakScore > 100 ? Math.ceil(peakScore / 10) * 10 : 100;
+  const gridLines = [0, 25, 50, 75, 100].filter(v => v <= maxScore);
+  if (maxScore > 100) gridLines.push(maxScore);
+  const height = 150;
+  const width = Math.max(history.length * 20, container.clientWidth);
+  const canvas = document.createElement('canvas');
+  canvas.width = width;
+  canvas.height = height;
+  canvas.style.width = width + 'px';
+  canvas.style.height = height + 'px';
+  container.appendChild(canvas);
+
+  const ctx = canvas.getContext('2d');
+  const padding = { top: 8, bottom: 8, left: 30, right: 8 };
+  const chartW = width - padding.left - padding.right;
+  const chartH = height - padding.top - padding.bottom;
+
+  // Grid lines and labels
+  ctx.fillStyle = '#8899aa';
+  ctx.font = '10px -apple-system, sans-serif';
+  ctx.textAlign = 'left';
+  gridLines.forEach(val => {
+    const y = padding.top + chartH - (val / maxScore) * chartH;
+    ctx.fillText(val, 2, y + 3);
+    ctx.strokeStyle = '#2a3045';
+    ctx.beginPath();
+    ctx.moveTo(padding.left, y);
+    ctx.lineTo(width - padding.right, y);
+    ctx.stroke();
+  });
+
+  const step = chartW / (history.length - 1);
+
+  // EMA line
+  ctx.beginPath();
+  ctx.strokeStyle = '#0d6efd';
+  ctx.lineWidth = 2;
+  scores.forEach((s, i) => {
+    const x = padding.left + i * step;
+    const y = padding.top + chartH - (Math.min(s, maxScore) / maxScore) * chartH;
+    if (i === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  });
+  ctx.stroke();
+
+  // Dots colored by correct/incorrect
+  const points = [];
+  history.forEach((h, i) => {
+    const x = padding.left + i * step;
+    const y = padding.top + chartH - (Math.min(scores[i], maxScore) / maxScore) * chartH;
+    ctx.beginPath();
+    ctx.fillStyle = h.correct ? '#0d6efd' : '#e74c6f';
+    ctx.arc(x, y, 3, 0, Math.PI * 2);
+    ctx.fill();
+    const emoji = getTierEmoji(scores[i]);
+    points.push({ x, y, label: `${emoji} ${scores[i]}` });
+  });
+  wireChartTooltip(canvas, points);
+}
+
+function renderVolumeChart(history) {
+  const container = document.getElementById('qa-volume-chart');
+  if (!container || history.length < 1) return;
+
+  // Aggregate sentence counts by local YYYY-MM-DD, filling gaps with 0
+  const dayKey = (ts) => {
+    const d = new Date(ts);
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  };
+  const counts = new Map();
+  for (const h of history) {
+    const k = dayKey(h.timestamp);
+    counts.set(k, (counts.get(k) || 0) + 1);
+  }
+  const firstDate = new Date(history[0].timestamp); firstDate.setHours(0, 0, 0, 0);
+  const lastDate = new Date(history[history.length - 1].timestamp); lastDate.setHours(0, 0, 0, 0);
+  const days = [];
+  for (let d = new Date(firstDate); d <= lastDate; d.setDate(d.getDate() + 1)) {
+    const k = dayKey(d.getTime());
+    days.push({ date: new Date(d), count: counts.get(k) || 0 });
+  }
+  if (days.length === 0) return;
+
+  const peak = Math.max(...days.map(d => d.count), 1);
+  const maxY = Math.max(5, Math.ceil(peak / 5) * 5);
+  const gridLines = [0, Math.round(maxY / 2), maxY];
+
+  const height = 150;
+  const width = Math.max(days.length * 20, container.clientWidth);
+  const canvas = document.createElement('canvas');
+  canvas.width = width;
+  canvas.height = height;
+  canvas.style.width = width + 'px';
+  canvas.style.height = height + 'px';
+  container.appendChild(canvas);
+
+  const ctx = canvas.getContext('2d');
+  const padding = { top: 8, bottom: 20, left: 30, right: 8 };
+  const chartW = width - padding.left - padding.right;
+  const chartH = height - padding.top - padding.bottom;
+
+  // Grid lines
+  ctx.fillStyle = '#8899aa';
+  ctx.font = '10px -apple-system, sans-serif';
+  ctx.textAlign = 'left';
+  gridLines.forEach(val => {
+    const y = padding.top + chartH - (val / maxY) * chartH;
+    ctx.fillText(val, 2, y + 3);
+    ctx.strokeStyle = '#2a3045';
+    ctx.beginPath();
+    ctx.moveTo(padding.left, y);
+    ctx.lineTo(width - padding.right, y);
+    ctx.stroke();
+  });
+
+  const step = days.length > 1 ? chartW / (days.length - 1) : 0;
+  const yellow = '#f5c518';
+
+  // Line
+  ctx.beginPath();
+  ctx.strokeStyle = yellow;
+  ctx.lineWidth = 2;
+  days.forEach((d, i) => {
+    const x = padding.left + i * step;
+    const y = padding.top + chartH - (d.count / maxY) * chartH;
+    if (i === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  });
+  ctx.stroke();
+
+  // Dots + tooltip points
+  const points = [];
+  days.forEach((d, i) => {
+    const x = padding.left + i * step;
+    const y = padding.top + chartH - (d.count / maxY) * chartH;
+    ctx.beginPath();
+    ctx.fillStyle = yellow;
+    ctx.arc(x, y, 3, 0, Math.PI * 2);
+    ctx.fill();
+    const label = `${d.date.getMonth() + 1}/${d.date.getDate()}: ${d.count}`;
+    points.push({ x, y, label });
+  });
+
+  // X-axis labels: max 15, evenly spaced
+  ctx.fillStyle = '#8899aa';
+  ctx.textAlign = 'center';
+  const maxLabels = 15;
+  const labelStride = Math.max(1, Math.ceil(days.length / maxLabels));
+  for (let i = 0; i < days.length; i += labelStride) {
+    const x = padding.left + i * step;
+    const d = days[i].date;
+    ctx.fillText(`${d.getMonth() + 1}/${d.getDate()}`, x, height - 6);
+  }
+
+  wireChartTooltip(canvas, points);
+}
+
+function renderHistoryTable() {
+  const container = document.getElementById('qa-history-table');
+  if (!container) return;
+  const filter = document.getElementById('qa-history-filter')?.value || 'all';
+  let history = getHistory().slice().reverse();
+
+  if (filter === 'correct') history = history.filter(h => h.correct);
+  else if (filter === 'incorrect') history = history.filter(h => !h.correct);
+
+  if (history.length === 0) {
+    container.innerHTML = `<p class="text-muted text-small text-center" style="padding:20px">${t('noMatches')}</p>`;
+    return;
+  }
+
+  container.innerHTML = `
+    <table class="history-table">
+      <thead><tr>
+        <th>${t('source')}</th>
+        <th>${t('yourAnswer')}</th>
+        <th>${t('score')}</th>
+        <th>${t('level')}</th>
+        <th>${t('time')}</th>
+      </tr></thead>
+      <tbody>
+        ${history.map((h, i) => `
+          <tr class="expand-row" onclick="toggleExpand(${i})">
+            <td>${escapeHtml(h.es)}</td>
+            <td style="color:${h.correct ? 'var(--accent)' : 'var(--error)'}">${escapeHtml(h.attempt)}</td>
+            <td>${h.sentenceScore}</td>
+            <td><span class="level-badge" style="font-size:0.65rem;padding:1px 6px">${h.fluencyLevel}</span></td>
+            <td>${h.responseTime}s</td>
+          </tr>
+          <tr><td colspan="5">
+            <div class="expand-content" id="qa-expand-${i}">
+              <strong>${t('expectedLabel')}:</strong> ${escapeHtml(h.expected)}<br>
+              <strong>${t('feedback')}:</strong> ${renderFeedbackMd(h.feedback)}
+              <strong>${t('baseScore')}:</strong> ${h.baseScore}${h.sentenceScore > h.baseScore ? ` <span style="color:#53d8a8">+${h.sentenceScore - h.baseScore}</span>` : ''}<br>
+              <span class="text-muted">${new Date(h.timestamp).toLocaleString()}</span>
+            </div>
+          </td></tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+  updateScrollHint();
+  container.addEventListener('scroll', updateScrollHint);
+}
+
+function updateScrollHint() {
+  const container = document.getElementById('qa-history-table');
+  const hint = document.getElementById('qa-scroll-hint');
+  if (!container || !hint) return;
+  const hasMore = container.scrollHeight - container.scrollTop - container.clientHeight > 20;
+  hint.classList.toggle('visible', hasMore);
+}
+
+function toggleExpand(i) {
+  const el = document.getElementById('qa-expand-' + i);
+  if (el) el.classList.toggle('open');
+}
+
+function renderSessions(sessions) {
+  const container = document.getElementById('qa-sessions');
+  if (!container) return;
+
+  container.innerHTML = sessions.slice().reverse().map(s => `
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <strong>${new Date(s.date).toLocaleDateString()}</strong>
+          <span class="text-muted text-small">${Math.round(s.duration / 60)}min</span>
+        </div>
+        <div>
+          ${t('nSentences')(s.count)} &middot; ${t('avg')} ${s.averageScore}
+          &middot; ${s.fluencyStart} \u2192 ${s.fluencyEnd}
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ── Util ───────────────────────────────────────────────────────────
+function escapeHtml(s) {
+  if (!s) return '';
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+function renderFeedbackMd(s) {
+  if (!s) return '';
+  const lines = s.split('\n');
+  let html = '';
+  let inList = false;
+  for (const raw of lines) {
+    const line = raw.trim();
+    if (/^[-*] /.test(line)) {
+      if (!inList) { html += '<ul>'; inList = true; }
+      html += '<li>' + inlineFormat(line.replace(/^[-*] /, '')) + '</li>';
+    } else {
+      if (inList) { html += '</ul>'; inList = false; }
+      if (line) html += '<p>' + inlineFormat(line) + '</p>';
+    }
+  }
+  if (inList) html += '</ul>';
+  return html;
+}
+
+function inlineFormat(s) {
+  return escapeHtml(s)
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>');
+}
+
+// ── Init ───────────────────────────────────────────────────────────
+handleRoute();
+</script>
+</body>
+</html>
