@@ -27,6 +27,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg'><text y='32' font-size='32'>🎯</text></svg>">
 <title>Flashcards - Nederlands Oefenen</title>
+<script>window.goatcounter = {no_onload: true};</script>
+<script data-goatcounter="https://topherhunt.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script>
+function gcEvent(name) {
+  if (window.goatcounter && window.goatcounter.count) {
+    window.goatcounter.count({path: 'quizzer-' + name, title: 'quizzer ' + name, event: true});
+  } else {
+    setTimeout(function() { gcEvent(name); }, 200);
+  }
+}
+</script>
 <style>
 :root {
   --bg: #141720;
@@ -1838,6 +1849,7 @@ function handleRoute() {
   } else if (parts.length === 1 && parts[0] === 'settings') {
     renderGlobalSettings();
   } else if (parts.length === 1 && parts[0] === 'help') {
+    gcEvent('help-viewed');
     renderHelp();
   } else if (parts.length === 1) {
     renderDeckHome(parts[0]);
@@ -1853,6 +1865,7 @@ function handleRoute() {
   } else if (parts[1] === 'settings') {
     renderDeckSettings(parts[0]);
   } else if (parts[1] === 'stats') {
+    gcEvent('stats-viewed');
     renderStats(parts[0]);
   } else if (parts[1] === 'session' && parts[2]) {
     renderSessionDetail(parts[0], parseInt(parts[2]));
@@ -2447,6 +2460,7 @@ function handleRating(rating, responseTime) {
 }
 
 function applyRating(rating, responseTime) {
+  gcEvent('question-complete');
   const { qid, question } = studySession.queue[studySession.currentIndex];
   const isCorrect = rating !== Rating.Again;
 
@@ -2902,6 +2916,7 @@ applyNavLabels();
 migrateStats();
 window.addEventListener('hashchange', handleRoute);
 handleRoute();
+gcEvent('page-loaded');
 </script>
 </body>
 </html>
