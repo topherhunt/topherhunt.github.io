@@ -513,7 +513,7 @@ const LANGS = {
     presetsTitle: 'Preset decks',
     orImportCsv: 'Or import your own CSV',
     importTitle: 'Add a Deck',
-    importInstructions: 'Create a quiz deck CSV using ChatGPT, Claude, or any AI assistant. Copy the prompt below, fill in the bracketed parts, and paste the result as a <code>.csv</code> file. You can optionally add a <code>wrong4</code> column after <code>wrong3</code> for a 5th answer option per question.',
+    importInstructions: 'Create a quiz deck CSV using ChatGPT, Claude, or any AI assistant. Copy the prompt below, fill in the bracketed parts, and paste the result as a <code>.csv</code> file. You can optionally add a <code>wrong4</code> column after <code>wrong3</code> for a 5th answer option per question. Quizzer works great for language vocab, but also for memorizing anything else — history dates, anatomy, chemistry, capitals, scripture, you name it.',
     importPrompt: `Create a CSV flashcard deck for studying [TOPIC]. Target level: [BEGINNER / INTERMEDIATE / ADVANCED]. Language: [LANGUAGE].
 
 Use this exact header row:
@@ -594,6 +594,7 @@ Output ONLY the CSV with no other text.`,
     navSettings: 'Settings',
     navHelp: 'Help',
     helpForumNote: 'Questions, problems, ideas, or just want to say hi? Visit the <a href="https://github.com/topherhunt/topher-utilities/discussions" target="_blank" rel="noopener" style="color:var(--accent)">discussion forum</a>.',
+    helpIntro: 'Quizzer is a flashcard app for memorizing anything. Language vocab is a natural fit, but it works just as well for history, science, geography, scripture, or any other topic you want to drill into long-term memory.',
     helpSections: [
       { title: 'Creating a deck', items: [
         'Click <strong>+ Import Deck</strong> on the home screen to add a new deck.',
@@ -1441,6 +1442,143 @@ title,question,correct,wrong1,wrong2,wrong3,explanation
       ]},
     ],
   },
+  ar: {
+    _label: '🇸🇦',
+    _name: 'العربية',
+    _locale: 'ar',
+    _dir: 'rtl',
+    home: 'الرئيسية',
+    dragCsv: 'اسحب ملف CSV هنا<br>أو انقر للاختيار',
+    noDecks: 'لا توجد مجموعات بعد. استورد مجموعة للبدء!',
+    myDecks: 'مجموعاتي',
+    importDeck: '+ إضافة مجموعة',
+    presetsTitle: 'مجموعات جاهزة',
+    orImportCsv: 'أو استورد ملف CSV الخاص بك',
+    importTitle: 'إضافة مجموعة',
+    importInstructions: 'أنشئ ملف CSV لمجموعة اختبار باستخدام ChatGPT أو Claude أو أي مساعد ذكاء اصطناعي. انسخ الموجّه أدناه، واملأ الأجزاء الموضوعة بين أقواس، واحفظ النتيجة كملف <code>.csv</code>. يمكنك اختياريًا إضافة عمود <code>wrong4</code> بعد <code>wrong3</code> لخيار إجابة خامس لكل سؤال. يعمل Quizzer بشكل رائع لمفردات اللغات، وأيضًا لحفظ أي شيء آخر — تواريخ تاريخية، تشريح، كيمياء، عواصم، نصوص دينية، وما إلى ذلك.',
+    importPrompt: `أنشئ مجموعة بطاقات تعليمية بصيغة CSV لدراسة [الموضوع]. المستوى المستهدف: [مبتدئ / متوسط / متقدم]. اللغة: [اللغة].
+
+استخدم صف العناوين التالي بالضبط:
+title,question,correct,wrong1,wrong2,wrong3,explanation
+
+أنشئ [العدد] من أسئلة الاختيار من متعدد. يجب أن يحتوي كل صف على 7 أعمدة مفصولة بفواصل بالضبط. ضع أي حقل يحتوي على فاصلة بين علامتي اقتباس مزدوجتين. يجب أن يقدّم عمود "explanation" سببًا موجزًا لصحة الإجابة الصحيحة.
+
+أخرج ملف CSV فقط دون أي نص آخر.`,
+    copyPrompt: 'نسخ الموجّه',
+    copied: 'تم النسخ!',
+    allDecks: 'كل المجموعات',
+    deckBreadcrumb: name => `المجموعة: ${name}`,
+    howToCreate: 'كيفية إنشاء مجموعة جديدة',
+    nCards: n => `${n} بطاقة`,
+    dueToday: 'مستحقة اليوم',
+    newAvailable: 'جديدة',
+    totalCards: 'المجموع',
+    start: 'ادرس',
+    statistics: 'الإحصائيات',
+    delete: 'حذف',
+    error: 'خطأ',
+    emptyFile: 'الملف فارغ.',
+    invalidHeader: 'ترويسة CSV غير صالحة. المتوقع: ',
+    noValidQuestions: 'لم يتم العثور على أسئلة صالحة (يجب أن يحتوي كل صف على 9 أعمدة).',
+    deleteDeck: 'حذف المجموعة',
+    deleteDeckConfirm: name => `حذف "${name}" وكل التقدم؟`,
+    back: 'رجوع',
+    backToDeck: 'العودة إلى المجموعة',
+    spacedRep: 'التكرار المتباعد',
+    spacedRepDesc: 'بأولوية FSRS: البطاقات المستحقة أولًا، ثم الجديدة',
+    leastPracticed: 'الأقل تدريبًا أولًا',
+    leastPracticedDesc: 'البطاقات غير المرئية والأضعف أولًا',
+    randomMode: 'عشوائي',
+    randomModeDesc: 'كل البطاقات بترتيب عشوائي',
+    browse: 'تصفح',
+    browseDesc: 'تصفح كل البطاقات مع الإجابات',
+    noDue: 'لا شيء مستحق — كل شيء محدّث!',
+    caughtUp: 'لقد أنهيت كل شيء لهذا اليوم! خذ استراحة أو تابع التدريب.',
+    doneForNow: 'اكتفيت الآن',
+    nextCard: 'التالية',
+    reviewed: 'تمت المراجعة',
+    remaining: 'المتبقية',
+    correct: '<strong>صحيح!</strong>',
+    incorrect: '<strong>خطأ!</strong>',
+    sessionSummary: 'ملخّص الجلسة',
+    cardsReviewed: 'البطاقات المراجَعة',
+    time: 'الوقت',
+    ratingEasy: 'سهل',
+    ratingModerate: 'متوسط',
+    ratingHard: 'صعب',
+    ratingIncorrect: 'خطأ',
+    newStarted: 'بطاقات جديدة بدأت',
+    cardsImproved: 'بطاقات تحسّنت',
+    cardsMastered: 'بطاقات أُتقنت',
+    stateNew: 'جديدة',
+    stateLearning: 'قيد التعلم',
+    stateReview: 'مراجعة',
+    stateMastered: 'متقنة',
+    questionDetail: 'تفاصيل البطاقة',
+    questionCol: 'البطاقة',
+    stateCol: 'الحالة',
+    stabilityCol: 'الاستقرار',
+    nextReviewCol: 'المراجعة التالية',
+    sessionHistory: 'سجل الجلسات',
+    sessionDetail: 'تفاصيل الجلسة',
+    exportJson: 'تصدير JSON',
+    importJson: 'استيراد JSON',
+    deleteAll: 'حذف كل البيانات',
+    clearAll: 'مسح الكل',
+    clearAllTitle: 'حذف كل البيانات',
+    clearAllConfirm: 'هل أنت متأكد؟ سيتم حذف كل المجموعات والإحصائيات والسجل.',
+    importJsonConfirm: 'سيؤدي الاستيراد إلى استبدال كل مجموعاتك وإحصائياتك وسجلك الحالي. هل تريد المتابعة؟',
+    importInvalid: 'ملف JSON غير صالح.',
+    importDone: 'اكتمل الاستيراد.',
+    globalSettings: 'الإعدادات',
+    dataInfo: 'بياناتك ملك لك. كل شيء — المجموعات وسجل التدريب وإحصائيات التقدم — مخزَّن محليًا في متصفحك. إذا مسحت بيانات المتصفح أو غيّرت الحاسوب، فسيضيع كل شيء. إن كنت تهتم بها، فقم بتصدير نسخة JSON احتياطية من حين لآخر. يقوم التصدير بتنزيل كل مجموعاتك مع كامل سجل التدريب والتقدم، لتتمكن من استيرادها لاحقًا أو نقلها إلى جهاز آخر.',
+    navHome: 'الرئيسية',
+    navSettings: 'الإعدادات',
+    navHelp: 'مساعدة',
+    helpForumNote: 'أسئلة أو مشكلات أو أفكار أو مجرد إلقاء التحية؟ تفضّل بزيارة <a href="https://github.com/topherhunt/topher-utilities/discussions" target="_blank" rel="noopener" style="color:var(--accent)">منتدى النقاش</a>.',
+    helpIntro: 'Quizzer تطبيق بطاقات تعليمية لحفظ أي شيء. مفردات اللغات خيار طبيعي، لكنه يعمل بنفس الكفاءة للتاريخ والعلوم والجغرافيا والنصوص الدينية أو أي موضوع آخر تريد ترسيخه في الذاكرة طويلة الأمد.',
+    helpSections: [
+      { title: 'إنشاء مجموعة', items: [
+        'انقر على <strong>+ إضافة مجموعة</strong> في الشاشة الرئيسية لإضافة مجموعة جديدة.',
+        'استخدم الموجّه المقدَّم هناك مع ChatGPT أو Claude أو أي ذكاء اصطناعي لإنشاء مجموعة CSV حول أي موضوع.',
+        'اسحب ملف <code>.csv</code> الناتج إلى منطقة الاستيراد (أو انقر لاختياره).',
+      ]},
+      { title: 'أوضاع التدريب', items: [
+        '<strong>التكرار المتباعد</strong> (موصى به): يستخدم التطبيق FSRS لإظهار البطاقات المستحقة أولًا، ثم يُدخل الجديدة بالإيقاع المناسب للذاكرة طويلة الأمد.',
+        '<strong>الأقل تدريبًا</strong>: يركّز على البطاقات التي رأيتها أقل — مفيد لإحماء مجموعة جديدة.',
+        '<strong>عشوائي</strong>: يخلط كل البطاقات بغض النظر عن حالتها — جيد للمراجعة غير الرسمية.',
+        '<strong>تصفح</strong>: تصفّح كل بطاقة والإجابات ظاهرة — بدون تقييم ولا تتبّع.',
+      ]},
+      { title: 'تقييم البطاقات', items: [
+        '<strong>مرة أخرى</strong>: أخطأت — ستعود البطاقة قريبًا.',
+        '<strong>صعب</strong>: صحيح لكن بصعوبة — فاصل أقصر في المرة القادمة.',
+        '<strong>جيد</strong>: صحيح بجهد طبيعي — فاصل معياري.',
+        '<strong>سهل</strong>: استرجاع فوري — فاصل أطول.',
+      ]},
+      { title: 'الإحصائيات والسجل', items: [
+        'تعرض صفحة كل مجموعة تفصيل الإتقان (جديدة / قيد التعلم / مراجعة / متقنة) ورسمًا بيانيًا للسجل عبر الزمن.',
+        'مرّر المؤشر فوق النقاط في الرسم لرؤية الأعداد في أي يوم.',
+        'انقر على <strong>الإحصائيات</strong> في مجموعة لرؤية كل الجلسات السابقة والتعمّق في تفاصيل كل جلسة.',
+        'في الشاشة الرئيسية، يُظهر الخط الأحمر الصغير بجانب كل مجموعة حجم تدريبك خلال آخر 14 يومًا.',
+      ]},
+      { title: 'النسخ الاحتياطي والاستعادة', items: [
+        'بياناتك تعيش في المتصفح فقط. تفضل بـ<strong>الإعدادات</strong> لتصدير نسخة JSON احتياطية من حين لآخر.',
+        'استخدم <strong>استيراد JSON</strong> في الإعدادات لاستعادة نسخة احتياطية أو نقل بياناتك إلى حاسوب آخر.',
+        'مسح بيانات المتصفح أو تغيير الأجهزة دون التصدير أولًا سيؤدي إلى فقدان مجموعاتك وسجلك.',
+      ]},
+    ],
+    cancel: 'إلغاء',
+    confirm: 'تأكيد',
+    previous: 'السابقة',
+    next: 'التالية',
+    recommended: 'موصى به',
+    days: 'ي',
+    today: 'اليوم',
+    noSessions: 'لا توجد جلسات بعد.',
+    settings: 'الإعدادات',
+    deckName: 'اسم المجموعة',
+    save: 'حفظ',
+  },
 };
 
 let currentLang = localStorage.getItem('quizzer_lang') || 'en';
@@ -1449,6 +1587,7 @@ function setLang(lang) {
   currentLang = lang;
   localStorage.setItem('quizzer_lang', lang);
   document.documentElement.lang = LANGS[lang]._locale.slice(0, 2);
+  document.documentElement.dir = LANGS[lang]._dir || 'ltr';
   initLangSelect();
   applyNavLabels();
   handleRoute();
@@ -2404,11 +2543,11 @@ function renderStudyCard() {
       <div class="study-counter">${t('reviewed')}: ${reviewedCount} · ${t('remaining')}: ${remainingCount}</div>
     </div>
     <div class="progress-dots">${dots}</div>
-    <div class="question-text">${esc(question.question)}</div>
+    <div class="question-text" dir="auto">${esc(question.question)}</div>
     <div class="options" id="options">
   `;
   for (const opt of options) {
-    html += `<button class="option-btn" data-answer="${esc(opt)}" onclick="handleAnswer(this)">${esc(opt)}</button>`;
+    html += `<button class="option-btn" dir="auto" data-answer="${esc(opt)}" onclick="handleAnswer(this)">${esc(opt)}</button>`;
   }
   html += `</div><div id="feedback"></div>`;
   app().innerHTML = html;
@@ -2437,7 +2576,7 @@ function handleAnswer(btn) {
   if (isCorrect) {
     // Correct: show explanation + let user choose difficulty rating
     feedback.innerHTML = `
-      <div class="explanation"><p>${resultText}</p><p class="mt-8">${esc(question.explanation)}</p></div>
+      <div class="explanation"><p>${resultText}</p><p class="mt-8" dir="auto">${esc(question.explanation)}</p></div>
       <div class="rating-buttons mt-16">
         <button class="btn btn-danger" onclick="handleRating(${Rating.Hard}, ${Math.round(responseTime)})">${t('ratingHard')}</button>
         <button class="btn btn-primary" onclick="handleRating(${Rating.Good}, ${Math.round(responseTime)})">${t('ratingModerate')}</button>
@@ -2448,7 +2587,7 @@ function handleAnswer(btn) {
     // Incorrect: auto-rate as Again and advance
     applyRating(Rating.Again, Math.round(responseTime));
     feedback.innerHTML = `
-      <div class="explanation"><p>${resultText}</p><p class="mt-8">${esc(question.explanation)}</p></div>
+      <div class="explanation"><p>${resultText}</p><p class="mt-8" dir="auto">${esc(question.explanation)}</p></div>
       <button class="btn btn-secondary mt-16" onclick="advanceStudy()">${t('nextCard')}</button>
     `;
   }
@@ -2612,10 +2751,10 @@ function renderBrowse() {
       <button class="btn btn-outline-primary" onclick="reviewIndex++;navigate('#/${dn}/browse')" ${reviewIndex === deck.questions.length - 1 ? 'disabled' : ''}>${t('next')}</button>
     </div>
     <div class="text-muted mb-8" style="font-size:0.75rem">${reviewIndex + 1} / ${deck.questions.length}</div>
-    <div class="question-text">${esc(question.question)}</div>
-    <div class="review-answer">${esc(question.correct)}</div>
-    ${question.wrong.map(w => `<div class="review-wrong">${esc(w)}</div>`).join('')}
-    <div class="explanation">${esc(question.explanation)}</div>
+    <div class="question-text" dir="auto">${esc(question.question)}</div>
+    <div class="review-answer" dir="auto">${esc(question.correct)}</div>
+    ${question.wrong.map(w => `<div class="review-wrong" dir="auto">${esc(w)}</div>`).join('')}
+    <div class="explanation" dir="auto">${esc(question.explanation)}</div>
   `;
 }
 
@@ -2851,6 +2990,7 @@ const HELP_ICONS = [
 function renderHelp() {
   const sections = t('helpSections');
   let html = `<h2 class="mb-16">${t('navHelp')}</h2>`;
+  html += `<div class="card"><p style="margin:0;font-size:0.9rem;line-height:1.5">${t('helpIntro')}</p></div>`;
   sections.forEach((sec, si) => {
     html += `<div class="card"><h3 style="margin-bottom:10px;font-size:1rem">${sec.title}</h3>`;
     sec.items.forEach((text, ii) => {
@@ -2911,6 +3051,7 @@ function esc(s) {
 
 // ─── Init ───────────────────────────────────────────────────────────
 document.documentElement.lang = LANGS[currentLang]._locale.slice(0, 2);
+document.documentElement.dir = LANGS[currentLang]._dir || 'ltr';
 initLangSelect();
 applyNavLabels();
 migrateStats();
