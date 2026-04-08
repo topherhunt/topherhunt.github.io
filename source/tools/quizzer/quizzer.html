@@ -26,7 +26,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg'><text y='32' font-size='32'>🎯</text></svg>">
-<title>Flashcards - Nederlands Oefenen</title>
+<title>Quizzer - multiple-choice flashcards for faster learning</title>
 <script>window.goatcounter = {no_onload: true};</script>
 <script data-goatcounter="https://topherhunt.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 <script>
@@ -488,11 +488,11 @@ a { color: #0d6efd; }
 <body>
 <div class="container">
   <header>
-    <h1 onclick="navigate('#/')">Flashcards</h1>
+    <h1 onclick="navigate('#/')">🎯 Quizzer</h1>
     <nav>
       <button id="nav-home" class="btn btn-small btn-outline-primary" onclick="navigate('#/')">Home</button>
-      <button id="nav-settings" class="btn btn-small btn-outline-primary" onclick="navigate('#/settings')">Settings</button>
       <button id="nav-help" class="btn btn-small btn-outline-primary" onclick="navigate('#/help')">Help</button>
+      <button id="nav-settings" class="btn btn-small btn-outline-primary" onclick="navigate('#/settings')">Settings</button>
     </nav>
   </header>
   <main id="app"></main>
@@ -2859,7 +2859,7 @@ function renderHelp() {
     });
     html += `</div>`;
   });
-  html += `<div class="card"><p style="margin:0;font-size:0.9rem;line-height:1.5">💬 ${t('helpForumNote')}</p></div>`;
+  html += `<div class="card"><p style="margin:0 0 8px;font-size:0.9rem;line-height:1.5">Made with love by <a href="https://topherhunt.github.io" target="_blank" rel="noopener" style="color:var(--accent)">Topher Hunt</a></p><p style="margin:0;font-size:0.9rem;line-height:1.5">💬 ${t('helpForumNote')}</p></div>`;
   app().innerHTML = html;
 }
 
