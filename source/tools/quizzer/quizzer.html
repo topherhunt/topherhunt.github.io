@@ -512,7 +512,7 @@ const LANGS = {
     importDeck: '+ Add Deck',
     presetsTitle: 'Preset decks',
     orImportCsv: 'Or import your own CSV',
-    importTitle: 'Import a Deck',
+    importTitle: 'Add a Deck',
     importInstructions: 'Create a quiz deck CSV using ChatGPT, Claude, or any AI assistant. Copy the prompt below, fill in the bracketed parts, and paste the result as a <code>.csv</code> file. You can optionally add a <code>wrong4</code> column after <code>wrong3</code> for a 5th answer option per question.',
     importPrompt: `Create a CSV flashcard deck for studying [TOPIC]. Target level: [BEGINNER / INTERMEDIATE / ADVANCED]. Language: [LANGUAGE].
 
@@ -1916,9 +1916,9 @@ function renderHome() {
 }
 
 const PRESET_LANGS = [
-  { code: 'en', label: 'English', fileLang: 'English' },
-  { code: 'it', label: 'Italian', fileLang: 'Italian' },
-  { code: 'nl', label: 'Dutch',   fileLang: 'Dutch'   },
+  { code: 'en', label: '🇺🇸 English', fileLang: 'English' },
+  { code: 'it', label: '🇮🇹 Italian', fileLang: 'Italian' },
+  { code: 'nl', label: '🇳🇱 Dutch',   fileLang: 'Dutch'   },
 ];
 const PRESET_LEVELS = ['A1','A1+','A2','A2+','B1','B1+','B2','B2+'];
 const PRESET_COLS = [
