@@ -15,6 +15,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Traductor — Translation Practice</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌍</text></svg>">
+<script>window.goatcounter = {no_onload: true};</script>
+<script data-goatcounter="https://topherhunt.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script>
+function gcEvent(name) {
+  if (window.goatcounter && window.goatcounter.count) {
+    window.goatcounter.count({path: 'translator-' + name, title: 'translator ' + name, event: true});
+  } else {
+    setTimeout(function() { gcEvent(name); }, 200);
+  }
+}
+</script>
 <style>
 :root {
   --bg: #141720;
@@ -1694,8 +1705,8 @@ function handleRoute() {
     generateEpoch++;
     if (sessionSentences.length > 0) endSession();
     if (hash.startsWith('#/settings')) renderSettings();
-    else if (hash.startsWith('#/help')) renderHelp();
-    else renderStats();
+    else if (hash.startsWith('#/help')) { gcEvent('help-viewed'); renderHelp(); }
+    else { gcEvent('stats-viewed'); renderStats(); }
   }
 }
 
@@ -2074,6 +2085,7 @@ async function submitTranslation() {
     const { result: evalResult, usage: evalUsage } = await evaluateTranslation(
       currentSentence.es, attempt, history, !!currentSentence.isRetry, currentSentence.previousAttempt
     );
+    gcEvent('sentence-complete');
 
     const lastLevel = history.length > 0 ? history[history.length - 1].fluencyLevel : 'A1';
     const fluencyLevel = evalResult.fluency_level || lastLevel;
@@ -2864,6 +2876,7 @@ function inlineFormat(s) {
 
 // ── Init ───────────────────────────────────────────────────────────
 handleRoute();
+gcEvent('page-loaded');
 </script>
 </body>
 </html>
