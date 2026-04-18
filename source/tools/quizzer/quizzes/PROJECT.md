@@ -104,6 +104,19 @@ The tables below list constructs **non-exhaustively** — they indicate the terr
 | B2 | Congiuntivo imperfetto and trapassato, periodo ipotetico (all three types), gerund and infinitive constructions, passive voice (venire/essere/andare) |
 | B2+ | Advanced congiuntivo triggers, formal register and written style, discourse markers (tuttavia, pertanto, anzi), subtle pronoun placement, idiomatic constructions |
 
+### French (fr)
+
+| Level | Grammar constructs |
+|-------|--------------------|
+| A1 | Présent regular (-er, -ir, -re), être/avoir, articles (le/la/les, un/une/des), gender and plurals, basic negation (ne...pas), c'est / il y a |
+| A1+ | Irregular present (aller, faire, venir, prendre, pouvoir, vouloir), contracted articles (du, des, au, aux), possessive adjectives (mon/ma/mes, ton/ta/tes), question formation (est-ce que, inversion) |
+| A2 | Passé composé (avoir vs être, agreement with être), reflexive verbs, direct object pronouns (le, la, les), basic conjunctions (parce que, quand, si, que) |
+| A2+ | Imparfait vs passé composé, indirect object pronouns (lui, leur), futur proche vs futur simple, prepositions (à, de, en, dans, chez) |
+| B1 | Subjonctif présent (il faut que, je veux que, bien que), conditionnel présent, impératif (tu/nous/vous), relative pronouns (qui, que, dont, où), connectors (bien que, pour que, avant que) |
+| B1+ | Pronouns y and en, double pronoun order, plus-que-parfait, si-clauses (type 1 and 2), passive voice (être + participe passé) |
+| B2 | Subjonctif passé, concordance des temps, gérondif (en + participe présent), periodo ipotetico / si-clauses (all three types), passive alternatives (se faire + inf, on) |
+| B2+ | Subjonctif imparfait (literary), advanced subjonctif triggers, formal register and discourse markers (néanmoins, toutefois, par ailleurs), subtle pronoun placement, common confusables (an/année, jour/journée, savoir/connaître) |
+
 ### English (en)
 
 | Level | Grammar constructs |
