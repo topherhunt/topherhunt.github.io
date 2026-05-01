@@ -301,6 +301,30 @@ a { color: #0d6efd; }
   animation: slideIn 0.25s ease-out;
 }
 
+/* TTS */
+.tts-btn {
+  background: transparent;
+  border: 1px solid var(--elevated);
+  color: var(--text);
+  border-radius: var(--radius);
+  padding: 4px 10px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  min-width: 36px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.tts-btn:hover:not(:disabled) { background: var(--elevated); }
+.tts-btn:disabled { cursor: wait; opacity: 0.7; }
+.tts-btn.playing { color: #f5a524; border-color: #f5a524; }
+.tts-btn-inline {
+  padding: 2px 6px;
+  font-size: 0.75rem;
+  min-width: 28px;
+  vertical-align: middle;
+  margin-left: 4px;
+}
+
 @keyframes slideIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
 /* Session summary */
@@ -637,6 +661,11 @@ Output ONLY the CSV with no other text.`,
     settings: 'Settings',
     deckName: 'Deck name',
     save: 'Save',
+    importExportHeader: 'Import & export',
+    openaiKeyLabel: 'OpenAI API key (optional)',
+    openaiKeyHint: 'Enables the ▶ read-aloud buttons. Get a key at platform.openai.com. You are only charged when you click ▶ — roughly $0.01 per 50 cards.',
+    settingsSaved: 'Settings saved.',
+    invalidApiKey: 'Invalid API key. Please check and try again.',
   },
   fr: {
     _label: '🇫🇷',
@@ -773,6 +802,11 @@ Renvoie UNIQUEMENT le CSV, sans aucun autre texte.`,
     settings: 'Paramètres',
     deckName: 'Nom du jeu',
     save: 'Enregistrer',
+    importExportHeader: 'Import & export',
+    openaiKeyLabel: 'Clé API OpenAI (optionnel)',
+    openaiKeyHint: 'Active les boutons ▶ de lecture audio. Obtenez une clé sur platform.openai.com. Vous n\'êtes facturé que lorsque vous cliquez sur ▶ — environ 0,01 $ par 50 cartes.',
+    settingsSaved: 'Paramètres enregistrés.',
+    invalidApiKey: 'Clé API invalide. Veuillez vérifier et réessayer.',
   },
   nl: {
     _label: '🇳🇱',
@@ -908,6 +942,11 @@ Geef ALLEEN de CSV zonder andere tekst.`,
         'Als je je browser­gegevens wist of van apparaat wisselt zonder eerst te exporteren, ben je je decks en geschiedenis kwijt.',
       ]},
     ],
+    importExportHeader: 'Import & export',
+    openaiKeyLabel: 'OpenAI API-sleutel (optioneel)',
+    openaiKeyHint: 'Activeert de ▶ voorleesknoppen. Haal een sleutel op platform.openai.com. Er worden alleen kosten in rekening gebracht als je op ▶ klikt — circa $0,01 per 50 kaarten.',
+    settingsSaved: 'Instellingen opgeslagen.',
+    invalidApiKey: 'Ongeldige API-sleutel. Controleer en probeer opnieuw.',
   },
   it: {
     _label: '🇮🇹',
@@ -1043,6 +1082,11 @@ Restituisci SOLO il CSV senza altro testo.`,
         'Cancellare i dati del browser o cambiare dispositivo senza prima esportare farà perdere i tuoi mazzi e la cronologia.',
       ]},
     ],
+    importExportHeader: 'Importa ed esporta',
+    openaiKeyLabel: 'Chiave API OpenAI (opzionale)',
+    openaiKeyHint: 'Abilita i pulsanti ▶ di lettura audio. Ottieni una chiave su platform.openai.com. Il costo viene addebitato solo quando clicchi ▶ — circa $0,01 ogni 50 carte.',
+    settingsSaved: 'Impostazioni salvate.',
+    invalidApiKey: 'Chiave API non valida. Controlla e riprova.',
   },
   tr: {
     _label: '🇹🇷',
@@ -1178,6 +1222,11 @@ YALNIZCA CSV çıktısı ver, başka metin ekleme.`,
         'Önce dışa aktarmadan tarayıcı verilerini silmek veya cihaz değiştirmek desteleri ve geçmişi kaybettirir.',
       ]},
     ],
+    importExportHeader: 'İçe ve dışa aktar',
+    openaiKeyLabel: 'OpenAI API anahtarı (isteğe bağlı)',
+    openaiKeyHint: '▶ sesli okuma düğmelerini etkinleştirir. platform.openai.com adresinden bir anahtar edinin. Yalnızca ▶ düğmesine tıkladığınızda ücretlendirilirsiniz — yaklaşık 50 kart başına 0,01 $.',
+    settingsSaved: 'Ayarlar kaydedildi.',
+    invalidApiKey: 'Geçersiz API anahtarı. Lütfen kontrol edip tekrar deneyin.',
   },
   es: {
     _label: '🇪🇸',
@@ -1313,6 +1362,11 @@ Devuelve SOLO el CSV sin ningún otro texto.`,
         'Borrar los datos del navegador o cambiar de dispositivo sin exportar antes hará que pierdas tus mazos e historial.',
       ]},
     ],
+    importExportHeader: 'Importar y exportar',
+    openaiKeyLabel: 'Clave API de OpenAI (opcional)',
+    openaiKeyHint: 'Activa los botones ▶ de lectura en voz alta. Consigue una clave en platform.openai.com. Solo se cobra al pulsar ▶ — aproximadamente $0,01 por cada 50 tarjetas.',
+    settingsSaved: 'Ajustes guardados.',
+    invalidApiKey: 'Clave API no válida. Revisa e inténtalo de nuevo.',
   },
   el: {
     _label: '🇬🇷',
@@ -1448,6 +1502,11 @@ title,question,correct,wrong1,wrong2,wrong3,explanation
         'Η διαγραφή δεδομένων περιηγητή ή η αλλαγή συσκευής χωρίς προηγούμενη εξαγωγή θα χάσει τις τράπουλες και το ιστορικό σας.',
       ]},
     ],
+    importExportHeader: 'Εισαγωγή & εξαγωγή',
+    openaiKeyLabel: 'Κλειδί API OpenAI (προαιρετικό)',
+    openaiKeyHint: 'Ενεργοποιεί τα κουμπιά ▶ ανάγνωσης. Αποκτήστε ένα κλειδί στο platform.openai.com. Χρεώνεστε μόνο όταν πατάτε ▶ — περίπου $0,01 ανά 50 κάρτες.',
+    settingsSaved: 'Οι ρυθμίσεις αποθηκεύτηκαν.',
+    invalidApiKey: 'Μη έγκυρο κλειδί API. Ελέγξτε και δοκιμάστε ξανά.',
   },
   ar: {
     _label: '🇸🇦',
@@ -1586,6 +1645,11 @@ title,question,correct,wrong1,wrong2,wrong3,explanation
     settings: 'الإعدادات',
     deckName: 'اسم المجموعة',
     save: 'حفظ',
+    importExportHeader: 'استيراد وتصدير',
+    openaiKeyLabel: 'مفتاح API لـ OpenAI (اختياري)',
+    openaiKeyHint: 'يفعّل أزرار ▶ القراءة بصوت عالٍ. احصل على مفتاح من platform.openai.com. لا تُفرض رسوم إلا عند الضغط على ▶ — حوالي 0.01$ لكل 50 بطاقة.',
+    settingsSaved: 'تم حفظ الإعدادات.',
+    invalidApiKey: 'مفتاح API غير صالح. يرجى التحقق والمحاولة مرة أخرى.',
   },
 };
 
@@ -1617,7 +1681,7 @@ function initLangSelect() {
 }
 
 // ─── Storage ────────────────────────────────────────────────────────
-const KEYS = { quizzes: 'quizzer_quizzes', stats: 'quizzer_stats', sessions: 'quizzer_sessions' };
+const KEYS = { quizzes: 'quizzer_quizzes', stats: 'quizzer_stats', sessions: 'quizzer_sessions', openaiKey: 'quizzer_openai_key' };
 
 function load(key) {
   try { return JSON.parse(localStorage.getItem(key)) || null; } catch { return null; }
@@ -1985,6 +2049,7 @@ function navigate(hash) {
 }
 
 function handleRoute() {
+  stopTTS();
   const hash = location.hash || '#/';
   const raw = hash.slice(2); // strip '#/'
   const parts = raw ? raw.split('/').map(decodeURIComponent) : [];
@@ -2537,6 +2602,7 @@ function startStudySession(deckName, mode) {
 }
 
 function renderStudyCard() {
+  stopTTS();
   if (!studySession || studySession.currentIndex >= studySession.queue.length) {
     if (studySession && studySession.reviewed.length > 0) {
       return navigate('#/' + encodeURIComponent(studySession.deckName) + '/summary');
@@ -2570,11 +2636,11 @@ function renderStudyCard() {
       <div class="study-counter">${t('reviewed')}: ${reviewedCount} · ${t('remaining')}: ${remainingCount}</div>
     </div>
     <div class="progress-dots">${dots}</div>
-    <div class="question-text" dir="auto">${esc(question.question)}</div>
+    <div class="question-text" dir="auto">${esc(question.question)} ${ttsBtn(question.question)}</div>
     <div class="options" id="options">
   `;
   for (const opt of options) {
-    html += `<button class="option-btn" dir="auto" data-answer="${esc(opt)}" onclick="handleAnswer(this)">${esc(opt)}</button>`;
+    html += `<div style="display:flex;gap:8px;align-items:stretch"><button class="option-btn" dir="auto" style="margin-bottom:0" data-answer="${esc(opt)}" onclick="handleAnswer(this)">${esc(opt)}</button>${ttsBtn(opt)}</div>`;
   }
   html += `</div><div id="feedback"></div>`;
   app().innerHTML = html;
@@ -2603,7 +2669,7 @@ function handleAnswer(btn) {
   if (isCorrect) {
     // Correct: show explanation + let user choose difficulty rating
     feedback.innerHTML = `
-      <div class="explanation"><p>${resultText}</p><p class="mt-8" dir="auto">${esc(question.explanation)}</p></div>
+      <div class="explanation"><p>${resultText}</p><p class="mt-8" dir="auto">${esc(question.explanation)} ${ttsBtn(question.explanation)}</p></div>
       <div class="rating-buttons mt-16">
         <button class="btn btn-danger" onclick="handleRating(${Rating.Hard}, ${Math.round(responseTime)})">${t('ratingHard')}</button>
         <button class="btn btn-primary" onclick="handleRating(${Rating.Good}, ${Math.round(responseTime)})">${t('ratingModerate')}</button>
@@ -2614,7 +2680,7 @@ function handleAnswer(btn) {
     // Incorrect: auto-rate as Again and advance
     applyRating(Rating.Again, Math.round(responseTime));
     feedback.innerHTML = `
-      <div class="explanation"><p>${resultText}</p><p class="mt-8" dir="auto">${esc(question.explanation)}</p></div>
+      <div class="explanation"><p>${resultText}</p><p class="mt-8" dir="auto">${esc(question.explanation)} ${ttsBtn(question.explanation)}</p></div>
       <button class="btn btn-secondary mt-16" onclick="advanceStudy()">${t('nextCard')}</button>
     `;
   }
@@ -2778,10 +2844,10 @@ function renderBrowse() {
       <button class="btn btn-outline-primary" onclick="reviewIndex++;navigate('#/${dn}/browse')" ${reviewIndex === deck.questions.length - 1 ? 'disabled' : ''}>${t('next')}</button>
     </div>
     <div class="text-muted mb-8" style="font-size:0.75rem">${reviewIndex + 1} / ${deck.questions.length}</div>
-    <div class="question-text" dir="auto">${esc(question.question)}</div>
-    <div class="review-answer" dir="auto">${esc(question.correct)}</div>
-    ${question.wrong.map(w => `<div class="review-wrong" dir="auto">${esc(w)}</div>`).join('')}
-    <div class="explanation" dir="auto">${esc(question.explanation)}</div>
+    <div class="question-text" dir="auto">${esc(question.question)} ${ttsBtn(question.question)}</div>
+    <div class="review-answer" dir="auto">${esc(question.correct)} ${ttsBtn(question.correct)}</div>
+    ${question.wrong.map(w => `<div class="review-wrong" dir="auto">${esc(w)} ${ttsBtn(w)}</div>`).join('')}
+    <div class="explanation" dir="auto">${esc(question.explanation)} ${ttsBtn(question.explanation)}</div>
   `;
 }
 
@@ -3030,6 +3096,43 @@ function renderHelp() {
   app().innerHTML = html;
 }
 
+function showToast(msg) {
+  const el = document.createElement('div');
+  el.textContent = msg;
+  Object.assign(el.style, {
+    position: 'fixed', bottom: '24px', left: '50%', transform: 'translateX(-50%)',
+    background: 'var(--accent)', color: '#000', padding: '10px 20px',
+    borderRadius: 'var(--radius)', fontWeight: '600', fontSize: '0.9rem',
+    zIndex: '9999', opacity: '0', transition: 'opacity 0.3s',
+  });
+  document.body.appendChild(el);
+  requestAnimationFrame(() => el.style.opacity = '1');
+  setTimeout(() => { el.style.opacity = '0'; setTimeout(() => el.remove(), 300); }, 2500);
+}
+
+async function saveSettings() {
+  const val = document.getElementById('openai-key-input').value.trim();
+  if (val) {
+    try {
+      const res = await fetch('https://api.openai.com/v1/models', {
+        headers: { 'Authorization': `Bearer ${val}` },
+      });
+      if (!res.ok) {
+        showToast(t('invalidApiKey'));
+        return;
+      }
+    } catch {
+      showToast(t('invalidApiKey'));
+      return;
+    }
+    localStorage.setItem(KEYS.openaiKey, val);
+  } else {
+    localStorage.removeItem(KEYS.openaiKey);
+  }
+  navigate('#/');
+  showToast(t('settingsSaved'));
+}
+
 function renderGlobalSettings() {
   app().innerHTML = `
     <h2 class="mb-16">${t('globalSettings')}</h2>
@@ -3037,12 +3140,19 @@ function renderGlobalSettings() {
       <div style="margin-bottom:14px;">
         <select id="lang-select" onchange="setLang(this.value)" style="width:100%;background:var(--bg);color:var(--fg);border:1px solid var(--elevated);border-radius:var(--radius);padding:10px 12px;font-size:0.95rem;cursor:pointer;"></select>
       </div>
-      <p class="text-muted" style="font-size:0.85rem; line-height:1.5; margin:0 0 14px;">${t('dataInfo')}</p>
-      <div style="display:flex; flex-direction:column; gap:10px;">
-        <button class="btn btn-secondary" onclick="exportStats()">${t('exportJson')}</button>
-        <button class="btn btn-secondary" onclick="document.getElementById('global-import-input').click()">${t('importJson')}</button>
+      <div style="margin-bottom:14px;">
+        <label style="display:block;font-size:0.85rem;margin-bottom:4px;color:var(--text)">${t('openaiKeyLabel')}</label>
+        <input id="openai-key-input" type="password" value="${localStorage.getItem(KEYS.openaiKey) || ''}" placeholder="sk-..." style="width:100%;background:var(--bg);color:var(--fg);border:1px solid var(--elevated);border-radius:var(--radius);padding:10px 12px;font-size:0.9rem;" onfocus="this.type='text'" onblur="this.type='password'">
+        <p style="font-size:0.75rem;margin-top:4px;color:var(--text);opacity:0.7">${t('openaiKeyHint')}</p>
+        <button class="btn btn-primary btn-small" style="margin:16px 0 8px" onclick="saveSettings()">${t('save')}</button>
+      </div>
+      <h3 style="margin:8px 0 8px">${t('importExportHeader')}</h3>
+      <p style="font-size:0.85rem; line-height:1.5; margin:0 0 14px; color:var(--text); opacity:0.7;">${t('dataInfo')}</p>
+      <div style="display:flex; gap:10px;">
+        <button class="btn btn-secondary" onclick="exportStats()">📤 ${t('exportJson')}</button>
+        <button class="btn btn-secondary" onclick="document.getElementById('global-import-input').click()">📥 ${t('importJson')}</button>
         <input id="global-import-input" type="file" accept="application/json,.json" style="display:none" onchange="if(this.files[0]) importJSONFile(this.files[0])">
-        <button class="btn btn-danger" onclick="clearAllData()">${t('deleteAll')}</button>
+        <button class="btn btn-danger" onclick="clearAllData()">🗑️ ${t('deleteAll')}</button>
       </div>
     </div>
   `;
@@ -3074,6 +3184,74 @@ function esc(s) {
   const div = document.createElement('div');
   div.textContent = s;
   return div.innerHTML;
+}
+
+// ─── TTS ────────────────────────────────────────────────────────
+let ttsCache = {};
+let ttsAudio = null;
+
+function stopTTS() {
+  if (ttsAudio) { try { ttsAudio.pause(); } catch {} ttsAudio = null; }
+  document.querySelectorAll('.tts-btn.playing').forEach(b => { b.classList.remove('playing'); b.innerHTML = '▶'; });
+}
+
+function ttsBtn(text) {
+  if (!localStorage.getItem(KEYS.openaiKey)) return '';
+  return `<button class="tts-btn tts-btn-inline" onclick="event.stopPropagation();toggleTTS(this)" data-text="${esc(text)}" title="Read aloud">▶</button>`;
+}
+
+async function toggleTTS(btn) {
+  const text = btn.getAttribute('data-text');
+  if (ttsAudio && !ttsAudio.paused) {
+    stopTTS();
+    return;
+  }
+  if (ttsCache[text]) {
+    playTTS(btn, ttsCache[text]);
+    return;
+  }
+  const openaiKey = localStorage.getItem(KEYS.openaiKey);
+  if (!openaiKey) return;
+  btn.disabled = true;
+  btn.innerHTML = '...';
+  try {
+    const res = await fetch('https://api.openai.com/v1/audio/speech', {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${openaiKey}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'gpt-4o-mini-tts',
+        voice: 'alloy',
+        input: text,
+        instructions: 'Speak slowly and clearly.',
+        response_format: 'mp3',
+      }),
+    });
+    if (!res.ok) throw new Error(`TTS error: ${res.status}`);
+    const blob = await res.blob();
+    const audioUrl = URL.createObjectURL(blob);
+    ttsCache[text] = audioUrl;
+    btn.disabled = false;
+    playTTS(btn, audioUrl);
+  } catch (e) {
+    btn.disabled = false;
+    btn.innerHTML = '▶';
+    btn.title = e.message;
+  }
+}
+
+function playTTS(btn, audioUrl) {
+  stopTTS();
+  ttsAudio = new Audio(audioUrl);
+  btn.classList.add('playing');
+  btn.innerHTML = '■';
+  ttsAudio.addEventListener('ended', () => {
+    btn.classList.remove('playing');
+    btn.innerHTML = '▶';
+  });
+  ttsAudio.play().catch(() => {
+    btn.classList.remove('playing');
+    btn.innerHTML = '▶';
+  });
 }
 
 // ─── Init ───────────────────────────────────────────────────────────
