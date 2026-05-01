@@ -6,13 +6,13 @@ General-purpose multiple-choice quiz decks for language learners across four lan
 
 ### Status
 
-- EL, IT, FR, and NL have been reviewed for quality.
+- AR, EL, IT, FR, and NL have been reviewed for quality.
 
 ### Useful snippets
 
-- CREATE DECK: Please read source/tools/quizzer/quizzes/PROJECT.md. Your task is to create decks for el/ (Greek) carefully conforming to the quality criteria described there. Use sub-agents.
+- CREATE DECK: Please read source/tools/quizzer/quizzes/PROJECT.md. Your task is to create decks for Arabic, carefully conforming to the quality criteria described there. Use sub-agents.
 
-- REVIEW DECKS: Please read source/tools/quizzer/quizzes/PROJECT.md and then use subagents to thoroughly review all decks in source/tools/quizzer/quizzes/nl/. Does all content conform to the quality-check criteria? Any correct answers marked incorrect? Any confusing questions that need to be clearer to elicit the to-learn rule?
+- REVIEW DECKS: Please read source/tools/quizzer/quizzes/PROJECT.md and then use subagents to thoroughly review all decks in source/tools/quizzer/quizzes/ar/. Does all content conform to the quality-check criteria? Any correct answers marked incorrect? Any confusing questions that need to be clearer to elicit the to-learn rule?
 
 - REVIEW CHANGES: Please read source/tools/quizzer/quizzes/PROJECT.md and then thoroughly review all changes in source/tools/quizzer/quizzes/en/. Do the changes all conform to the quality-check criteria? Do they all make the questions better and more unambiguous? Do any of them make the questions inappropriately more confusing or harder?
 

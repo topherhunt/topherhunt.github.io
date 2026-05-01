@@ -511,9 +511,10 @@ const LANGS = {
     myDecks: 'My Decks',
     importDeck: '+ Add Deck',
     presetsTitle: 'Preset decks',
+    langEnglish: 'English', langFrench: 'French', langGreek: 'Greek', langItalian: 'Italian', langDutch: 'Dutch', langArabic: 'Arabic',
     orImportCsv: 'Or import your own CSV',
     importTitle: 'Add a Deck',
-    importInstructions: 'Create a quiz deck CSV using ChatGPT, Claude, or any AI assistant. Copy the prompt below, fill in the bracketed parts, and paste the result as a <code>.csv</code> file. You can optionally add a <code>wrong4</code> column after <code>wrong3</code> for a 5th answer option per question. Quizzer works great for language vocab, but also for memorizing anything else — history dates, anatomy, chemistry, capitals, scripture, you name it.',
+    importInstructions: '<ol style="margin:0;padding-left:1.2em"><li><b>Copy the prompt</b> below (tap the Copy button).</li><li><b>Paste it into any AI chatbot</b> — ChatGPT, Claude, Gemini, etc.</li><li><b>Fill in the [BRACKETED] parts</b> in the prompt (topic, level, language, number of cards).</li><li>The AI will reply with CSV text. <b>Save that text as a <code>.csv</code> file</b> on your device.</li><li><b>Drag the file onto the box above</b> (or tap to select it).</li></ol><p style="margin-top:8px">Works great for language vocab, but also history dates, anatomy, chemistry, capitals — anything you want to memorize!</p>',
     importPrompt: `Create a CSV flashcard deck for studying [TOPIC]. Target level: [BEGINNER / INTERMEDIATE / ADVANCED]. Language: [LANGUAGE].
 
 Use this exact header row:
@@ -526,7 +527,7 @@ Output ONLY the CSV with no other text.`,
     copied: 'Copied!',
     allDecks: 'All decks',
     deckBreadcrumb: name => `Deck: ${name}`,
-    howToCreate: 'How to create a new deck',
+    howToCreate: 'How to create your own personalized deck',
     nCards: n => `${n} cards`,
     dueToday: 'Due today',
     newAvailable: 'New',
@@ -647,9 +648,10 @@ Output ONLY the CSV with no other text.`,
     myDecks: 'Mes jeux',
     importDeck: '+ Ajouter un jeu',
     presetsTitle: 'Jeux préréglés',
+    langEnglish: 'Anglais', langFrench: 'Français', langGreek: 'Grec', langItalian: 'Italien', langDutch: 'Néerlandais', langArabic: 'Arabe',
     orImportCsv: 'Ou importez votre propre CSV',
     importTitle: 'Importer un jeu',
-    importInstructions: 'Créez un jeu de quiz au format CSV avec ChatGPT, Claude ou n\'importe quel assistant IA. Copiez le prompt ci-dessous, complétez les parties entre crochets et enregistrez le résultat sous forme de fichier <code>.csv</code>. Vous pouvez éventuellement ajouter une colonne <code>wrong4</code> après <code>wrong3</code> pour proposer une 5ᵉ option de réponse par question.',
+    importInstructions: '<ol style="margin:0;padding-left:1.2em"><li><b>Copiez le prompt</b> ci-dessous (appuyez sur le bouton Copier).</li><li><b>Collez-le dans un chatbot IA</b> — ChatGPT, Claude, Gemini, etc.</li><li><b>Remplissez les parties entre [CROCHETS]</b> dans le prompt (sujet, niveau, langue, nombre de cartes).</li><li>L\'IA répondra avec du texte CSV. <b>Enregistrez ce texte comme fichier <code>.csv</code></b> sur votre appareil.</li><li><b>Glissez le fichier dans la zone ci-dessus</b> (ou appuyez pour le sélectionner).</li></ol><p style="margin-top:8px">Idéal pour le vocabulaire, mais aussi les dates historiques, l\'anatomie, la chimie, les capitales — tout ce que vous voulez mémoriser !</p>',
     importPrompt: `Crée un jeu de cartes-flash CSV pour étudier [SUJET]. Niveau visé : [DÉBUTANT / INTERMÉDIAIRE / AVANCÉ]. Langue : [LANGUE].
 
 Utilise exactement cette ligne d'en-tête :
@@ -662,7 +664,7 @@ Renvoie UNIQUEMENT le CSV, sans aucun autre texte.`,
     copied: 'Copié !',
     allDecks: 'Tous les jeux',
     deckBreadcrumb: name => `Jeu : ${name}`,
-    howToCreate: 'Comment créer un nouveau jeu',
+    howToCreate: 'Comment créer votre propre jeu personnalisé',
     nCards: n => `${n} cartes`,
     dueToday: 'À réviser aujourd\'hui',
     newAvailable: 'Nouvelles',
@@ -782,9 +784,10 @@ Renvoie UNIQUEMENT le CSV, sans aucun autre texte.`,
     myDecks: 'Mijn Decks',
     importDeck: '+ Deck toevoegen',
     presetsTitle: 'Voorgeïnstalleerde decks',
+    langEnglish: 'Engels', langFrench: 'Frans', langGreek: 'Grieks', langItalian: 'Italiaans', langDutch: 'Nederlands', langArabic: 'Arabisch',
     orImportCsv: 'Of importeer je eigen CSV',
     importTitle: 'Deck importeren',
-    importInstructions: 'Maak een quiz-deck CSV met ChatGPT, Claude of een andere AI-assistent. Kopieer de onderstaande prompt, vul de delen tussen haakjes in, en sla het resultaat op als <code>.csv</code>-bestand. Je kunt optioneel een <code>wrong4</code>-kolom na <code>wrong3</code> toevoegen voor een 5e antwoordoptie per vraag.',
+    importInstructions: '<ol style="margin:0;padding-left:1.2em"><li><b>Kopieer de prompt</b> hieronder (tik op de knop Kopiëren).</li><li><b>Plak het in een AI-chatbot</b> — ChatGPT, Claude, Gemini, etc.</li><li><b>Vul de delen tussen [HAAKJES] in</b> in de prompt (onderwerp, niveau, taal, aantal kaarten).</li><li>De AI antwoordt met CSV-tekst. <b>Sla die tekst op als <code>.csv</code>-bestand</b> op je apparaat.</li><li><b>Sleep het bestand naar het vak hierboven</b> (of tik om te selecteren).</li></ol><p style="margin-top:8px">Ideaal voor woordenschat, maar ook voor geschiedenisdata, anatomie, scheikunde, hoofdsteden — alles wat je wilt onthouden!</p>',
     importPrompt: `Maak een CSV-flashcard-deck om [ONDERWERP] te studeren. Niveau: [BEGINNER / GEMIDDELD / GEVORDERD]. Taal: [TAAL].
 
 Gebruik exact deze kopregel:
@@ -797,7 +800,7 @@ Geef ALLEEN de CSV zonder andere tekst.`,
     copied: 'Gekopieerd!',
     allDecks: 'Alle decks',
     deckBreadcrumb: name => `Deck: ${name}`,
-    howToCreate: 'Een nieuw deck maken',
+    howToCreate: 'Hoe maak je je eigen gepersonaliseerd deck',
     nCards: n => `${n} kaarten`,
     dueToday: 'Vandaag',
     newAvailable: 'Nieuw',
@@ -916,9 +919,10 @@ Geef ALLEEN de CSV zonder andere tekst.`,
     myDecks: 'I Miei Mazzi',
     importDeck: '+ Aggiungi mazzo',
     presetsTitle: 'Mazzi predefiniti',
+    langEnglish: 'Inglese', langFrench: 'Francese', langGreek: 'Greco', langItalian: 'Italiano', langDutch: 'Olandese', langArabic: 'Arabo',
     orImportCsv: 'Oppure importa il tuo CSV',
     importTitle: 'Importa un mazzo',
-    importInstructions: 'Crea un mazzo quiz CSV usando ChatGPT, Claude o qualsiasi assistente AI. Copia il prompt qui sotto, compila le parti tra parentesi e salva il risultato come file <code>.csv</code>. Puoi aggiungere opzionalmente una colonna <code>wrong4</code> dopo <code>wrong3</code> per una 5a opzione di risposta per domanda.',
+    importInstructions: '<ol style="margin:0;padding-left:1.2em"><li><b>Copia il prompt</b> qui sotto (tocca il pulsante Copia).</li><li><b>Incollalo in un chatbot AI</b> — ChatGPT, Claude, Gemini, etc.</li><li><b>Compila le parti tra [PARENTESI]</b> nel prompt (argomento, livello, lingua, numero di carte).</li><li>L\'AI risponderà con testo CSV. <b>Salva quel testo come file <code>.csv</code></b> sul tuo dispositivo.</li><li><b>Trascina il file nella zona sopra</b> (o tocca per selezionarlo).</li></ol><p style="margin-top:8px">Ottimo per il vocabolario, ma anche per date storiche, anatomia, chimica, capitali — qualsiasi cosa tu voglia memorizzare!</p>',
     importPrompt: `Crea un mazzo di flashcard CSV per studiare [ARGOMENTO]. Livello: [PRINCIPIANTE / INTERMEDIO / AVANZATO]. Lingua: [LINGUA].
 
 Usa esattamente questa riga di intestazione:
@@ -931,7 +935,7 @@ Restituisci SOLO il CSV senza altro testo.`,
     copied: 'Copiato!',
     allDecks: 'Tutti i mazzi',
     deckBreadcrumb: name => `Mazzo: ${name}`,
-    howToCreate: 'Come creare un nuovo mazzo',
+    howToCreate: 'Come creare il tuo mazzo personalizzato',
     nCards: n => `${n} carte`,
     dueToday: 'Oggi',
     newAvailable: 'Nuove',
@@ -1050,9 +1054,10 @@ Restituisci SOLO il CSV senza altro testo.`,
     myDecks: 'Destelerim',
     importDeck: '+ Deste Ekle',
     presetsTitle: 'Hazır desteler',
+    langEnglish: 'İngilizce', langFrench: 'Fransızca', langGreek: 'Yunanca', langItalian: 'İtalyanca', langDutch: 'Hollandaca', langArabic: 'Arapça',
     orImportCsv: 'Veya kendi CSV dosyanızı içe aktarın',
     importTitle: 'Deste İçe Aktar',
-    importInstructions: 'ChatGPT, Claude veya herhangi bir yapay zeka asistanı kullanarak bir quiz destesi CSV\'si oluşturun. Aşağıdaki istemi kopyalayın, parantez içindeki kısımları doldurun ve sonucu <code>.csv</code> dosyası olarak kaydedin. İsteğe bağlı olarak her soru için 5. cevap seçeneği eklemek üzere <code>wrong3</code>\'ten sonra bir <code>wrong4</code> sütunu ekleyebilirsiniz.',
+    importInstructions: '<ol style="margin:0;padding-left:1.2em"><li><b>Aşağıdaki istemi kopyalayın</b> (Kopyala düğmesine dokunun).</li><li><b>Bir AI sohbet botuna yapıştırın</b> — ChatGPT, Claude, Gemini, vb.</li><li><b>İstemdeki [KÖŞELI PARANTEZ] kısımları doldurun</b> (konu, seviye, dil, kart sayısı).</li><li>AI, CSV metniyle yanıt verecektir. <b>Bu metni cihazınıza <code>.csv</code> dosyası olarak kaydedin</b>.</li><li><b>Dosyayı yukarıdaki kutuya sürükleyin</b> (veya seçmek için dokunun).</li></ol><p style="margin-top:8px">Kelime bilgisi için harika, ama aynı zamanda tarih tarihleri, anatomi, kimya, başkentler — ezberlemek istediğiniz her şey için!</p>',
     importPrompt: `[KONU] çalışmak için bir CSV flashcard destesi oluştur. Seviye: [BAŞLANGIÇ / ORTA / İLERİ]. Dil: [DİL].
 
 Tam olarak bu başlık satırını kullan:
@@ -1065,7 +1070,7 @@ YALNIZCA CSV çıktısı ver, başka metin ekleme.`,
     copied: 'Kopyalandı!',
     allDecks: 'Tüm desteler',
     deckBreadcrumb: name => `Deste: ${name}`,
-    howToCreate: 'Yeni bir deste nasıl oluşturulur',
+    howToCreate: 'Kendi kişiselleştirilmiş destenizi nasıl oluşturursunuz',
     nCards: n => `${n} kart`,
     dueToday: 'Bugün',
     newAvailable: 'Yeni',
@@ -1184,9 +1189,10 @@ YALNIZCA CSV çıktısı ver, başka metin ekleme.`,
     myDecks: 'Mis Mazos',
     importDeck: '+ Añadir mazo',
     presetsTitle: 'Mazos predefinidos',
+    langEnglish: 'Inglés', langFrench: 'Francés', langGreek: 'Griego', langItalian: 'Italiano', langDutch: 'Neerlandés', langArabic: 'Árabe',
     orImportCsv: 'O importa tu propio CSV',
     importTitle: 'Importar un mazo',
-    importInstructions: 'Crea un mazo de quiz CSV usando ChatGPT, Claude o cualquier asistente de IA. Copia el prompt de abajo, rellena las partes entre corchetes y guarda el resultado como archivo <code>.csv</code>. Opcionalmente puedes añadir una columna <code>wrong4</code> después de <code>wrong3</code> para una 5ª opción de respuesta por pregunta.',
+    importInstructions: '<ol style="margin:0;padding-left:1.2em"><li><b>Copia el prompt</b> de abajo (toca el botón Copiar).</li><li><b>Pégalo en un chatbot de IA</b> — ChatGPT, Claude, Gemini, etc.</li><li><b>Rellena las partes entre [CORCHETES]</b> en el prompt (tema, nivel, idioma, número de tarjetas).</li><li>La IA responderá con texto CSV. <b>Guarda ese texto como archivo <code>.csv</code></b> en tu dispositivo.</li><li><b>Arrastra el archivo a la zona de arriba</b> (o toca para seleccionarlo).</li></ol><p style="margin-top:8px">Ideal para vocabulario, pero también para fechas históricas, anatomía, química, capitales — ¡cualquier cosa que quieras memorizar!</p>',
     importPrompt: `Crea un mazo de flashcards CSV para estudiar [TEMA]. Nivel: [PRINCIPIANTE / INTERMEDIO / AVANZADO]. Idioma: [IDIOMA].
 
 Usa exactamente esta fila de encabezado:
@@ -1199,7 +1205,7 @@ Devuelve SOLO el CSV sin ningún otro texto.`,
     copied: '¡Copiado!',
     allDecks: 'Todos los mazos',
     deckBreadcrumb: name => `Mazo: ${name}`,
-    howToCreate: 'Cómo crear un nuevo mazo',
+    howToCreate: 'Cómo crear tu propio mazo personalizado',
     nCards: n => `${n} tarjetas`,
     dueToday: 'Hoy',
     newAvailable: 'Nuevas',
@@ -1318,9 +1324,10 @@ Devuelve SOLO el CSV sin ningún otro texto.`,
     myDecks: 'Οι Τράπουλές μου',
     importDeck: '+ Προσθήκη τράπουλας',
     presetsTitle: 'Προκαθορισμένες τράπουλες',
+    langEnglish: 'Αγγλικά', langFrench: 'Γαλλικά', langGreek: 'Ελληνικά', langItalian: 'Ιταλικά', langDutch: 'Ολλανδικά', langArabic: 'Αραβικά',
     orImportCsv: 'Ή εισαγάγετε το δικό σας CSV',
     importTitle: 'Εισαγωγή τράπουλας',
-    importInstructions: 'Δημιουργήστε ένα CSV quiz τράπουλας χρησιμοποιώντας ChatGPT, Claude ή οποιονδήποτε βοηθό AI. Αντιγράψτε το παρακάτω prompt, συμπληρώστε τα μέρη σε αγκύλες και αποθηκεύστε το αποτέλεσμα ως αρχείο <code>.csv</code>. Προαιρετικά μπορείτε να προσθέσετε μια στήλη <code>wrong4</code> μετά το <code>wrong3</code> για 5η επιλογή απάντησης ανά ερώτηση.',
+    importInstructions: '<ol style="margin:0;padding-left:1.2em"><li><b>Αντιγράψτε το prompt</b> παρακάτω (πατήστε το κουμπί Αντιγραφή).</li><li><b>Επικολλήστε το σε ένα AI chatbot</b> — ChatGPT, Claude, Gemini, κλπ.</li><li><b>Συμπληρώστε τα μέρη σε [ΑΓΚΥΛΕΣ]</b> στο prompt (θέμα, επίπεδο, γλώσσα, αριθμός καρτών).</li><li>Το AI θα απαντήσει με κείμενο CSV. <b>Αποθηκεύστε αυτό το κείμενο ως αρχείο <code>.csv</code></b> στη συσκευή σας.</li><li><b>Σύρετε το αρχείο στην περιοχή πάνω</b> (ή πατήστε για να το επιλέξετε).</li></ol><p style="margin-top:8px">Ιδανικό για λεξιλόγιο, αλλά και για ιστορικές ημερομηνίες, ανατομία, χημεία, πρωτεύουσες — ό,τι θέλετε να απομνημονεύσετε!</p>',
     importPrompt: `Δημιούργησε μια τράπουλα flashcard CSV για μελέτη [ΘΕΜΑ]. Επίπεδο: [ΑΡΧΑΡΙΟ / ΜΕΣΑΙΟ / ΠΡΟΧΩΡΗΜΕΝΟ]. Γλώσσα: [ΓΛΩΣΣΑ].
 
 Χρησιμοποίησε ακριβώς αυτή τη γραμμή επικεφαλίδας:
@@ -1333,7 +1340,7 @@ title,question,correct,wrong1,wrong2,wrong3,explanation
     copied: 'Αντιγράφηκε!',
     allDecks: 'Όλες οι τράπουλες',
     deckBreadcrumb: name => `Τράπουλα: ${name}`,
-    howToCreate: 'Πώς να δημιουργήσετε μια νέα τράπουλα',
+    howToCreate: 'Πώς να δημιουργήσετε τη δική σας εξατομικευμένη τράπουλα',
     nCards: n => `${n} κάρτες`,
     dueToday: 'Σήμερα',
     newAvailable: 'Νέες',
@@ -1453,9 +1460,10 @@ title,question,correct,wrong1,wrong2,wrong3,explanation
     myDecks: 'مجموعاتي',
     importDeck: '+ إضافة مجموعة',
     presetsTitle: 'مجموعات جاهزة',
+    langEnglish: 'الإنجليزية', langFrench: 'الفرنسية', langGreek: 'اليونانية', langItalian: 'الإيطالية', langDutch: 'الهولندية', langArabic: 'العربية',
     orImportCsv: 'أو استورد ملف CSV الخاص بك',
     importTitle: 'إضافة مجموعة',
-    importInstructions: 'أنشئ ملف CSV لمجموعة اختبار باستخدام ChatGPT أو Claude أو أي مساعد ذكاء اصطناعي. انسخ الموجّه أدناه، واملأ الأجزاء الموضوعة بين أقواس، واحفظ النتيجة كملف <code>.csv</code>. يمكنك اختياريًا إضافة عمود <code>wrong4</code> بعد <code>wrong3</code> لخيار إجابة خامس لكل سؤال. يعمل Quizzer بشكل رائع لمفردات اللغات، وأيضًا لحفظ أي شيء آخر — تواريخ تاريخية، تشريح، كيمياء، عواصم، نصوص دينية، وما إلى ذلك.',
+    importInstructions: '<ol style="margin:0;padding-left:1.2em"><li><b>انسخ الموجّه</b> أدناه (اضغط على زر النسخ).</li><li><b>الصقه في أي روبوت دردشة ذكي</b> — ChatGPT، Claude، Gemini، إلخ.</li><li><b>املأ الأجزاء بين [الأقواس]</b> في الموجّه (الموضوع، المستوى، اللغة، عدد البطاقات).</li><li>سيرد الذكاء الاصطناعي بنص CSV. <b>احفظ هذا النص كملف <code>.csv</code></b> على جهازك.</li><li><b>اسحب الملف إلى المربع أعلاه</b> (أو اضغط لاختياره).</li></ol><p style="margin-top:8px">رائع للمفردات، وأيضًا للتواريخ والتشريح والكيمياء والعواصم — أي شيء تريد حفظه!</p>',
     importPrompt: `أنشئ مجموعة بطاقات تعليمية بصيغة CSV لدراسة [الموضوع]. المستوى المستهدف: [مبتدئ / متوسط / متقدم]. اللغة: [اللغة].
 
 استخدم صف العناوين التالي بالضبط:
@@ -1468,7 +1476,7 @@ title,question,correct,wrong1,wrong2,wrong3,explanation
     copied: 'تم النسخ!',
     allDecks: 'كل المجموعات',
     deckBreadcrumb: name => `المجموعة: ${name}`,
-    howToCreate: 'كيفية إنشاء مجموعة جديدة',
+    howToCreate: 'كيفية إنشاء مجموعتك المخصصة',
     nCards: n => `${n} بطاقة`,
     dueToday: 'مستحقة اليوم',
     newAvailable: 'جديدة',
@@ -2055,10 +2063,12 @@ function renderHome() {
 }
 
 const PRESET_LANGS = [
-  { code: 'en', label: '🇺🇸 English', fileLang: 'English' },
-  { code: 'it', label: '🇮🇹 Italian', fileLang: 'Italian' },
-  { code: 'nl', label: '🇳🇱 Dutch',   fileLang: 'Dutch'   },
-  { code: 'fr', label: '🇫🇷 French',  fileLang: 'French'  },
+  { code: 'ar', flag: '🇸🇦', labelKey: 'langArabic',  fileLang: 'Arabic'  },
+  { code: 'nl', flag: '🇳🇱', labelKey: 'langDutch',   fileLang: 'Dutch'   },
+  { code: 'en', flag: '🇺🇸', labelKey: 'langEnglish', fileLang: 'English' },
+  { code: 'fr', flag: '🇫🇷', labelKey: 'langFrench',  fileLang: 'French'  },
+  { code: 'el', flag: '🇬🇷', labelKey: 'langGreek',   fileLang: 'Greek'   },
+  { code: 'it', flag: '🇮🇹', labelKey: 'langItalian', fileLang: 'Italian' },
 ];
 const PRESET_LEVELS = ['A1','A1+','A2','A2+','B1','B1+','B2','B2+'];
 const PRESET_COLS = [
@@ -2068,12 +2078,25 @@ const PRESET_COLS = [
   { module: 'Vocab',   num: 2 },
 ];
 
+function togglePresetLang(id) {
+  const el = document.getElementById(id);
+  const arrow = document.getElementById(id + '-arrow');
+  if (el.style.display === 'none') {
+    el.style.display = '';
+    arrow.textContent = '▾';
+  } else {
+    el.style.display = 'none';
+    arrow.textContent = '▸';
+  }
+}
+
 function renderPresetsSection() {
   const existingNames = new Set(Object.values(getDecks()).map(d => d.name));
   let html = `<h3 style="margin-bottom:8px">${t('presetsTitle')}</h3>`;
   for (const lang of PRESET_LANGS) {
-    html += `<h4 style="margin:12px 0 4px">${lang.label}</h4>`;
-    html += `<table style="border-collapse:collapse;font-size:0.88rem;margin-bottom:6px"><tbody>`;
+    const langId = 'preset-' + lang.code;
+    html += `<h4 style="margin:12px 0 4px;cursor:pointer;color:#0066cc" onclick="togglePresetLang('${langId}')"><span id="${langId}-arrow">▸</span> ${lang.flag} ${t(lang.labelKey)}</h4>`;
+    html += `<table id="${langId}" style="display:none;border-collapse:collapse;font-size:0.88rem;margin-bottom:6px"><tbody>`;
     for (const level of PRESET_LEVELS) {
       html += `<tr>`;
       for (const col of PRESET_COLS) {
@@ -2091,6 +2114,7 @@ function renderPresetsSection() {
     }
     html += `</tbody></table>`;
   }
+
   return html;
 }
 
@@ -2118,11 +2142,13 @@ function renderImport() {
       <p>${t('dragCsv')}</p>
       <input type="file" id="file-input" accept=".csv" multiple>
     </div>
-    <h3 style="margin-bottom:8px">${t('howToCreate')}</h3>
+    <h3 style="margin-bottom:8px;cursor:pointer;color:#0066cc" onclick="document.getElementById('how-to-create-body').style.display=document.getElementById('how-to-create-body').style.display==='none'?'':'none';document.getElementById('how-to-create-arrow').textContent=document.getElementById('how-to-create-body').style.display==='none'?'▸':'▾'"><span id="how-to-create-arrow">▸</span> ${t('howToCreate')}</h3>
+    <div id="how-to-create-body" style="display:none">
     <p class="text-muted" style="margin-bottom:16px">${t('importInstructions')}</p>
-    <div style="position:relative;margin-bottom:20px">
+    <div style="position:relative;margin-top:16px;margin-bottom:20px">
       <pre style="background:var(--elevated);border-radius:var(--radius);padding:14px;font-size:0.82rem;line-height:1.5;white-space:pre-wrap;word-break:break-word;color:var(--text);max-height:240px;overflow-y:auto">${esc(promptText)}</pre>
       <button id="copy-prompt-btn" class="btn btn-small btn-outline-primary" style="position:absolute;bottom:8px;right:8px;background:var(--elevated)" onclick="copyPrompt()">${t('copyPrompt')}</button>
+    </div>
     </div>
   `;
   app().innerHTML = html;
