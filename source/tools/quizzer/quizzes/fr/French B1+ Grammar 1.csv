@@ -12,7 +12,7 @@
 "Pronom en: venir de","Tu viens de la bibliothèque? — Oui, j'___ viens.","en","y","la","lui","'en' remplace 'de la bibliothèque'."
 "Pronom en: avoir besoin","Tu as besoin de ce livre? — Oui, j'___ ai besoin.","en","y","le","lui","'en' remplace 'de ce livre' (avoir besoin de)."
 "Pronom en: pas de","Tu as de l'argent? — Non, je n'___ ai pas.","en","y","le","lui","'en' remplace 'de l'argent' dans une phrase négative."
-"Pronom en: s'occuper de","Elle s'occupe de ses enfants? — Oui, elle s'___ occupe.","en","y","les","leur","'en' remplace 'de ses enfants' (s'occuper de)."
+"Pronom en: avoir besoin","Tu as besoin de ces documents ? — Oui, j'___ ai besoin.","en","y","les","eux","'Avoir besoin de qqch' → 'en' remplace le complément introduit par 'de'. 'Y' remplace 'à + chose' ; 'les' est un COD ; 'eux' est un pronom tonique."
 "Double pronom: le lui","Tu donnes le livre à Paul? — Oui, je ___ donne.","le lui","lui le","le le","y en","Ordre: COD (le) + COI (lui) à la 3e personne."
 "Double pronom: te le","Tu me donnes le stylo? — Oui, je ___ donne.","te le","le te","te la","te lui","COI (te) avant COD (le); 'le te' est un ordre impossible, 'te la' a un mauvais accord, 'te lui' combine deux COI."
 "Double pronom: la lui","Il montre la photo à sa mère? — Oui, il ___ montre.","la lui","lui la","la le","y en","COD (la) + COI (lui) à la 3e personne."

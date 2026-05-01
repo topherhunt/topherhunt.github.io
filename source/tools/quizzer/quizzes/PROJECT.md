@@ -4,6 +4,18 @@
 
 General-purpose multiple-choice quiz decks for language learners across four languages (Dutch, Greek, English, Italian) and eight CEFR-aligned levels (A1, A1+, A2, A2+, B1, B1+, B2, B2+). Each deck contains ~50 items in 4-option multiple-choice format, consumed by the quizzer app (`quizzer/quizzer.html`).
 
+### Status
+
+- EL, IT, FR, and NL have been reviewed for quality.
+
+### Useful snippets
+
+- CREATE DECK: Please read source/tools/quizzer/quizzes/PROJECT.md. Your task is to create decks for el/ (Greek) carefully conforming to the quality criteria described there. Use sub-agents.
+
+- REVIEW DECKS: Please read source/tools/quizzer/quizzes/PROJECT.md and then use subagents to thoroughly review all decks in source/tools/quizzer/quizzes/nl/. Does all content conform to the quality-check criteria? Any correct answers marked incorrect? Any confusing questions that need to be clearer to elicit the to-learn rule?
+
+- REVIEW CHANGES: Please read source/tools/quizzer/quizzes/PROJECT.md and then thoroughly review all changes in source/tools/quizzer/quizzes/en/. Do the changes all conform to the quality-check criteria? Do they all make the questions better and more unambiguous? Do any of them make the questions inappropriately more confusing or harder?
+
 ## CSV format
 
 ```
@@ -297,7 +309,7 @@ The blank must contain a concrete grammatical rule the distractor violates (wron
 
 This self-check is not optional. In reviewer reports, any question retained in a §2d landmine category must include the completed self-check sentence for each distractor.
 
-**3. Distractors too absurd to be useful.** Wrong options should require the learner to think. Distractors with secondary errors (wrong agreement, missing article, etc.) are fine — recognizing those mistakes is itself a useful skill. Only flag a distractor if it is pure nonsense (random word salad, semantically absurd) that a learner could thoughtlessly discard without engaging any relevant or adjacent grammar knowledge.
+**3. Distractors too absurd to be useful.** Wrong options should require the learner to think. Distractors with secondary errors (wrong agreement, missing article, invented-but-plausible word forms like "coulded" or "websiting", etc.) are fine — recognizing those mistakes is itself a useful skill, especially at lower levels where learners are still building the ability to distinguish real forms from fake ones. Only flag a distractor if it is completely unrelated to the construct being tested (e.g., "pizza" as an alternative to "walk") such that a learner could discard it without engaging any relevant or adjacent language knowledge.
 
 **4. Correct answer structurally obvious.** If the correct option stands out purely by surface formatting (e.g., it is the only long answer, or the only one with a period), students can pick it without reading. However, if the correct answer "stands out" because it is the only grammatically sound option, that is acceptable — the learner still has to apply grammar knowledge to identify it.
 
