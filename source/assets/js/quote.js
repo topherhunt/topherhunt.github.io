@@ -36,7 +36,8 @@ $(function(){
     "*Achieving* your goal does not make you happy. *Moving towards* your goal makes you happy. And the loftier your goal, the more happiness in moving towards it. - Jordan Peterson",
     "As I look at the code trying to understand it, I refactor to help improve my understanding. Often I find that this active process of working with the code helps in finding the bug. One way to look at it is that if you do get a bug report, it's a sign you need refactoring, because the code was not clear enough for you to see there was a bug. - <a href='https://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882'>Clean Code</a>",
     "He who carries his lamp in his chest will not be concerned with the darkness of the world. - Jalal ad-Din Rumi",
-    "Once upon a midnight dreary, while I pondered weak and weary,\n O'er a sea of data churning - what neural networks might be learning —\n Sudden from my monitor there came a curious dancing line —\n As of pixels etched in phosphor, flickering with hints sublime.\n \"Deep learning,\" I muttered, pondering, \"how will AI divine?\"\n\n - Claude"
+    "Once upon a midnight dreary, while I pondered weak and weary,\n O'er a sea of data churning - what neural networks might be learning —\n Sudden from my monitor there came a curious dancing line —\n As of pixels etched in phosphor, flickering with hints sublime.\n \"Deep learning,\" I muttered, pondering, \"how will AI divine?\"\n\n - Claude",
+    "I find it so amazing when people tell me that electronic music has not got soul and they blame the computers. You can't blame the computer. If there's no soul in the music, it's because nobody put it there. And it's not the tool's fault. -- Björk"
   ];
 
   var quote = quotes[ Math.floor(Math.random() * quotes.length) ]
