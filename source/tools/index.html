@@ -13,22 +13,20 @@ permalink: /tools/
   .tool-card .launch { display: inline-block; margin-top: 0.5rem; font-weight: 600; }
 </style>
 
-<p>A couple of single-file browser tools I built for language practice. No install, no server — just open and go. All progress lives in your browser's localStorage.</p>
+<p>Small tools I've built for my own use. The browser tools need no install -- just open and go, with all progress in localStorage. The desktop tools are open-source and available on GitHub.</p>
 
 <div class="tools-grid">
 
   <div class="tool-card">
     <h2>🎯 Quizzer</h2>
-    <p>A spaced-repetition flashcard app in one HTML file. Drop in a CSV deck and study.</p>
-    <p>Great for language vocab, but also for memorizing anything else: psychology, history, you name it.</p>
+    <p>A spaced-repetition flashcard app in one HTML file. Drop in a CSV deck and study. Great for language vocab, but works for anything.</p>
     <ul>
-      <li>🧠 FSRS-4.5 spaced repetition (tracks stability, difficulty, due dates per card)</li>
+      <li>🧠 FSRS-4.5 spaced repetition</li>
       <li>📥 Import decks as CSV via drag-and-drop</li>
-      <li>🎛️ Study modes: spaced repetition, least practiced, random, browse</li>
-      <li>⭐ Self-rate each answer: Again / Hard / Good / Easy</li>
+      <li>🎛️ Multiple study modes: spaced repetition, least practiced, random, browse</li>
       <li>📊 Session summaries, mastery charts, response-time breakdowns</li>
       <li>💾 Export / import full state as JSON</li>
-      <li>🌍 Multi-language UI (🇺🇸 🇫🇷 🇳🇱 🇮🇹 🇹🇷 🇪🇸 🇬🇷 🇸🇦)</li>
+      <li>🌍 Multi-language UI (EN, FR, NL, IT, TR, ES, EL, AR)</li>
     </ul>
     <a class="launch" href="/tools/quizzer/quizzer.html" target="_blank" rel="noopener">Launch Quizzer →</a>
   </div>
@@ -39,14 +37,23 @@ permalink: /tools/
     <ul>
       <li>🗣️ 8 languages, any direction (EN, NL, ES, TR, DE, IT, EL, FR)</li>
       <li>🤖 Claude evaluates each attempt: score, ideal translation, grammar notes</li>
-      <li>📈 Adaptive difficulty — the AI adjusts based on your recent performance</li>
-      <li>🏅 CEFR sub-levels (A1- through B2+) tracked over time</li>
-      <li>🔁 Retry injection: periodically re-serves sentences you got wrong</li>
-      <li>⚡ Speed bonus for fast correct answers (carrot, not stick)</li>
-      <li>🔊 Optional TTS playback of expected translations (bring your own OpenAI key)</li>
-      <li>🔑 Bring your own Anthropic API key — no server, no middleman</li>
+      <li>📈 Adaptive difficulty and CEFR sub-level tracking</li>
+      <li>🔁 Periodically re-serves sentences you got wrong</li>
+      <li>🔑 Bring your own API keys -- no server, no middleman</li>
     </ul>
     <a class="launch" href="/tools/translator/translator.html" target="_blank" rel="noopener">Launch Translator →</a>
+  </div>
+
+  <div class="tool-card">
+    <h2>📅 SetDate</h2>
+    <p>A lightweight Mac utility for batch-setting or batch-translating timestamps on photo and video files. Updates all EXIF fields and the Unix creation timestamp so your photo album files things into the right date on import.</p>
+    <ul>
+      <li>🖱️ Drag and drop files to load them</li>
+      <li>📆 Batch set or batch translate dates</li>
+      <li>🖼️ Updates EXIF metadata and filesystem creation date</li>
+      <li>🍎 Mac OS (Apple Silicon) only</li>
+    </ul>
+    <a class="launch" href="https://github.com/topherhunt/setdate" target="_blank" rel="noopener">View on GitHub →</a>
   </div>
 
 </div>
