@@ -5,55 +5,35 @@ permalink: /tools/
 ---
 
 <style>
-  .tools-grid { display: grid; gap: 2rem; }
-  .tool-card { border: 1px solid #ccc3; border-radius: 10px; padding: 1.25rem 1.5rem; }
-  .tool-card h2 { margin-top: 0; }
-  .tool-card ul { list-style: none; padding-left: 0; }
-  .tool-card li { margin: 0.35rem 0; }
-  .tool-card .launch { display: inline-block; margin-top: 0.5rem; font-weight: 600; }
+  .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  @media (max-width: 640px) { .tools-grid { grid-template-columns: 1fr; } }
+  .tools-grid h2 { margin-top: 0; font-size: 1.25rem; }
+  .tools-grid h2 a { text-decoration: none; }
+  .tools-grid h2 a:hover { text-decoration: underline; }
 </style>
 
 <p>Small tools I've built for my own use. The browser tools need no install -- just open and go, with all progress in localStorage. The desktop tools are open-source and available on GitHub.</p>
 
 <div class="tools-grid">
 
-  <div class="tool-card">
-    <h2>🎯 Quizzer</h2>
-    <p>A spaced-repetition flashcard app in one HTML file. Drop in a CSV deck and study. Great for language vocab, but works for anything.</p>
-    <ul>
-      <li>🧠 FSRS-4.5 spaced repetition</li>
-      <li>📥 Import decks as CSV via drag-and-drop</li>
-      <li>🎛️ Multiple study modes: spaced repetition, least practiced, random, browse</li>
-      <li>📊 Session summaries, mastery charts, response-time breakdowns</li>
-      <li>💾 Export / import full state as JSON</li>
-      <li>🌍 Multi-language UI (EN, FR, NL, IT, TR, ES, EL, AR)</li>
-    </ul>
-    <a class="launch" href="/tools/quizzer/quizzer.html" target="_blank" rel="noopener">Launch Quizzer →</a>
+  <div class="d-flex flex-column bg-surface rounded-lg p-4">
+    <h2><a href="/tools/quizzer/quizzer.html" target="_blank" rel="noopener">🎯 Quizzer</a></h2>
+    <p>Flashcards that know what you're about to forget. Load up a vocab deck, study in your browser, and let the app figure out what to quiz you on next. Tracks your progress over time.</p>
   </div>
 
-  <div class="tool-card">
-    <h2>🌍 Translator</h2>
-    <p>AI-powered translation practice. Pick a language pair, translate sentences, get instant feedback with adaptive difficulty.</p>
-    <ul>
-      <li>🗣️ 8 languages, any direction (EN, NL, ES, TR, DE, IT, EL, FR)</li>
-      <li>🤖 Claude evaluates each attempt: score, ideal translation, grammar notes</li>
-      <li>📈 Adaptive difficulty and CEFR sub-level tracking</li>
-      <li>🔁 Periodically re-serves sentences you got wrong</li>
-      <li>🔑 Bring your own API keys -- no server, no middleman</li>
-    </ul>
-    <a class="launch" href="/tools/translator/translator.html" target="_blank" rel="noopener">Launch Translator →</a>
+  <div class="d-flex flex-column bg-surface rounded-lg p-4">
+    <h2><a href="/tools/translator/translator.html" target="_blank" rel="noopener">🌍 Translator</a></h2>
+    <p>Practice translating sentences and get instant AI feedback -- what you got right, what sounds off, and how to say it better. Supports 8 languages and gets harder as you improve.</p>
   </div>
 
-  <div class="tool-card">
-    <h2>📅 SetDate</h2>
-    <p>A lightweight Mac utility for batch-setting or batch-translating timestamps on photo and video files. Updates all EXIF fields and the Unix creation timestamp so your photo album files things into the right date on import.</p>
-    <ul>
-      <li>🖱️ Drag and drop files to load them</li>
-      <li>📆 Batch set or batch translate dates</li>
-      <li>🖼️ Updates EXIF metadata and filesystem creation date</li>
-      <li>🍎 Mac OS (Apple Silicon) only</li>
-    </ul>
-    <a class="launch" href="https://github.com/topherhunt/setdate" target="_blank" rel="noopener">View on GitHub →</a>
+  <div class="d-flex flex-column bg-surface rounded-lg p-4">
+    <h2><a href="https://github.com/topherhunt/setdate" target="_blank" rel="noopener">📅 SetDate</a></h2>
+    <p>Mac utility for batch-setting or shifting timestamps on photo and video files. Updates EXIF metadata and filesystem creation date so your photo library sorts things correctly.</p>
+  </div>
+
+  <div class="d-flex flex-column bg-surface rounded-lg p-4">
+    <h2><a href="https://github.com/topherhunt/mde" target="_blank" rel="noopener">📝 MDE (Markdown Editor)</a></h2>
+    <p>A simple but sturdy visual markdown text editor, inspired by Obsidian and VS Code. Standard editing tools, tabs, file explorer, outline view, quick-open, and DOCX/PDF import/export.</p>
   </div>
 
 </div>

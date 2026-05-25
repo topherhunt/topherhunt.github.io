@@ -13,6 +13,7 @@
   --text-color-secondary: #4a5568;
   --background-color: #f7f9fc;
   --surface-color: #ffffff;
+  --surface-color-subtle: #eef2f7;
   --brand-color: #2563eb;
   --brand-color-dark: #1d4ed8;
   --code-background-color: #eef2f7;
@@ -32,8 +33,9 @@
 [data-theme="dark"] {
   --text-color: #e2e8f0;
   --text-color-secondary: #a0aec0;
-  --background-color: #0f172a;
+  --background-color: #080c15;
   --surface-color: #1e293b;
+  --surface-color-subtle: #0f172a;
   --brand-color: #60a5fa;
   --brand-color-dark: #93bbfd;
   --code-background-color: #1e293b;
@@ -316,6 +318,15 @@ pre {
 
 .u-hidden { display: none; }
 
+.d-flex { display: flex !important; }
+.flex-column { flex-direction: column !important; }
+.flex-1 { flex: 1 !important; }
+
+.bg-surface { background-color: var(--surface-color-subtle) !important; }
+.rounded { border-radius: 5px !important; }
+.rounded-lg { border-radius: 10px !important; }
+.border { border: 1px solid var(--border-color) !important; }
+
 .row {
   display: flex;
   flex-direction: row;
@@ -366,6 +377,7 @@ pre {
 .p-1 { padding: 0.25rem !important; }
 .p-2 { padding: 0.5rem !important; }
 .p-3 { padding: 1rem !important; }
+.p-4 { padding: 1.5rem !important; }
 .pt-0 { padding-top: 0rem !important; }
 .pt-1 { padding-top: 0.25rem !important; }
 .pt-2 { padding-top: 0.5rem !important; }
