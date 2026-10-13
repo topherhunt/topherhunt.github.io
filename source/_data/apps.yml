@@ -20,6 +20,7 @@
     - name: Yammer
       emoji: 🎙️
       coming_soon: true
+      url: https://github.com/topherhunt/yammer
       description: A fully voice-driven, AI-powered rich text editor.
 
 - category: Games
