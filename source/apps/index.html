@@ -17,11 +17,11 @@ wide: true
           {% if app.thumb %}<img src="{{ app.thumb }}" alt="{{ app.name }} screenshot" loading="lazy">
           {% elsif app.icon %}<img class="m-icon" src="{{ app.icon }}" alt="{{ app.name }} icon" loading="lazy">
           {% else %}{{ app.emoji }}{% endif %}
-          {% if app.coming_soon %}<span class="b-tag qa-coming-soon">Coming soon</span>{% endif %}
         </div>
         <div class="p-3">
-          <h3>{{ app.name }}</h3>
+          <h3>{% if app.icon %}<img class="me-1" src="{{ app.icon }}" alt="" loading="lazy">{% endif %}{{ app.name }}</h3>
           <p>{{ app.description }}</p>
+          {% if app.coming_soon %}<div class="text-center mt-2"><span class="b-tag qa-coming-soon">Coming soon</span></div>{% endif %}
         </div>
       {% if app.url %}</a>{% else %}</div>{% endif %}
     {% endfor %}
