@@ -1,0 +1,30 @@
+---
+layout: page
+title: Apps
+permalink: /apps/
+wide: true
+---
+
+<p>Things I've built, mostly to scratch my own itches. All open-source on <a href="https://github.com/topherhunt">GitHub</a>.</p>
+
+{% for group in site.data.apps %}
+<details class="b-collapsible qa-app-category" open>
+  <summary><h2>{{ group.category }}</h2></summary>
+  <div class="grid grid-md-2 grid-lg-3">
+    {% for app in group.items %}
+      {% if app.url %}<a href="{{ app.url }}" target="_blank" rel="noopener"{% else %}<div{% endif %} class="b-app-card qa-app-card bg-surface rounded-lg border">
+        <div class="b-app-thumb">
+          {% if app.thumb %}<img src="{{ app.thumb }}" alt="{{ app.name }} screenshot" loading="lazy">
+          {% elsif app.icon %}<img class="m-icon" src="{{ app.icon }}" alt="{{ app.name }} icon" loading="lazy">
+          {% else %}{{ app.emoji }}{% endif %}
+          {% if app.coming_soon %}<span class="b-tag qa-coming-soon">Coming soon</span>{% endif %}
+        </div>
+        <div class="p-3">
+          <h3>{{ app.name }}</h3>
+          <p>{{ app.description }}</p>
+        </div>
+      {% if app.url %}</a>{% else %}</div>{% endif %}
+    {% endfor %}
+  </div>
+</details>
+{% endfor %}

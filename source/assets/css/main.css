@@ -209,6 +209,8 @@ pre {
   padding-left: var(--spacing-unit);
   display: flow-root;
 
+  &.m-wide { --content-width: 1000px; }
+
   @media screen and (max-width: 800px) {
     max-width: calc(var(--content-width) - var(--spacing-unit));
     padding-right: var(--spacing-unit-half);
@@ -326,6 +328,11 @@ pre {
 .rounded { border-radius: 5px !important; }
 .rounded-lg { border-radius: 10px !important; }
 .border { border: 1px solid var(--border-color) !important; }
+
+/* Grid: 1 col by default; md (>=768px) and lg (>=992px) modifiers add columns */
+.grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+@media (min-width: 768px) { .grid-md-2 { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 992px) { .grid-lg-3 { grid-template-columns: repeat(3, 1fr); } }
 
 .row {
   display: flex;
@@ -499,6 +506,16 @@ pre {
   }
 }
 
+/* Native <details> with the same carets as .foldable; heading lives inside <summary> */
+.b-collapsible {
+  margin-bottom: 1.5rem;
+
+  > summary { list-style: none; cursor: pointer; }
+  > summary::-webkit-details-marker { display: none; }
+  > summary > :first-child::before { content: "⏵ "; }
+  &[open] > summary > :first-child::before { content: "⏷ "; }
+}
+
 
 /* ==========================================================================
    Table of Contents
@@ -629,6 +646,46 @@ pre {
   box-shadow: 3px 3px 10px 0px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
   overflow: hidden;
+}
+
+.b-app-card {
+  display: flex;
+  overflow: hidden;
+  color: var(--text-color);
+  text-decoration: none;
+  transition: transform 0.15s, box-shadow 0.15s;
+
+  &[href]:hover { transform: translateY(-2px); box-shadow: 3px 3px 10px 0px rgba(0, 0, 0, 0.2); text-decoration: none; }
+  h3 { margin: 0 0 0.25rem; font-size: 1.05rem; }
+  p { margin: 0; font-size: var(--small-font-size); color: var(--text-color-secondary); }
+}
+
+.b-app-thumb {
+  position: relative;
+  flex: 0 0 110px;
+  min-height: 110px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--surface-color);
+  font-size: 2.5rem;
+
+  /* Absolute so a screenshot fills the full card height without stretching the card */
+  img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top left; }
+  img.m-icon { position: static; width: 64px; height: 64px; object-fit: contain; }
+}
+
+.b-tag {
+  padding: 0.1rem 0.6rem;
+  border-radius: 999px;
+  background: var(--grey-color-light);
+  color: var(--grey-color-dark);
+  font-size: 0.65rem;
+  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .b-caption {

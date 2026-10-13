@@ -1,0 +1,63 @@
+# Featured on /apps/. Omit `url` for a non-clickable card. Thumbnail priority: `thumb` (screenshot), then `icon`, then `emoji`.
+
+- category: Apps
+  items:
+    - name: Ditto
+      emoji: 🦜
+      icon: /assets/images/apps/ditto-icon.png
+      url: https://github.com/topherhunt/ditto
+      description: AI-powered language learning, free and online. A grab bag of activities for vocab, translation, and conversation.
+    - name: Ludi
+      emoji: 🎵
+      icon: /assets/images/apps/ludi-icon.png
+      url: https://github.com/topherhunt/ludi
+      description: Cross-platform music library with folder nesting, real tags, and seriously good search.
+    - name: MDE
+      emoji: 📝
+      icon: /assets/images/apps/mde-icon.png
+      url: https://github.com/topherhunt/mde
+      description: A sturdy markdown editor with built-in Git version tracking. Inspired by Obsidian and VS Code.
+    - name: Yammer
+      emoji: 🎙️
+      coming_soon: true
+      description: A fully voice-driven, AI-powered rich text editor.
+
+- category: Games
+  items:
+    - name: Aurora
+      emoji: 🌌
+      thumb: /assets/images/apps/aurora.jpg
+      url: https://github.com/topherhunt/aurora
+      description: A massive procgen open-world multiplayer WebVR RPG. Hike through the woods, reach the lake at sunset, stay for the Northern Lights.
+    - name: OpenHeroes
+      emoji: ⚔️
+      thumb: /assets/images/apps/openheroes.jpg
+      url: https://github.com/topherhunt/openheroes
+      description: Turn-based fantasy strategy. A love letter to Heroes of Might and Magic III and IV.
+    - name: Khet
+      emoji: 🔦
+      coming_soon: true
+      description: The laser-chess board game.
+
+- category: Utilities
+  items:
+    - name: Activity Monitor
+      emoji: ⏱️
+      icon: /assets/images/apps/activity-monitor-icon.png
+      url: https://github.com/topherhunt/activity-monitor
+      description: Lightweight native Mac activity monitor, for answering the perennial question "Where did my time go?"
+    - name: Recorder
+      emoji: 🎥
+      thumb: /assets/images/apps/recorder.jpg
+      url: https://github.com/topherhunt/recorder
+      description: A right-sized Mac video recorder that respects your disk space and doesn't drown you in options.
+    - name: SetDate
+      emoji: 📅
+      thumb: /assets/images/apps/setdate.png
+      url: https://github.com/topherhunt/setdate
+      description: Batch-set or shift the timestamps on photos and videos so your library sorts correctly.
+    - name: Trimmer
+      emoji: ✂️
+      icon: /assets/images/apps/trimmer-icon.png
+      url: https://github.com/topherhunt/audio-trimmer
+      description: A friendly little Mac audio trimmer, for when opening Audacity is overkill.
