@@ -4,6 +4,7 @@
   items:
     - name: Ditto
       emoji: 🦜
+      thumb: /assets/images/apps/ditto.jpg
       icon: /assets/images/apps/ditto-icon.png
       url: https://ditto.topherhunt.com
       description: AI-powered language learning, free and online. A grab bag of activities for vocab, translation, and conversation.
