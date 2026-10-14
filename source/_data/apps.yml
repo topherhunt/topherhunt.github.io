@@ -14,6 +14,7 @@
       description: Cross-platform music library with folder nesting, real tags, and seriously good search.
     - name: MDE
       emoji: 📝
+      thumb: /assets/images/apps/mde.jpg
       icon: /assets/images/apps/mde-icon.png
       url: https://github.com/topherhunt/mde
       description: A sturdy markdown editor with built-in Git version tracking. Inspired by Obsidian and VS Code.
