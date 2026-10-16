@@ -8,6 +8,10 @@
       icon: /assets/images/apps/ditto-icon.png
       url: https://ditto.topherhunt.com
       description: AI-powered language learning, free and online. A grab bag of activities for vocab, translation, and conversation.
+    - name: Rijtheorie
+      icon: /assets/images/apps/rijtheorie-icon.png
+      url: https://rijtheorie.pages.dev
+      description: A free, unofficial Spanish-language course for the Dutch car theory exam (rijbewijs B). Learn the Netherlands' driving rules en español.
     - name: Ludi
       emoji: 🎵
       icon: /assets/images/apps/ludi-icon.png
@@ -18,7 +22,7 @@
       thumb: /assets/images/apps/mde.jpg
       icon: /assets/images/apps/mde-icon.png
       url: https://github.com/topherhunt/mde
-      description: A sturdy markdown editor with built-in Git version tracking. Inspired by Obsidian and VS Code.
+      description: A right-sized markdown editor with built-in Git version tracking. Inspired by Obsidian and VS Code.
     - name: Yammer
       emoji: 🎙️
       coming_soon: true
