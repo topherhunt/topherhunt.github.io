@@ -16,7 +16,7 @@
       emoji: 🎵
       icon: /assets/images/apps/ludi-icon.png
       url: https://github.com/topherhunt/ludi
-      description: Cross-platform music library with folder nesting, real tags, and seriously good search.
+      description: A Mac music library with real tags, good search, and an on-device AI that hears what your songs sound like.
     - name: MDE
       emoji: 📝
       thumb: /assets/images/apps/mde.jpg
