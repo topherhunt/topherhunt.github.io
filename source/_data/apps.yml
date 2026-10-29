@@ -23,6 +23,12 @@
       icon: /assets/images/apps/mde-icon.png
       url: https://github.com/topherhunt/mde
       description: A right-sized markdown editor with built-in Git version tracking. Inspired by Obsidian and VS Code.
+    - name: Spreadsheet
+      emoji: 📊
+      thumb: /assets/images/apps/spreadsheet.jpg
+      icon: /assets/images/apps/spreadsheet-icon.png
+      url: https://github.com/topherhunt/spreadsheet
+      description: A fast, fully offline Mac spreadsheet editor for CSV and Excel files that feels like Google Sheets, and never mangles what it can't display.
     - name: Yammer
       emoji: 🎙️
       coming_soon: true
