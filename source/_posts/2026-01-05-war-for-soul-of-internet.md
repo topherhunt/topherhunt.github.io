@@ -43,7 +43,7 @@ Bottom-up movements aren't an alternative to top-down regulation. Nor are they o
 
 ## The power-user problem
 
-But a proving ground only proves something if people are willing to use it. And here's where the "convivial tools" vision hits a wall: **hand-coded websites and IndieWeb don't seem to scale beyond the passionate power-user crowd.** Henry's poetic call-to-action assumes people want autonomy over their social graph. It assumes they're willing to maintain infrastructure, learn protocols, debug federation issues, and tolerate literally any amount of technical setup complexity beyond the minimum, because they value a free and open internet. It assumes, in short, that most people are power users.
+But a proving ground only proves something if people are willing to use it. And here's where the "convivial tools" vision hits a wall: **hand-coded websites and IndieWeb don't seem to scale beyond the passionate power-user crowd.** Henry's poetic call-to-action assumes people want autonomy over their social graph. It assumes they're willing to maintain infrastructure, learn protocols, debug federation issues, and tolerate a nonzero amount of technical setup complexity, because they value a free and open internet. It assumes, in short, that most people are power users.
 
 They're not. Most people are content with consuming content and have minimal patience for tech setup. You'll never get widespread adoption if your tech assumes most people are tech geeks. This isn't a moral failing. It's just... how people are. The correct response isn't to lament that the masses won't hand-code their HTML; it's to hammer out solutions whose appeal and user-friendliness hold up as you scale from enthusiasts to lay consumers.
 
