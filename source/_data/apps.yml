@@ -41,7 +41,7 @@
       emoji: 🌌
       thumb: /assets/images/apps/aurora.jpg
       url: https://aurora.topherhunt.com
-      description: A massive procgen open-world multiplayer WebVR RPG. Hike through the woods, reach the lake at sunset, stay for the Northern Lights.
+      description: A massive open-world multiplayer WebVR mountainscape of mythical creatures, calm lakes, castles, mazelike caves, and Northern Lights.
     - name: OpenHeroes
       emoji: ⚔️
       thumb: /assets/images/apps/openheroes.jpg
@@ -53,7 +53,7 @@
       thumb: /assets/images/apps/khet.jpg
       url: https://github.com/topherhunt/khet
       coming_soon: true
-      description: The laser-chess board game.
+      description: The laser-chess board game. AI features are still WIP.
 
 - category: Utilities
   items:
